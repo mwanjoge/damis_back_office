@@ -1,7 +1,8 @@
-@extends('layouts.master')
+{{-- @extends('layouts.master')
 @section('title')
     @lang('translation.settings')
-@endsection
+@endsection --}}
+<div>
 @section('content')
     <div class="row">
         <div class="col-xxl-9">
@@ -39,11 +40,11 @@
             <div class="card-body p-4" style="background-color: white">
                 <div class="tab-content">
                     <div class="tab-pane active" id="countries" role="tabpanel">
-                        {{-- <div class="justify-content-end text-end row">
+                        <div class="justify-content-end text-end align-content-start">
                             <button type="button" class="btn btn-primary waves-effect waves-light">New Country</button>                                  
-                        </div> --}}
+                        </div>
                         
-                        <div class="table-responsive table-card">
+                        <div class="table-responsive table-card ">
                             <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
                                 <thead class="text-muted table-light">
                                     <tr>
@@ -141,7 +142,8 @@
         </div>
     </div>
     @endsection
-    @section('script')
+</div>
+    {{-- @section('script')
         <script src="{{ URL::asset('build/js/pages/profile-setting.init.js') }}"></script>
         <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    @endsection
+    @endsection --}}

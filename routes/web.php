@@ -20,6 +20,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Route::get('/settings', SettingsPage::class)->name('settings');
+Route::get('/settings', SettingsPage::class)->name('settings');
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
