@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    /** @use HasFactory<\Database\Factories\ServiceFactory> */
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'service_provider_id',
+    ];
+
+    public function serviceProvider()
+    {
+        return $this->belongsTo(ServiceProvider::class);
+    }
+    
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

@@ -18,7 +18,7 @@ class EmbassyCreated
     /**
      * Create a new event instance.
      */
-    public function __construct(Public Embassy $embassy)
+    public function __construct(public mixed $record)
     {
        // $this->embassy = $embassy;
     }

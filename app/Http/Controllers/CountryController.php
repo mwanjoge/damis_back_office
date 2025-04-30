@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EmbassyCreated;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
 use App\Models\Country;
+use Illuminate\Support\Facades\Http;
 
 class CountryController extends Controller
 {
@@ -13,7 +15,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        return view('countries.index');
     }
 
     /**
@@ -29,7 +31,9 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request)
     {
-        //
+        $country = Country::query()->create($request->all());
+
+        event(new EmbassyCreated($country));
     }
 
     /**

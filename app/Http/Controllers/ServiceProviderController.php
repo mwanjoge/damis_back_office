@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EmbassyCreated;
 use App\Http\Requests\StoreServiceProviderRequest;
 use App\Http\Requests\UpdateServiceProviderRequest;
 use App\Models\ServiceProvider;
@@ -13,7 +14,7 @@ class ServiceProviderController extends Controller
      */
     public function index()
     {
-        //
+        return view('service_providers.index');
     }
 
     /**
@@ -29,7 +30,20 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
-        //
+        $serviceProvider = ServiceProvider::query()
+            ->create([
+                'name' => $request->name
+            ]);
+
+        if($request->service){
+            foreach ($request->service as $service) {
+                $serviceProvider->services()->create(['name' => $service]);
+            }
+        }
+        
+
+        // Dispatch the event to push the service provider data to the public server
+        event(new EmbassyCreated($serviceProvider));
     }
 
     /**

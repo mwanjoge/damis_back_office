@@ -22,10 +22,11 @@ class PushCreatedRecordsToPublicServer
      */
     public function handle(object $event): void
     {
+        $record = $event->record;
         // Check if the event is of the type we want to handle
-        if ($event->embassy instanceof \App\Models\Embassy) {
-            $embassy = $event->embassy;
-            //dd($embassy);
+        if ($event->record instanceof \App\Models\Embassy) {
+            $embassy = $event->record;
+            
             // Push the embassy data to the public server
             $response = Http::public()->post('/api/embassy', [
                 'id' => $embassy->id,
@@ -33,8 +34,16 @@ class PushCreatedRecordsToPublicServer
                 'type' => $embassy->type,
                 'is_active' => $embassy->is_active,
             ]);
-            Log::info($response);
-            // Handle the response as needed
+        }
+
+        if($record instanceof \App\Models\Country){
+            
+            // Push the country data to the public server
+            Http::public()->post('api/country', [
+                'name' => $record->name,
+                'code' => $record->code,
+                'phone_code' => $record->phone_code,
+            ]);
         }
     }
 }

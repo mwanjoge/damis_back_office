@@ -1,12 +1,17 @@
 <?php
 
+use App\Http\Controllers\API\AcknowledgeController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EmbassyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ServiceProviderController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('embassy', [EmbassyController::class, 'store']);
-Route::post('acknowlege', [EmbassyController::class, 'acknowledge']);
+Route::resource('embassy', EmbassyController::class)->names('embassy');
+Route::resource('country', CountryController::class)->names('country');
+Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
+Route::post('acknowledge', [AcknowledgeController::class, 'acknowledge']);
