@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EmbassyCreated;
 use App\Http\Requests\StoreEmbassyRequest;
 use App\Http\Requests\UpdateEmbassyRequest;
 use App\Models\Embassy;
+use App\Services\EmbassyService;
+use Illuminate\Support\Facades\DB;
 
 class EmbassyController extends Controller
 {
+
+    public function __construct(protected EmbassyService $embassyService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +36,17 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
-        //
+        
+        DB::transaction(function () use ($request) {
+            $embassy = $this->embassyService->create($request);
+            $account = $this->embassyService->createAccount($request);
+            $embassy->account()->save($account);
+
+            $this->embassyService->attachCountries($embassy, $request);
+
+            // Dispatch the event to push the embassy data to the public server
+            event(new EmbassyCreated($embassy));
+        });
     }
 
     /**

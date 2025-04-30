@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\EmbassyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return csrf_token();
 });
+
+

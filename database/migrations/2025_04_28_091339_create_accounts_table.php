@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->bigInteger('embassy_id')->nullable();
             $table->boolean('has_depertment')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
