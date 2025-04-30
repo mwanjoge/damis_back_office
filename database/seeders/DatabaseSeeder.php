@@ -16,6 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create(['name' => 'admin','email' => 'admin@themesbrand.com','password' => Hash::make('12345678'),'email_verified_at'=>'2022-01-02 17:04:58','created_at' => now(),]);
+        User::create(['name' => 'admin','email' => 'admin@gmail.com','password' => Hash::make('12345678'),'email_verified_at'=>'2022-01-02 17:04:58','created_at' => now(),]);
     }
 }
