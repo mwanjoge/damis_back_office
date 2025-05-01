@@ -13,6 +13,7 @@ class Service extends Model
         'name',
         'service_provider_id',
         'account_id',
+        'synced',
     ];
 
     public function serviceProvider()
