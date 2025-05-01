@@ -1,10 +1,12 @@
 <div>
-    <a wire:click="addInput" class="btn btn-primary mb-3">Add</a>
+    <button type="button" wire:click="addInput" class="btn btn-link mb-3 text-primary fw-bolder">New Service</button>
 
     @foreach($inputs as $key => $value)
         <div class="service-field mb-3 d-flex">
             <input type="text" wire:model="inputs.{{ $key }}" class="form-control me-2" placeholder="Enter service" required>
-            <a wire:click="removeInput({{ $key }})" class="btn btn-danger">Remove</a>
+            <button wire:click="removeInput({{ $key }})" class="btn btn-danger">
+                <i class="bx bx-trash"></i>
+            </button>
         </div>
     @endforeach
 </div>

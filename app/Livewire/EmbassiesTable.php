@@ -51,7 +51,7 @@ class EmbassiesTable extends Component
             'is_active' => $this->is_active,
         ];
 
-        // dd($data);
+         dd($data);
 
         $request2 = new StoreEmbassyRequest( $data);
         $embassyController = app(EmbassyController::class);

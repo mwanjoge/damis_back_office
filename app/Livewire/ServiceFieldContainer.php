@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\Reactive;
 
 class ServiceFieldContainer extends Component
 {

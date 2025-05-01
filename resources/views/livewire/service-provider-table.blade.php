@@ -98,7 +98,7 @@
                             <div class="col-md-12 justify-content-center">
                                 <input type="text" class="form-control" wire:model="name" required>
                             </div>
-                            <p class="mt-4">Add Services</p>
+                            <p class="mt-4 fw-bold">Services</p>
                       
                             @livewire('service-field-container')
                            
