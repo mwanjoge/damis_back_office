@@ -62,16 +62,5 @@ class Request extends Model
     {
         return $this->belongsTo(Country::class);
     }
-    /** @use HasFactory<\Database\Factories\RequestFactory> */
-    use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'country_id',
-        'service_id',
-        'message',
-        'status',
-    ];
 }
