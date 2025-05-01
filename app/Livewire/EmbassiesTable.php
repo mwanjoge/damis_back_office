@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Http\Requests\StoreEmbassyRequest;
 use Livewire\Component;
 use App\Models\Embassy;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EmbassyController;
 
@@ -50,11 +51,12 @@ class EmbassiesTable extends Component
             'is_active' => $this->is_active,
         ];
 
-        // dd($data);
+         dd($data);
 
         $request2 = new StoreEmbassyRequest( $data);
         $embassyController = app(EmbassyController::class);
-        $embassyController->store($request2);
+        $response = $embassyController->store($request2);
+        dd($response);
 
         // $request = Request::create(
         //     '/fake',
@@ -77,6 +79,11 @@ class EmbassiesTable extends Component
 
     public function render()
     {
-        return view('livewire.embassies-table');
+        return view('livewire.embassies-table',
+    [
+            'countries' => Country::all(),
+            'embassies' => Embassy::all(),
+        ]
+    );
     }
 }

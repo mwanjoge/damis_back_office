@@ -9,6 +9,7 @@ class Embassy extends Model
 {
     use HasFactory;
 
+    use HasFactory;
     protected $fillable = [
         'name',
         'type',

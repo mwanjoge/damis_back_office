@@ -34,7 +34,7 @@
                     </tr>
 
                     <!-- Edit Modal -->
-                    <div class="modal fade" id="editServiceProviderModal{{ $serviceProvider['id'] }}" tabindex="-1" aria-labelledby="editServiceProviderModalLabel" aria-hidden="true">
+                    <div wire:ignore.self class="modal fade" id="editServiceProviderModal{{ $serviceProvider['id'] }}" tabindex="-1" aria-labelledby="editServiceProviderModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -88,7 +88,7 @@
     </script>
 
 <div class="card">
-    <div class="card-body modal fade service-provider-modal" tabindex="-1" role="dialog" aria-labelledby="serviceProviderModalLabel" aria-hidden="true">
+    <div wire:ignore.self class="card-body modal fade service-provider-modal" tabindex="-1" role="dialog" aria-labelledby="serviceProviderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body text-center p-5">
@@ -98,12 +98,10 @@
                             <div class="col-md-12 justify-content-center">
                                 <input type="text" class="form-control" wire:model="name" required>
                             </div>
-                            <p class="mt-4">Select Services</p>
-                            <select wire:model="selectedServices" class="js-example-basic-multiple" multiple>
-                                @foreach ($services as $service)
-                                    <option value="{{ $service['id'] }}">{{ $service['name'] }}</option>
-                                @endforeach
-                            </select>
+                            <p class="mt-4 fw-bold">Services</p>
+                      
+                            @livewire('service-field-container')
+                           
                             <div class="hstack gap-2 justify-content-center mt-4">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save Changes</button>

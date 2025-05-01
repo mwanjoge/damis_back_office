@@ -2,10 +2,11 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use App\Models\ServiceProvider;
 use App\Models\Service;
+use Livewire\Component;
 use Illuminate\Http\Request;
+use App\Models\ServiceProvider;
+use App\Http\Requests\StoreServiceProviderRequest;
 use App\Http\Controllers\ServiceProviderController;
 
 class ServiceProviderTable extends Component
@@ -26,7 +27,7 @@ class ServiceProviderTable extends Component
 
     public function loadData()
     {
-        $this->services = Service::all()->toArray();
+        $this->services = Service::all();
         $this->serviceProviders = ServiceProvider::with('services')->get()->toArray();
     }
 
@@ -46,16 +47,14 @@ class ServiceProviderTable extends Component
     {
         $data = [
             'name' => $this->name,
-            'services' => $this->selectedServices,
+            'inputs' => $this->selectedServices,
         ];
 
-        $request = Request::create(
-            '/fake',
-            $this->editingId ? 'PUT' : 'POST',
-            array_merge($data, ['id' => $this->editingId])
-        );
+        // @dd($data);
 
-        app()->call([ServiceProviderController::class, 'storeOrUpdate'], ['request' => $request]);
+        $request = new StoreServiceProviderRequest($data);
+        $serviceProviderController = app(ServiceProviderController::class);
+        $serviceProviderController->store($request);
 
         $this->reset(['editingId', 'name', 'selectedServices']);
         $this->mount(); // reload data

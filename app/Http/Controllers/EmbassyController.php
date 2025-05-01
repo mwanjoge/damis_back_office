@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\EmbassyCreated;
-use App\Http\Requests\StoreEmbassyRequest;
-use App\Http\Requests\UpdateEmbassyRequest;
+use Illuminate\Support\Facades\Log;
 use App\Models\Embassy;
+use App\Events\EmbassyCreated;
 use App\Services\EmbassyService;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreEmbassyRequest;
+use App\Http\Requests\UpdateEmbassyRequest;
 
 class EmbassyController extends Controller
 {
@@ -36,17 +37,21 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
-        
-        DB::transaction(function () use ($request) {
-            $embassy = $this->embassyService->create($request);
-            $account = $this->embassyService->createAccount($request);
-            $embassy->account()->save($account);
+        try {
+            DB::transaction(function () use ($request) {
+                $embassy = $this->embassyService->create($request);
+                $account = $this->embassyService->createAccount($request);
+                $embassy->account()->save($account);
 
-            $this->embassyService->attachCountries($embassy, $request);
+                $this->embassyService->attachCountries($embassy, $request);
 
-            // Dispatch the event to push the embassy data to the public server
-            event(new EmbassyCreated($embassy));
-        });
+                // Dispatch the event to push the embassy data to the public server
+                event(new EmbassyCreated($embassy));
+            });
+        } catch (\Exception $e) {
+            Log::error('Failed to store embassy: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to store embassy'], 500);
+        }
     }
 
     /**
