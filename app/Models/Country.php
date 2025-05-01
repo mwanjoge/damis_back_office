@@ -10,4 +10,9 @@ class Country extends Model
     protected $fillable = [
         'name','code','phone_code','embassy_id','synced'
     ];
+
+    public function embassy()
+    {
+        return $this->belongsTo(Embassy::class);
+    }
 }
