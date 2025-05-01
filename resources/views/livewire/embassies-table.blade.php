@@ -1,4 +1,4 @@
-@include("modal.alert")
+@include('modal.alert')
 
 <div class="tab-pane px-4" id="embassy" role="tabpanel">
     <div class="text-end pb-4">
@@ -29,9 +29,16 @@
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                 data-bs-target=".mission-modal"
-                                onclick="openMissionModal('{{ $embassy->id }}', '{{ $embassy->name }}', '{{ $embassy->type }}', '{{ $embassy->is_active }}')">
+                                onclick="openMissionModal(
+                                    '{{ $embassy->id }}',
+                                    @js($embassy->name),
+                                    '{{ $embassy->type }}',
+                                    '{{ $embassy->is_active }}'
+                                     @js($embassy->countries->pluck('id'))
+                                )">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
+
 
                             <button class="btn btn-danger btn-sm"
                                 onclick="confirmDelete({{ $embassy->id }}, 'mission')">
@@ -54,14 +61,24 @@
     <div wire:ignore.self class="modal fade mission-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form  id="missionForm" method="post" action="{{ route('embassy.store') }}">
+                <form id="missionForm" method="post"
+                    action="{{ $editingId ? route('embassy.update', $editingId) : route('embassy.store') }}">
                     @csrf
-                    {{-- <input type="hidden" name="_method" id="missionMethod" value="POST">
-                <input type="hidden" name="id" id="missionId"> --}}
+                    @if ($editingId)
+                        @method('PUT')
+                    @endif
+
                     <div class="modal-header text-center">
-                        <h4 class="" id="missionModalTitle">Add New Mission</h4>
+                        <h4 id="missionModalTitle">
+                            {{ $editingId ? 'Edit Mission' : 'Add New Mission' }}
+                        </h4>
                     </div>
+
                     <div class="modal-body px-5">
+                        <!-- Inside the <form> -->
+                        <input type="hidden" id="missionMethod" name="_method" value="POST">
+                        <input type="hidden" id="missionId" name="id" value="">
+
                         <div class="mb-3">
                             <label class="form-label">Mission Name</label>
                             <input type="text" name="name" id="missionName" class="form-control" wire:model="name" required>
@@ -78,8 +95,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Status</label>
-                            <select name="is_active" id="missionStatus" class="form-select" wire:model="is_active"
-                                required>
+                            <select name="is_active" id="missionStatus" class="form-select" wire:model="is_active" required>
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
                             </select>
@@ -94,23 +110,39 @@
 
                         <div class="hstack gap-2 justify-content-center mt-4">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save Mission</button>
+                            <button type="submit" class="btn btn-primary">
+                                {{ $editingId ? 'Update Mission' : 'Save Mission' }}
+                            </button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
     <script>
-        function openMissionModal(id = '', name = '', type = 'embassy', is_active = 1) {
-            document.getElementById('missionModalTitle').innerText = id ? 'Edit Mission' : 'Add New Mission';
-            document.getElementById('missionMethod').value = id ? 'PUT' : 'POST';
-            document.getElementById('missionId').value = id;
-            document.getElementById('missionName').value = name;
-            document.getElementById('missionType').value = type;
-            document.getElementById('missionStatus').value = is_active;
+        function openMissionModal(id = '', name = '', type = 'embassy', is_active = 1, accreditedCountries = []) {
+    document.getElementById('missionModalTitle').innerText = id ? 'Edit Mission' : 'Add New Mission';
+    document.getElementById('missionMethod').value = id ? 'PUT' : 'POST';
+    document.getElementById('missionId').value = id;
+    document.getElementById('missionName').value = name;
+    document.getElementById('missionType').value = type;
+    document.getElementById('missionStatus').value = is_active;
+
+    // Set selected countries
+    const countrySelect = document.querySelector('select[name="country_id[]"]');
+    if (countrySelect) {
+        [...countrySelect.options].forEach(option => {
+            option.selected = accreditedCountries.includes(parseInt(option.value));
+        });
+
+        // Trigger change if using select2 or similar
+        if ($(countrySelect).hasClass('js-example-basic-multiple')) {
+            $(countrySelect).trigger('change');
         }
-    
+    }
+}
+
         function confirmDelete(id, type) {
             if (confirm(`Are you sure you want to delete this ${type}?`)) {
                 // Perform the delete action
