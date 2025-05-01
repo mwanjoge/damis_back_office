@@ -1,11 +1,14 @@
 @extends('layouts.master')
 @section('title', 'Show Request')
 @section('content')
-<div class="container mt-4">
-    <h2>Request Details</h2>
+<div class="card mt-4">
+    <div class="card-header">
+        <h4>Request Details</h4>
+       </div>
+    <div class="card-body">
+        <h5>Tracking Number: {{ $request->tracking_number }}</h5>
     <table class="table table-bordered">
         <tbody>
-            <tr><th>ID</th><td>{{ $request->id }}</td></tr>
             <tr><th>Account</th><td>{{ $request->account_id }}</td></tr>
             <tr><th>Embassy</th><td>{{ $request->embassy_id }}</td></tr>
             <tr><th>Service</th><td>{{ $request->service_id }}</td></tr>
@@ -24,11 +27,13 @@
         </tbody>
     </table>
     @if(!$request->is_approved)
-        <button wire:click="approve" class="btn btn-success">Approve</button>
+
+        <button wire:click="approve" class="btn btn-success btn-sm">Approve</button>
     @endif
-    <a href="{{ route('requests.index') }}" class="btn btn-secondary ms-2">Back</a>
+    <a href="{{ route('requests.index') }}" class="btn btn-secondary btn-sm">Back</a>
     @if(session()->has('success'))
         <div class="alert alert-success mt-2">{{ session('success') }}</div>
     @endif
+</div>
 </div>
 @endsection

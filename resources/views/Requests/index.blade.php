@@ -1,12 +1,14 @@
 @extends('layouts.master')
 @section('title', 'Requests')
 @section('content')
-    <div class="container">
-        <h1>Requests</h1>
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Requests</h4>
+            <a href="{{ route('requests.create') }}" class="btn btn-primary float-end">Create New Request</a>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>#</th>
                     <th>Tracking Number</th>
                     <th>Status</th>
                     <th>Type</th>
@@ -17,7 +19,7 @@
             <tbody>
                 @foreach($requests as $request)
                     <tr>
-                        <td>{{ $request->id }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $request->tracking_number }}</td>
                         <td>{{ $request->status }}</td>
                         <td>{{ $request->type }}</td>

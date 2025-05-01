@@ -38,7 +38,7 @@
                     </a>
                 </li> 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="/applications" >
+                    <a class="nav-link menu-link" href="/requests" >
                         <i class="lab la-delicious"></i> <span>Requests</span>
                     </a>
                 </li>

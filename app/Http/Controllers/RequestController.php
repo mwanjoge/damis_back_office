@@ -43,6 +43,10 @@ class RequestController extends Controller
     public function show(Request $request)
     {
         //
+        // Fetch the request from the database
+        // Return the request to the view
+        return view('requests.show', compact('request'));
+        
     }
 
     /**
