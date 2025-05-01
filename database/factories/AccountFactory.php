@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ServiceProvider>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Account>
  */
-class ServiceProviderFactory extends Factory
+class AccountFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,8 @@ class ServiceProviderFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'account_id' => \App\Models\Account::factory(),
+            'embassy_id' => 1, // You can randomize or set this in the seeder
+            'has_depertment' => $this->faker->boolean(),
         ];
     }
 }
