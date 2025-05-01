@@ -10,8 +10,7 @@ class ServiceProvider extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'account_id',
+        'name','account_id'
     ];
 
     public function services(){

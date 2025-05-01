@@ -30,15 +30,16 @@
 
                 <div class="card-body px-4" style="background-color: white">
                     <div class="tab-content">
+                        <!-- Mission -->
+                        <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel" wire:ignore.self>
+                            @livewire('embassies-table')
+                        </div>
 
-                        
                         <!-- Countries -->
                         <div class="tab-pane fade" id="tab-countries" role="tabpanel" wire:ignore.self>
                             @livewire('countries-table')
                         </div>
                         
-
-
                         <!-- Service Providers -->
                         <div class="tab-pane fade" id="tab-service-provider" role="tabpanel" wire:ignore.self>
                             @livewire('service-provider-table')
@@ -48,13 +49,6 @@
                         <div class="tab-pane fade" id="tab-services" role="tabpanel" wire:ignore.self>
                             @livewire('services-table')
                         </div>
-
-                        
-                        <!-- Mission -->
-                        <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel" wire:ignore.self>
-                            @livewire('embassies-table')
-                        </div>
-
                     </div>
                 </div>
             </div>

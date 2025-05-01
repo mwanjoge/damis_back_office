@@ -42,13 +42,14 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form wire:submit.prevent="save">
+                                    <form action="{{ route('service_provider.store') }}" method="post">
+                                        @csrf
                                         <div class="mb-3">
                                             <label class="form-label">Service Provider Name</label>
-                                            <input type="text" class="form-control" wire:model="name" required>
+                                            <input type="text" class="form-control" wire:model="name" name="name" required>
                                         </div>
                                         <p class="mt-4">Select Services</p>
-                                        <select wire:model="selectedServices" class="js-example-basic-multiple" multiple>
+                                        <select wire:model="selectedServices" name="service_id[]" class="js-example-basic-multiple" multiple>
                                             @foreach ($services as $service)
                                                 <option value="{{ $service['id'] }}">{{ $service['name'] }}</option>
                                             @endforeach
@@ -91,15 +92,17 @@
     <div wire:ignore.self class="card-body modal fade service-provider-modal" tabindex="-1" role="dialog" aria-labelledby="serviceProviderModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body text-center p-5">
+                <div class="modal-body p-3">
                     <div class="mt-4">
-                        <h4 class="mb-3">{{ $editingId ? 'Edit' : 'New' }} Service Provider</h4>
-                        <form wire:submit.prevent="save">
+                        <h4 class="mb-3 text-center">{{ $editingId ? 'Edit' : 'New' }} Service Provider</h4>
+                        <form action="{{ route('service_provider.store') }}" method="post">
+                            @csrf
                             <div class="col-md-12 justify-content-center">
-                                <input type="text" class="form-control" wire:model="name" required>
+                                <label class="form-label">Service Provider Name</label>
+                                <input type="text" class="form-control" wire:model="name" name="name" required>
                             </div>
-                            <p class="mt-4 fw-bold">Services</p>
-                      
+                          
+                            
                             @livewire('service-field-container')
                            
                             <div class="hstack gap-2 justify-content-center mt-4">

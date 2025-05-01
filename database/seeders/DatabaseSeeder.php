@@ -28,13 +28,13 @@ class DatabaseSeeder extends Seeder
 
         // Seed related tables first
         $this->call([
-            AccountSeeder::class,
-            EmbassySeeder::class,
-            ServiceSeeder::class,
-            ServiceProviderSeeder::class,
-            MemberSeeder::class,
-            CountrySeeder::class,
-            RequestSeeder::class, // Requests last!
+            //AccountSeeder::class,
+            //EmbassySeeder::class,
+            //ServiceSeeder::class,
+            //ServiceProviderSeeder::class,
+            //MemberSeeder::class,
+            //CountrySeeder::class,
+            //RequestSeeder::class, // Requests last!
         ]);
     }
 }

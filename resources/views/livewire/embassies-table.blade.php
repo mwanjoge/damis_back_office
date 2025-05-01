@@ -49,26 +49,25 @@
     <div wire:ignore.self class="modal fade mission-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form wire:submit.prevent="save" id="missionForm">
+                <form  id="missionForm" method="post" action="{{ route('embassy.store') }}">
                     @csrf
                     {{-- <input type="hidden" name="_method" id="missionMethod" value="POST">
                 <input type="hidden" name="id" id="missionId"> --}}
-
-                    <div class="modal-body p-5 text-center">
-                        <h4 class="mb-3" id="missionModalTitle">Add New Mission</h4>
-
+                    <div class="modal-header text-center">
+                        <h4 class="" id="missionModalTitle">Add New Mission</h4>
+                    </div>
+                    <div class="modal-body px-5">
                         <div class="mb-3">
                             <label class="form-label">Mission Name</label>
-                            <input type="text" name="name" id="missionName" class="form-control" wire:model="name"
-                                required>
+                            <input type="text" name="name" id="missionName" class="form-control" wire:model="name" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Type</label>
                             <select name="type" id="missionType" class="form-select" wire:model="type" required>
-                                <option value="embassy">Mission</option>
-                                <option value="permanent mission">Permanent Mission</option>
-                                <option value="high commission">High Commission</option>
+                                <option value="Embassy">Embassy</option>
+                                <option value="Permanent Mission">Permanent Mission</option>
+                                <option value="High Commission">High Commission</option>
                             </select>
                         </div>
 
@@ -81,11 +80,10 @@
                             </select>
                         </div>
 
-                        <p class="mt-4">Accredited Countries</p>
-                        <select wire:model="states" class="js-example-basic-multiple" multiple>
-                            @foreach ($countries as $country)
-                                <option value="{{ $country['id'] }}">{{ $country['name'] }}
-                                </option>
+                        <p class="mt-4">Accredited Countries {{$countries}}</p>
+                        <select wire:model="states" name="country_id[]" class="js-example-basic-multiple" multiple>
+                            @foreach (json_decode($countries) as $index => $country)
+                                <option value="{{ $index }}">{{ $country }}</option>
                             @endforeach
                         </select>
 
@@ -98,22 +96,22 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-<script>
-    function openMissionModal(id = '', name = '', type = 'embassy', is_active = 1) {
-        document.getElementById('missionModalTitle').innerText = id ? 'Edit Mission' : 'Add New Mission';
-        document.getElementById('missionMethod').value = id ? 'PUT' : 'POST';
-        document.getElementById('missionId').value = id;
-        document.getElementById('missionName').value = name;
-        document.getElementById('missionType').value = type;
-        document.getElementById('missionStatus').value = is_active;
-    }
-
-    function confirmDelete(id, type) {
-        if (confirm(`Are you sure you want to delete this ${type}?`)) {
-            // Perform the delete action
-            // You can use AJAX or a form submission here
-            console.log(`Deleting ${type} with ID: ${id}`);
+    <script>
+        function openMissionModal(id = '', name = '', type = 'embassy', is_active = 1) {
+            document.getElementById('missionModalTitle').innerText = id ? 'Edit Mission' : 'Add New Mission';
+            document.getElementById('missionMethod').value = id ? 'PUT' : 'POST';
+            document.getElementById('missionId').value = id;
+            document.getElementById('missionName').value = name;
+            document.getElementById('missionType').value = type;
+            document.getElementById('missionStatus').value = is_active;
         }
-    }
+    
+        function confirmDelete(id, type) {
+            if (confirm(`Are you sure you want to delete this ${type}?`)) {
+                // Perform the delete action
+                // You can use AJAX or a form submission here
+                console.log(`Deleting ${type} with ID: ${id}`);
+            }
+        }
+    </script>
+</div>

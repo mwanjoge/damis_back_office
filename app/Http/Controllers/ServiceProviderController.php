@@ -6,6 +6,7 @@ use App\Events\EmbassyCreated;
 use App\Http\Requests\StoreServiceProviderRequest;
 use App\Http\Requests\UpdateServiceProviderRequest;
 use App\Models\ServiceProvider;
+use Illuminate\Support\Facades\DB;
 
 class ServiceProviderController extends Controller
 {
@@ -30,20 +31,26 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
-        $serviceProvider = ServiceProvider::query()
+        DB::transaction(function () use ($request) {
+            $serviceProvider = ServiceProvider::query()
             ->create([
-                'name' => $request->name
+                'name' => $request->name,
             ]);
 
-        if($request->service){
-            foreach ($request->service as $service) {
-                $serviceProvider->services()->create(['name' => $service]);
+            if($request->service_name){
+                foreach ($request->service_name as $service) {
+                    $serviceProvider->services()
+                        ->create(
+                            [
+                                'name' => $service,
+                                'service_provider_id' => $serviceProvider->id,
+                            ]);
+                }
             }
-        }
-        
 
-        // Dispatch the event to push the service provider data to the public server
-        event(new EmbassyCreated($serviceProvider));
+            // Dispatch the event to push the service provider data to the public server
+            event(new EmbassyCreated($serviceProvider));
+        });
     }
 
     /**

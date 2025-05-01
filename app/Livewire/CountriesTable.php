@@ -25,8 +25,8 @@ class CountriesTable extends Component
 
     public function mount()
     {
-        $this->embassies = Embassy::all()->toArray();
-        $this->countries = Country::with('embassy')->get()->toArray();
+        $this->embassies = Embassy::query()->get();
+        $this->countries = Country::with('embassy')->get();
     }
 
     public function openForm($id = null)
