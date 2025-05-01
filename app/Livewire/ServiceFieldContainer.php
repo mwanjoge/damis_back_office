@@ -7,7 +7,7 @@ use Livewire\Attributes\Reactive;
 
 class ServiceFieldContainer extends Component
 {
-    public $inputs = [];
+    public $inputs = [''];
 
     public function addInput()
     {

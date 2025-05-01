@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_id')->constrained()->cascadeOnDelete();
             $table->foreignId('service_provider_id')->constrained()->cascadeOnDelete();
             $table->string('name')->unique();
             $table->boolean('synced')->default(false);

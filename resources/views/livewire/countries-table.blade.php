@@ -20,17 +20,17 @@
             <tbody>
                 @foreach ($countries as $country)
                     <tr>
-                        <td>{{ $country['id'] }}</td>
-                        <td>{{ $country['embassy_id'] }}</td>
-                        <td>{{ $country['name'] }}</td>
-                        <td>{{ $country['code'] }}</td>
-                        <td>{{ $country['phone_code'] }}</td>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{ $country->embassy?->name}}</td>
+                        <td>{{ $country->name }}</td>
+                        <td>{{ $country->code }}</td>
+                        <td>{{ $country->phone_code }}</td>
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".country-modal"
-                                wire:click="openForm({{ $country['id'] }})">
+                                wire:click="openForm({{ $country->id }})">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm" wire:click="delete({{ $country['id'] }})">
+                            <button class="btn btn-danger btn-sm" wire:click="delete({{ $country->id }})">
                                 <i class="bx bxs-trash"></i>
                             </button>
                         </td>
@@ -43,25 +43,26 @@
     <!-- Country Modal -->
     <div  class="modal fade country-modal" tabindex="-1" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered">
-            <form wire:submit.prevent="save" class="modal-content">
+            <form method="post" action="{{ route('country.store') }}" class="modal-content">
+                @csrf
                 <div class="modal-body justify-content-center p-5">
                     <div class="mt-4 text-center">
                         <h4 class="mb-3">{{ $editingId ? 'Edit Country' : 'Add New Country' }}</h4>
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Country Name" wire:model="name" required>
+                            <input type="text" class="form-control" placeholder="Country Name" wire:model="name" name="name" required>
                         </div>
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Code" wire:model="code">
+                            <input type="text" class="form-control" placeholder="Code" wire:model="code" name="code">
                         </div>
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Phone Code" wire:model="phone_code">
+                            <input type="text" class="form-control" placeholder="Phone Code" wire:model="phone_code" name="phone_code">
                         </div>
 
                         <div class="mb-3">
-                            <select class="form-select" wire:model="embassy_id">
+                            <select class="form-select" wire:model="embassy_id" name="embassy_id">
                                 <option value="">Select Mission</option>
                                 @foreach ($embassies as $embassy)
                                     <option value="{{ $embassy['id'] }}">{{ $embassy['name'] }}</option>

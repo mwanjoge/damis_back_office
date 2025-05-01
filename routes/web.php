@@ -29,13 +29,14 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/settings', SettingsPage::class)->name('settings');
+//Route::get('/settings', SettingsPage::class)->name('settings');
 
 //Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::resource('embassy', EmbassyController::class)->names('embassy');
 Route::resource('country', CountryController::class)->names('country');
 Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
+Route::resource('service', \App\Http\Controllers\ServiceController::class)->names('service');
 Route::resource('requests', RequestController::class)->names('requests');
-Route::get('test', function () {
+Route::get('settings', function () {
     return view('settings');
-});
+})->name('settings');

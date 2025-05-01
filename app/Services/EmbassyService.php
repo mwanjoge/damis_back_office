@@ -32,7 +32,9 @@ class EmbassyService
 
     public function attachCountries(Embassy|Model $embassy, Request $request){
         if($request->country_id){
-            Country::query()->whereIn('id', $request->countries)->update([
+            
+            //find all selected countries and update embassy id to created embassy
+            Country::query()->whereIn('id', $request->country_id)->update([
                 'embassy_id' => $embassy->id,
             ]);
         }

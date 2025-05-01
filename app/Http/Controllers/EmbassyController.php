@@ -37,8 +37,10 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
+        //return "ok";
+        DB::beginTransaction();
         try {
-            DB::transaction(function () use ($request) {
+            // DB::transaction(function () use ($request) {
                 $embassy = $this->embassyService->create($request);
                 $account = $this->embassyService->createAccount($request);
                 $embassy->account()->save($account);
@@ -47,11 +49,14 @@ class EmbassyController extends Controller
 
                 // Dispatch the event to push the embassy data to the public server
                 event(new EmbassyCreated($embassy));
-            });
+            // });
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Failed to store embassy: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to store embassy'], 500);
         }
+        DB::commit();
+        return redirect()->route('settings');
     }
 
     /**

@@ -35,17 +35,15 @@ class ServiceProviderController extends Controller
             $serviceProvider = ServiceProvider::query()
             ->create([
                 'name' => $request->name,
-                'account_id' => $request->account_id,
             ]);
 
-            if($request->service){
-                foreach ($request->service as $service) {
+            if($request->service_name){
+                foreach ($request->service_name as $service) {
                     $serviceProvider->services()
                         ->create(
                             [
                                 'name' => $service,
                                 'service_provider_id' => $serviceProvider->id,
-                                'account_id' => $request->account_id
                             ]);
                 }
             }

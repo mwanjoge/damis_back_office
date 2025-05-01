@@ -27,7 +27,7 @@ class EmbassiesTable extends Component
 
     public function loadEmbassies()
     {
-        $this->embassies = Embassy::all()->toArray();
+        $this->embassies = Embassy::query()->get();
     }
 
     public function openForm($id = null)
@@ -81,8 +81,8 @@ class EmbassiesTable extends Component
     {
         return view('livewire.embassies-table',
     [
-            'countries' => Country::all(),
-            'embassies' => Embassy::all(),
+            'countries' => Country::query()->pluck('name','id'),
+            'embassies' => Embassy::query()->get(),
         ]
     );
     }

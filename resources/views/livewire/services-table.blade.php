@@ -41,13 +41,14 @@
             <div class="modal-content">
                 <div class="modal-body text-center p-5">
                     <h4 class="mb-3">{{ $editingId ? 'Edit' : 'New' }} Service</h4>
-                    <form wire:submit.prevent="save">
+                    <form action="{{ route('service.store') }}" method="post">
+                        @csrf
                         <div class="mb-3">
-                            <input type="text" class="form-control" wire:model="name" placeholder="Service Name" required>
+                            <input type="text" class="form-control" wire:model="name" name="name" placeholder="Service Name" required>
                         </div>
                         <div class="mb-3">
                             <label>Service Provider</label>
-                            <select wire:model="selectedProvider" class="form-select" required>
+                            <select wire:model="selectedProvider" name="service_provider_id" class="form-select" required>
                                 <option value="">-- Select --</option>
                                 @foreach ($serviceProviders as $provider)
                                     <option value="{{ $provider->id }}">{{ $provider->name }}</option>
