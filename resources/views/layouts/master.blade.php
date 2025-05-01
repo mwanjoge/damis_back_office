@@ -1,5 +1,5 @@
 <!doctype html >
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="sm-hover" data-sidebar-image="none" data-preloader="disable">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="horizontal" data-topbar="light" data-sidebar="dark" data-sidebar-size="sm-hover" data-sidebar-image="none" data-preloader="disable">
  
 <head>
     <meta charset="utf-8" />
@@ -50,6 +50,7 @@
 
 <script src="{{ URL::asset('build/js/pages/select2.init.js') }}"></script>
 @yield('script')
+
 </body>
 
 </html>
