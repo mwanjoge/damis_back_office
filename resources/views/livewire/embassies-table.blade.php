@@ -1,8 +1,7 @@
-
 <div class="tab-pane px-4" id="embassy" role="tabpanel">
     <div class="text-end pb-4">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target=".mission-modal" onclick="openMissionModal()">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".mission-modal"
+            onclick="openMissionModal()">
             New Mission
         </button>
     </div>
@@ -32,60 +31,73 @@
                                 <i class="bx bx-edit-alt"></i>
                             </button>
 
-                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $embassy->id }}, 'mission')">
+                            <button class="btn btn-danger btn-sm"
+                                onclick="confirmDelete({{ $embassy->id }}, 'mission')">
                                 <i class="bx bxs-trash"></i>
                             </button>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="text-center">No missions found.</td></tr>
+                    <tr>
+                        <td colspan="5" class="text-center">No missions found.</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 
-<div wire:ignore.self class="modal fade mission-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form wire:submit.prevent="save" id="missionForm">
-                @csrf
-                {{-- <input type="hidden" name="_method" id="missionMethod" value="POST">
+    <div wire:ignore.self class="modal fade mission-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form wire:submit.prevent="save" id="missionForm">
+                    @csrf
+                    {{-- <input type="hidden" name="_method" id="missionMethod" value="POST">
                 <input type="hidden" name="id" id="missionId"> --}}
 
-                <div class="modal-body p-5 text-center">
-                    <h4 class="mb-3" id="missionModalTitle">Add New Mission</h4>
+                    <div class="modal-body p-5 text-center">
+                        <h4 class="mb-3" id="missionModalTitle">Add New Mission</h4>
 
-                    <div class="mb-3">
-                        <label class="form-label">Mission Name</label>
-                        <input type="text" name="name" id="missionName" class="form-control" wire:model="name" required>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mission Name</label>
+                            <input type="text" name="name" id="missionName" class="form-control" wire:model="name"
+                                required>
+                        </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Type</label>
-                        <select name="type" id="missionType" class="form-select" wire:model="type" required>
-                            <option value="embassy">Mission</option>
-                            <option value="permanent mission">Permanent Mission</option>
-                            <option value="high commission">High Commission</option>
+                        <div class="mb-3">
+                            <label class="form-label">Type</label>
+                            <select name="type" id="missionType" class="form-select" wire:model="type" required>
+                                <option value="embassy">Mission</option>
+                                <option value="permanent mission">Permanent Mission</option>
+                                <option value="high commission">High Commission</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select name="is_active" id="missionStatus" class="form-select" wire:model="is_active"
+                                required>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+
+                        <p class="mt-4">Accredited Countries</p>
+                        <select wire:model="states" class="js-example-basic-multiple" multiple>
+                            @foreach ($countries as $country)
+                                <option value="{{ $country['id'] }}">{{ $country['name'] }}
+                                </option>
+                            @endforeach
                         </select>
-                    </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <select name="is_active" id="missionStatus" class="form-select" wire:model="is_active" required>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
-                        </select>
+                        <div class="hstack gap-2 justify-content-center mt-4">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Mission</button>
+                        </div>
                     </div>
-
-                    <div class="hstack gap-2 justify-content-center mt-4">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Mission</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>
 </div>
 <script>
