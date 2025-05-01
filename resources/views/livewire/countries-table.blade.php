@@ -10,8 +10,8 @@
             <thead class="text-muted table-light pt-3">
                 <tr>
                     <th>#</th>
-                    <th>Mission</th>
                     <th>Country</th>
+                    <th>Mission</th>
                     <th>Code</th>
                     <th>Phone Code</th>
                     <th>Actions</th>
@@ -21,8 +21,8 @@
                 @foreach ($countries as $country)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{ $country->embassy?->name}}</td>
                         <td>{{ $country->name }}</td>
+                        <td>{{ $country->embassy?->name}}</td>
                         <td>{{ $country->code }}</td>
                         <td>{{ $country->phone_code }}</td>
                         <td>
@@ -33,6 +33,7 @@
                             <button class="btn btn-danger btn-sm" wire:click="delete({{ $country->id }})">
                                 <i class="bx bxs-trash"></i>
                             </button>
+
                         </td>
                     </tr>
                 @endforeach
@@ -46,22 +47,26 @@
             <form method="post" action="{{ route('country.store') }}" class="modal-content">
                 @csrf
                 <div class="modal-body justify-content-center p-5">
-                    <div class="mt-4 text-center">
-                        <h4 class="mb-3">{{ $editingId ? 'Edit Country' : 'Add New Country' }}</h4>
+                    <div class="mt-4 text-start">
+                        <h4 class="mb-3 text-center">{{ $editingId ? 'Edit Country' : 'Add New Country' }}</h4>
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Country Name" wire:model="name" name="name" required>
+                            <label class="form-label">Country Name</label>
+                            <input type="text" class="form-control"  wire:model="name" name="name" required>
                         </div>
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Code" wire:model="code" name="code">
+                            <label class="form-label">Country Code</label>
+                            <input type="text" class="form-control"  wire:model="code" name="code">
                         </div>
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Phone Code" wire:model="phone_code" name="phone_code">
+                            <label class="form-label">Phone Code</label>
+                            <input type="text" class="form-control"  wire:model="phone_code" name="phone_code">
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label">Select Mission</label>
                             <select class="form-select" wire:model="embassy_id" name="embassy_id">
                                 <option value="">Select Mission</option>
                                 @foreach ($embassies as $embassy)
@@ -79,6 +84,9 @@
             </form>
         </div>
     </div>
+    <!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </div>
 
 @push('scripts')

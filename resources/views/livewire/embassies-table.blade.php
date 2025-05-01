@@ -1,3 +1,5 @@
+@include("modal.alert")
+
 <div class="tab-pane px-4" id="embassy" role="tabpanel">
     <div class="text-end pb-4">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".mission-modal"
@@ -34,6 +36,9 @@
                             <button class="btn btn-danger btn-sm"
                                 onclick="confirmDelete({{ $embassy->id }}, 'mission')">
                                 <i class="bx bxs-trash"></i>
+                            </button>
+                            <button class="btn btn-info btn-sm">
+                                <i class="bx bxs-show"></i>
                             </button>
                         </td>
                     </tr>
@@ -80,7 +85,7 @@
                             </select>
                         </div>
 
-                        <p class="mt-4">Accredited Countries {{$countries}}</p>
+                        <p class="mt-4">Accredited Countries</p>
                         <select wire:model="states" name="country_id[]" class="js-example-basic-multiple" multiple>
                             @foreach (json_decode($countries) as $index => $country)
                                 <option value="{{ $index }}">{{ $country }}</option>

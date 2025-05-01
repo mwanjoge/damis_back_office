@@ -50,6 +50,7 @@ class ServiceProviderController extends Controller
 
             // Dispatch the event to push the service provider data to the public server
             event(new EmbassyCreated($serviceProvider));
+            session()->flash('success', 'Service Provider saved successfully!');
         });
     }
 

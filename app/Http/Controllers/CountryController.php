@@ -34,6 +34,8 @@ class CountryController extends Controller
         $country = Country::query()->create($request->all());
 
         event(new EmbassyCreated($country));
+
+        session()->flash('success', 'Country created successfully!');
         return redirect()->route('settings');
     }
 

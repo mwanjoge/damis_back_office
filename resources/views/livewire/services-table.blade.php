@@ -1,3 +1,4 @@
+@include("modal.alert")
 <div id="services" role="tabpanel">
     <div class="text-end pb-4">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".service-modal" wire:click="openForm">
@@ -10,17 +11,17 @@
             <thead class="text-muted table-light">
                 <tr>
                     <th>#</th>
-                    <th>Service Provider</th>
                     <th>Service</th>
+                    <th>Service Provider</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($services as $service)
                     <tr>
-                        <td>{{ $service->id }}</td>
-                        <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>
+                        <td>{{ $loop ->iteration }}</td>
                         <td>{{ $service->name }}</td>
+                        <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>                    
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".service-modal" wire:click="openForm({{ $service->id }})">
                                 <i class="bx bx-edit-alt"></i>
@@ -36,18 +37,19 @@
     </div>
 
     <!-- Shared Modal -->
-    <div class="modal fade service-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div wire:ignore.self class="modal fade service-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body text-center p-5">
-                    <h4 class="mb-3">{{ $editingId ? 'Edit' : 'New' }} Service</h4>
+                <div class="modal-body text-start p-5">
+                    <h4 class="mb-3 text-center">{{ $editingId ? 'Edit' : 'New' }} Service</h4>
                     <form action="{{ route('service.store') }}" method="post">
                         @csrf
                         <div class="mb-3">
+                            <label class="form-label">Service Name</label>
                             <input type="text" class="form-control" wire:model="name" name="name" placeholder="Service Name" required>
                         </div>
                         <div class="mb-3">
-                            <label>Service Provider</label>
+                            <label class="form-label">Service Provider</label>
                             <select wire:model="selectedProvider" name="service_provider_id" class="form-select" required>
                                 <option value="">-- Select --</option>
                                 @foreach ($serviceProviders as $provider)

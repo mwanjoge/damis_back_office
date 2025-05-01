@@ -1,6 +1,7 @@
+@include("modal.alert")
 <div>
     <div class="row mt-3">
-        <div class="col">Add Service provider's services</div>
+        <div class="col">Add provider's services</div>
         <div class="col">
             <button wire:click="addInput" class="btn btn-outline-primary btn-sm mb-1 float-end">
                 <i class="bx bx-plus"></i> Add Service
