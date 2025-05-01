@@ -14,6 +14,10 @@ class RequestController extends Controller
     public function index()
     {
         //
+        // Fetch all requests from the database
+        $requests = Request::all();
+        // Return the requests to the view
+        return view('requests.index', compact('requests'));
     }
 
     /**
@@ -22,6 +26,7 @@ class RequestController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -51,16 +56,16 @@ class RequestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequestRequest $request, Request $request)
+    public function update(UpdateRequestRequest $request, Request $requestModel)
     {
-        //
+        // ...
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(Request $requestModel)
     {
-        //
+        // ...
     }
 }

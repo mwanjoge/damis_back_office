@@ -17,7 +17,10 @@ class MemberFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'account_id' => \App\Models\Account::factory(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber(),
         ];
     }
 }

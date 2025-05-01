@@ -17,7 +17,11 @@ class CountryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->unique()->country(),
+            'code' => $this->faker->countryCode(),
+            'phone_code' => $this->faker->numerify('+###'),
+            'embassy_id' => \App\Models\Embassy::factory(),
+            'synced' => $this->faker->boolean(),
         ];
     }
 }

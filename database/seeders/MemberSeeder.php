@@ -2,16 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Member;
+use App\Models\Account;
 
 class MemberSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        //
+        $accountIds = Account::pluck('id');
+        foreach ($accountIds as $accountId) {
+            Member::factory()->count(2)->create(['account_id' => $accountId]);
+        }
     }
 }

@@ -17,7 +17,8 @@ class ServiceProviderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->company(),
+            'account_id' => \App\Models\Account::factory(),
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\EmbassyController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceProviderController;
+use App\Http\Controllers\RequestController;
 
 //Language Translation
 Route::get('token_check', function () {
@@ -30,8 +31,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/settings', SettingsPage::class)->name('settings');
 
-Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+//Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::resource('embassy', EmbassyController::class)->names('embassy');
 Route::resource('country', CountryController::class)->names('country');
 Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
-
+Route::resource('requests', RequestController::class)->names('requests');
+Route::get('test', function () {
+    return view('settings');
+});

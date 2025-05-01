@@ -6,19 +6,19 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="index" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="22">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="17">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="45">
                         </span>
                     </a>
 
                     <a href="index" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="22">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="17">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="17">
                         </span>
                     </a>
                 </div>
@@ -59,95 +59,7 @@
                     </div>
                 </div>
 
-                {{-- <div class="dropdown ms-1 topbar-head-dropdown header-item">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        @switch(Session::get('lang'))
-                        @case('ru')
-                        <img src="{{ URL::asset('build/images/flags/russia.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @break
-
-                        @case('it')
-                        <img src="{{ URL::asset('build/images/flags/italy.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @break
-
-                        @case('sp')
-                        <img src="{{ URL::asset('build/images/flags/spain.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @break
-
-                        @case('ch')
-                        <img src="{{ URL::asset('build/images/flags/china.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @break
-
-                        @case('fr')
-                        <img src="{{ URL::asset('build/images/flags/french.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @break
-
-                        @case('gr')
-                        <img src="{{ URL::asset('build/images/flags/germany.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @break
-
-                        @case('ae')
-                        <img src="{{ URL::asset('build/images/flags/ae.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @break
-
-                        @default
-                        <img src="{{ URL::asset('build/images/flags/us.svg') }}" class="rounded" alt="Header Language" height="18">
-                        @endswitch
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-
-                        <!-- item-->
-                        <a href="{{ url('index/en') }}" class="dropdown-item notify-item language py-2" data-lang="en" title="English">
-                            <img src="{{ URL::asset('build/images/flags/us.svg') }}" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">English</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="{{ url('index/sp') }}" class="dropdown-item notify-item language" data-lang="sp" title="Spanish">
-                            <img src="{{ URL::asset('build/images/flags/spain.svg') }}" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Española</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="{{ url('index/gr') }}" class="dropdown-item notify-item language" data-lang="gr" title="German">
-                            <img src="{{ URL::asset('build/images/flags/germany.svg') }}" alt="user-image" class="me-2 rounded" height="18"> <span class="align-middle">Deutsche</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="{{ url('index/it') }}" class="dropdown-item notify-item language" data-lang="it" title="Italian">
-                            <img src="{{ URL::asset('build/images/flags/italy.svg') }}" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Italiana</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="{{ url('index/ru') }}" class="dropdown-item notify-item language" data-lang="ru" title="Russian">
-                            <img src="{{ URL::asset('build/images/flags/russia.svg') }}" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">русский</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="{{ url('index/ch') }}" class="dropdown-item notify-item language" data-lang="ch" title="Chinese">
-                            <img src="{{ URL::asset('build/images/flags/china.svg') }}" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">中国人</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="{{ url('index/fr') }}" class="dropdown-item notify-item language" data-lang="fr" title="French">
-                            <img src="{{ URL::asset('build/images/flags/french.svg') }}" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">français</span>
-                        </a>
-
-                        <!-- item-->
-                        <a href="{{ url('index/ae') }}" class="dropdown-item notify-item language" data-lang="ae" title="Arabic">
-                            <img src="{{URL::asset('build/images/flags/ae.svg')}}" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Arabic</span>
-                        </a>
-                    </div>
-                </div> --}}
-
-
-
-
+          
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
                         <i class='bx bx-moon fs-22'></i>
@@ -273,7 +185,7 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="@if (Auth::user()->avatar != '') {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('build/images/users/avatar-1.jpg') }} @endif" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{{ URL::asset('build/images/users/user-avatar.jpeg') }} " alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
                             </span>

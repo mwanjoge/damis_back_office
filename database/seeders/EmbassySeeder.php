@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Embassy;
 
 class EmbassySeeder extends Seeder
 {
@@ -12,6 +12,6 @@ class EmbassySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Embassy::factory()->count(3)->create();
     }
 }
