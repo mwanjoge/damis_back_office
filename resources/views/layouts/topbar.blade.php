@@ -60,16 +60,11 @@
                 </div>
 
           
-                <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-moon fs-22'></i>
-                    </button>
-                </div>
 
                 <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                         <i class='bx bx-bell fs-22'></i>
-                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                        {{-- <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span> --}}
                     </button>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
 
@@ -80,7 +75,7 @@
                                         <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
                                     </div>
                                     <div class="col-auto dropdown-tabs">
-                                        <span class="badge bg-light-subtle text-body fs-13"> 4 New</span>
+                                        <span class="badge bg-light-subtle text-body fs-13"> 1 New</span>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +84,7 @@
                                 <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
                                     <li class="nav-item waves-effect waves-light">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
-                                            All (4)
+                                            All (1)
                                         </a>
                                     </li>
                                     <li class="nav-item waves-effect waves-light">
@@ -114,9 +109,7 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
-                                                    <h6 class="mt-0 mb-2 lh-base">Your <b>Elite</b> author Graphic
-                                                        Optimization <span class="text-secondary">reward</span> is
-                                                        ready!
+                                                    <h6 class="mt-0 mb-2 lh-base">A new request waiting approval 
                                                     </h6>
                                                 </a>
                                                 <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
@@ -147,10 +140,10 @@
                                             <img src="{{URL::asset('build/images/users/avatar-3.jpg')}}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
-                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">James Lemire</h6>
+                                                    <h6 class="mt-0 mb-1 fs-13 fw-semibold">New request</h6>
                                                 </a>
                                                 <div class="fs-13 text-muted">
-                                                    <p class="mb-1">We talked about a project on linkedin.</p>
+                                                    <p class="mb-1">You have a pending request to update.</p>
                                                 </div>
                                                 <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
                                                     <span><i class="mdi mdi-clock-outline"></i> 30 min ago</span>

@@ -16,7 +16,7 @@
                         <th>Mission</th>
                         <th>Type</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th  class="text-end" style="width: 180px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,7 @@
                             <td>{{ $embassy->name }}</td>
                             <td>{{ ucfirst($embassy->type) }}</td>
                             <td>{{ $embassy->is_active ? 'Active' : 'Inactive' }}</td>
-                            <td>
+                            <td class="text-end">
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".mission-modal"
                                     onclick="openMissionModal({{ json_encode($embassy) }})">

@@ -13,7 +13,7 @@
                     <th>#</th>
                     <th>Service</th>
                     <th>Service Provider</th>
-                    <th>Actions</th>
+                    <th  class="text-end" style="width: 180px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@
                         <td>{{ $loop ->iteration }}</td>
                         <td>{{ $service->name }}</td>
                         <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>                    
-                        <td>
+                        <td class="text-end">
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".service-modal"
                             onclick="openServiceModal({{ $service->id }}, '{{ $service->name }}', {{ $service->service_provider_id ?? 'null' }})">
                             <i class="bx bx-edit-alt"></i>

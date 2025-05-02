@@ -36,7 +36,7 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Role</th>
-                            <th>Actions</th>
+                            <th class="text-end" style="width: 180px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +48,7 @@
                                 <td>{{ $user->phone }}</td>
                                 <td class="text-capitalize">
                                     {{ collect($roles)->firstWhere('id', $user->role_id)->name ?? '-' }}</td>
-                                <td>
+                                <td class="text-end">
                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#userModal"
                                         onclick="openUserModal('edit', {{ $user->id }}, '{{ $user->name }}', '{{ $user->email }}', '{{ $user->phone }}', {{ $user->role_id ?? 'null' }})">

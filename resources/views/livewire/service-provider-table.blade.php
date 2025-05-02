@@ -14,7 +14,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Service Provider</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col"  class="text-end" style="width: 180px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $serviceProvider['name'] }}</td>
-                        <td>
+                        <td class="text-end">
                             <!-- Edit Button -->
                             <button class="btn btn-warning btn-sm"
                                 data-bs-toggle="modal"

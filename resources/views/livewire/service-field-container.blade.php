@@ -14,9 +14,9 @@
             @foreach($inputs as $key => $value)
                 <div class="service-field mb-3 d-flex">
                     <input type="text" wire:model="inputs.{{ $key }}" class="form-control me-2" placeholder="Enter service" name="service_name[]" required>
-                    <button wire:click.prevent="removeInput({{ $key }})" class="btn btn-danger">
+                    <a href="#" wire:click.prevent="removeInput({{ $key }})" class="text-danger">
                         <i class="bx bx-trash"></i>
-                    </button>
+                    </a>
                 </div>
             @endforeach
         </div>

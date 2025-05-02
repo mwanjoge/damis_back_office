@@ -11,12 +11,12 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table  table-striped">
-                <thead class="">
+            <table class="table table-striped">
+                <thead>
                     <tr class="bg-light text-dark">
                         <th>#</th>
                         <th>Role Name</th>
-                        <th>Actions</th>
+                        <th class="text-end" style="width: 180px;">Actions</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -24,7 +24,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td class="text-capitalize">{{ $role->name }}</td>
-                            <td>
+                            <td class="text-end">
                                 <a href="{{ route('roles.show', $role->id) }}" class="btn btn-sm btn-primary">
                                     <i class="bx bx-show"></i>
                                 </a>
@@ -41,8 +41,8 @@
                     @endforeach
                 </tbody>
             </table>
-
         </div>
+        
     </div>
 </div>
 {{-- @endsection --}}
