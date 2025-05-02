@@ -37,7 +37,7 @@
                             <form method="POST" action="{{ route('country.destroy', $country->id) }}" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                <button type="submit" class="btn btn-danger btn-sm">
                                     <i class="bx bxs-trash"></i>
                                 </button>
                             </form>

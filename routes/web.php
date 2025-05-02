@@ -23,7 +23,8 @@ Route::middleware(['auth'])->group(function () {
     //Update User Details
     Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
     Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
-    Route::get('/profile/{id}', function () {
+
+    Route::get('/profile', function () {
         return view('pages-profile');
     })->name('pages-profile');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -38,14 +39,12 @@ Route::middleware(['auth'])->group(function () {
         return view('settings');
     })->name('settings');
 
-    Route::get('authentication', function () {
-        return view('authentication.authentication');
-    })->name('authentication');
+    Route::get('/authentication', [HomeController::class, 'authenticationIndex'])->name('authentication');
 
     // routes/web.php
-Route::get('/roles', [HomeController::class, 'roles'])->name('roles.index');
-Route::get('/roles', [HomeController::class, 'rolesIndex'])->name('roles.index');
-Route::get('/roles/{id}', [HomeController::class, 'show'])->name('roles.show');
+    Route::get('/roles', [HomeController::class, 'roles'])->name('roles.index');
+    Route::get('/roles', [HomeController::class, 'rolesIndex'])->name('roles.index');
+    Route::get('/roles/{id}', [HomeController::class, 'show'])->name('roles.show');
 });
 
 

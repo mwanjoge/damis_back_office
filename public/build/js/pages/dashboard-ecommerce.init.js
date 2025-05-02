@@ -243,7 +243,7 @@ function loadCharts() {
     if (chartDonutBasicColors) {
         var options = {
             series: [44, 55, 41, 17, 15],
-            labels: ["Direct", "Social", "Email", "Other", "Referrals"],
+            labels: ["JAN", "FEB", "MARCH", "MAY", "JUNE"],
             chart: {
                 height: 333,
                 type: "donut",

@@ -186,7 +186,8 @@
                             <div class="card-body">
                                 <div id="store-visits-source"
                                     data-colors='["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"]'
-                                    class="apex-charts" dir="ltr"></div>
+                                    class="apex-charts"
+                                     dir="ltr"></div>
                             </div>
                         </div> <!-- .card-->
                     </div> <!-- .col-->

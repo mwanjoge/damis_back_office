@@ -40,7 +40,7 @@
                         <div class="tab-pane fade" id="tab-countries" role="tabpanel" wire:ignore.self>
                             @livewire('countries-table')
                         </div>
-                        
+
                         <!-- Service Providers -->
                         <div class="tab-pane fade" id="tab-service-provider" role="tabpanel" wire:ignore.self>
                             @livewire('service-provider-table')
@@ -58,19 +58,18 @@
 @endsection
 @section('script')
     <script>
-        $(function () {
+        $(function() {
             // for bootstrap 3 use 'shown.bs.tab', for bootstrap 2 use 'shown' in the next line
-            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
                 // save the latest tab; use cookies if you like 'em better:
-                localStorage.setItem('lastTab', $(this).attr('href'));
+                localStorage.setItem('lastAuthTab', $(this).attr('href'));
             });
 
             // go to the latest tab, if it exists:
-            var lastTab = localStorage.getItem('lastTab');
+            var lastTab = localStorage.getItem('lastAuthTab');
             if (lastTab) {
                 $('[href="' + lastTab + '"]').tab('show');
             }
         });
-
     </script>
 @endsection

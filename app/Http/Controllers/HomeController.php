@@ -100,4 +100,12 @@ class HomeController extends Controller
 
         return view('authentication.roles.show', compact('role', 'groupedPermissions'));
     }
+
+    public function authenticationIndex() 
+    {
+      $permissions = $this->permissions;
+      $roles = $this->roles;
+      return view('authentication.authentication_home', compact('permissions', 'roles'));
+    }
+     
 }

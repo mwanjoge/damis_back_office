@@ -32,12 +32,12 @@
             <!--end col-->
             <div class="col">
                 <div class="p-2">
-                    <h3 class="text-white mb-1">Anna Adame</h3>
-                    <p class="text-white text-opacity-75">Owner & Founder</p>
+                    <h3 class="text-white mb-1">{{ Auth::user()->name }}</h3>
+                    <p class="text-white text-opacity-75">{{ Auth::user()->role ?? 'Role' }}</p>
                     <div class="hstack text-white-50 gap-1">
                         <div class="me-2"><i
-                                class="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>California,
-                            United States</div>
+                                class="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>{{ Auth::user()->address ?? 'Address' }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,20 +76,20 @@
                                             <table class="table table-borderless mb-0">
                                                 <tbody>
                                                     <tr>
-                                                        <th class="ps-0" scope="row">Full Name :</th>
-                                                        <td class="text-muted">Anna Adame</td>
+                                                        <th class="ps-0" scope="row">Name :</th>
+                                                        <td class="text-muted">{{ Auth::user()->name ?? 'Name' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="ps-0" scope="row">Mobile :</th>
-                                                        <td class="text-muted">+(1) 987 6543</td>
+                                                        <td class="text-muted">{{ Auth::user()->phone ?? 'Phone' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="ps-0" scope="row">E-mail :</th>
-                                                        <td class="text-muted">daveadame@velzon.com</td>
+                                                        <td class="text-muted">{{ Auth::user()->email ?? 'Email' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="ps-0" scope="row">Location :</th>
-                                                        <td class="text-muted">California, United States
+                                                        <td class="text-muted">{{ Auth::user()->address ?? 'Address' }}</td>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -97,20 +97,20 @@
                                         </div>
                                     </div>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
+            <!--end col-->
         </div>
-        <!--end col-->
-    </div>
-    <!--end row-->
-@endsection
-@section('script')
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
+        <!--end row-->
+    @endsection
+    @section('script')
+        <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
 
-    <script src="{{ URL::asset('build/js/pages/profile.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-@endsection
+        <script src="{{ URL::asset('build/js/pages/profile.init.js') }}"></script>
+        <script src="{{ URL::asset('build/js/app.js') }}"></script>
+    @endsection

@@ -31,6 +31,8 @@ class EmbassiesTable extends Component
 
     public function openForm($id = null)
     {
+
+        dd($id);
         if ($id) {
             $embassy = Embassy::findOrFail($id);
             $this->editingId = $embassy->id;
@@ -41,20 +43,6 @@ class EmbassiesTable extends Component
         } else {
             $this->reset(['editingId', 'name', 'type', 'is_active', 'states']);
         }
-    }
-
-    public function save()
-    {
-        $data = [
-            'name' => $this->name,
-            'type' => $this->type,
-            'is_active' => $this->is_active,
-        ];
-
-
-        $this->reset(['editingId', 'name', 'type', 'is_active', 'states']);
-        $this->mount(); // reload the list of embassies
-        $this->dispatchBrowserEvent('close-modal');
     }
 
 
