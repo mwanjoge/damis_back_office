@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile', function () {
         return view('pages-profile');
-    })->name('pages-profile');
+    })->name('user-profile');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resource('embassy', EmbassyController::class)->names('embassy');
