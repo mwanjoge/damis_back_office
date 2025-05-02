@@ -17,7 +17,7 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company(),
+            'name' => $this->faker->unique()->company(),
             'embassy_id' => 1, // You can randomize or set this in the seeder
             'has_depertment' => $this->faker->boolean(),
         ];

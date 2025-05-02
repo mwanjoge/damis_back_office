@@ -1,14 +1,14 @@
 <div>
     <div class="card py-1 mb-2">
         <div class="py-1 px-2 rounded-4">
-            <h6 class="fw-bold text-center mb-0">Summary</h6>
+            <h4 class="text-center mb-0">Summary</h4>
         </div>
     </div>
 
     <div class="row g-1">
         <div class="col-12">
             <div class="card card-animate border-warning shadow-sm rounded-4" style="min-height: 80px;">
-                <div class="card-body py-1 px-2">
+                <div class="card-body py-2 px-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="fw-medium text-muted mb-0 small">Pending</p>
@@ -19,7 +19,7 @@
                                 <span class="badge bg-light text-warning mb-0">
                                     <i class="bx bx-time-five align-middle" style="color: #ffc107;"></i>
                                 </span>
-                                Total: TZS {{ number_format($summary['PendingTotal'] ?? 0) }}
+                                Total: TZS {{ number_format($totalCost['Pending'] ?? 0) }}
                             </p>
                         </div>
                         <div>
@@ -36,7 +36,7 @@
 
         <div class="col-12">
             <div class="card card-animate border-info shadow-sm rounded-4" style="min-height: 80px;">
-                <div class="card-body py-1 px-2">
+                <div class="card-body py-2 px-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="fw-medium text-muted mb-0 small">In Progress</p>
@@ -47,7 +47,7 @@
                                 <span class="badge bg-light text-info mb-0">
                                     <i class="bx bx-loader align-middle" style="color: #17a2b8;"></i>
                                 </span>
-                                Total: TZS {{ number_format($summary['InProgressTotal'] ?? 0) }}
+                                Total: TZS {{ number_format($totalCost['In Progress'] ?? 0) }}
                             </p>
                         </div>
                         <div>
@@ -64,7 +64,7 @@
 
         <div class="col-12">
             <div class="card card-animate border-success shadow-sm rounded-4" style="min-height: 80px;">
-                <div class="card-body py-1 px-2">
+                <div class="card-body py-2 px-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="fw-medium text-muted mb-0 small">Completed</p>
@@ -75,7 +75,7 @@
                                 <span class="badge bg-light text-success mb-0">
                                     <i class="bx bx-check-circle align-middle" style="color: #28a745;"></i>
                                 </span>
-                                Total: TZS {{ number_format($summary['CompletedTotal'] ?? 0) }}
+                                Total: TZS {{ number_format($totalCost['Completed'] ?? 0) }}
                             </p>
                         </div>
                         <div>
@@ -92,7 +92,7 @@
 
         <div class="col-12">
             <div class="card card-animate border-danger shadow-sm rounded-4" style="min-height: 80px;">
-                <div class="card-body py-1 px-2">
+                <div class="card-body py-2 px-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="fw-medium text-muted mb-0 small">Cancelled</p>
@@ -103,7 +103,7 @@
                                 <span class="badge bg-light text-danger mb-0">
                                     <i class="bx bx-x-circle align-middle" style="color: #dc3545;"></i>
                                 </span>
-                                Total: TZS {{ number_format($summary['CancelledTotal'] ?? 0) }}
+                                Total: TZS {{ number_format($totalCost['Cancelled'] ?? 0) }}
                             </p>
                         </div>
                         <div>

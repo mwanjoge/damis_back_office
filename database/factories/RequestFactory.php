@@ -18,15 +18,13 @@ class RequestFactory extends Factory
     public function definition(): array
     {
         return [
-            'account_id' => \App\Models\Account::factory(),
-            'embassy_id' => \App\Models\Embassy::factory(),
-            'service_id' => \App\Models\Service::factory(),
-            'service_provider_id' => \App\Models\ServiceProvider::factory(),
-            'member_id' => \App\Models\Member::factory(),
+            'account_id' => $this->faker->numberBetween(1, 43),
+            'embassy_id' => $this->faker->numberBetween(1, 43), // Assuming you have 10 embassies
+            'member_id' => $this->faker->numberBetween(1, 95),
             'country_id' => \App\Models\Country::factory(),
             'type' => $this->faker->randomElement(['Diaspora', 'Domestic']),
             'status' => $this->faker->randomElement(['Pending', 'In Progress', 'Completed', 'Cancelled']),
-            'tracking_number' => $this->faker->unique()->uuid(),
+            'tracking_number' => $this->faker->numberBetween(10000000,99999999),
             'is_approved' => $this->faker->boolean(),
             'is_paid' => $this->faker->boolean(),
             'total_cost' => $this->faker->randomFloat(2, 50, 1000),

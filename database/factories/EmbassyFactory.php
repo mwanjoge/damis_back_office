@@ -17,8 +17,8 @@ class EmbassyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company(),
-            'type' => $this->faker->randomElement(['embassy', 'permanent mission']),
+            'name' => $this->faker->unique()->company(),
+            'type' => $this->faker->randomElement(['Embassy', 'Permanent Mission']),
             'is_active' => $this->faker->boolean(),
         ];
     }

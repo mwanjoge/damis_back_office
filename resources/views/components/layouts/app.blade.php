@@ -9,7 +9,7 @@
     <body>
         @extends('layouts.master')
         @section('title')
-    @lang('translation.settings')
+        @lang('translation.settings')
         {{ $slot }}
     </body>
 </html>

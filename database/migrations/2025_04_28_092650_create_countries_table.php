@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('code')->nullable();
             $table->string('phone_code')->nullable();
+            $table->string('currency')->nullable();
+            $table->string('currency_code')->nullable();
             $table->boolean('synced')->default(false);
             $table->timestamps();
             $table->softDeletes();

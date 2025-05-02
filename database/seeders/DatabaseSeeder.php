@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
         }
 
         // Example: Add sample data for requests and related tables
-        \App\Models\Account::factory()->count(3)->create();
-        \App\Models\Embassy::factory()->count(2)->create();
-        \App\Models\Member::factory()->count(3)->create();
+        \App\Models\Account::factory()->count(43)->create();
+        \App\Models\Embassy::factory()->count(43)->create();
+        \App\Models\Member::factory()->count(95)->create();
 
         // Only call Service::factory() if your services table has an account_id column!
         // \App\Models\Service::factory()->count(2)->create();
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         // Only call Country::factory() if your countries table has the correct columns!
         // \App\Models\Country::factory()->count(2)->create();
 
-        \App\Models\Request::factory()->count(5)->create();
+        \App\Models\Request::factory()->count(100)->create();
 
         // Seed related tables first
         $this->call([
