@@ -15,7 +15,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Hello, Anna!</h4>
+                                <h4 class="fs-16 mb-1">Hello, {{Auth::user()->name}}</h4>
                                
                             </div>
                             <div class="mt-3 mt-lg-0">

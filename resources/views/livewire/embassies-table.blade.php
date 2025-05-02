@@ -31,14 +31,13 @@
                                 data-bs-target=".mission-modal"
                                 onclick="openMissionModal(
                                     '{{ $embassy->id }}',
-                                    @js($embassy->name),
+                                    '{{ $embassy->name }}',
                                     '{{ $embassy->type }}',
-                                    '{{ $embassy->is_active }}'
-                                     @js($embassy->countries->pluck('id'))
+                                    '{{ $embassy->is_active }}',
+                                    @json($embassy->countries->pluck('id')->toArray())
                                 )">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
-
 
                             <button class="btn btn-danger btn-sm"
                                 onclick="confirmDelete({{ $embassy->id }}, 'mission')">
@@ -75,7 +74,6 @@
                     </div>
 
                     <div class="modal-body px-5">
-                        <!-- Inside the <form> -->
                         <input type="hidden" id="missionMethod" name="_method" value="POST">
                         <input type="hidden" id="missionId" name="id" value="">
 
@@ -122,26 +120,26 @@
 
     <script>
         function openMissionModal(id = '', name = '', type = 'embassy', is_active = 1, accreditedCountries = []) {
-    document.getElementById('missionModalTitle').innerText = id ? 'Edit Mission' : 'Add New Mission';
-    document.getElementById('missionMethod').value = id ? 'PUT' : 'POST';
-    document.getElementById('missionId').value = id;
-    document.getElementById('missionName').value = name;
-    document.getElementById('missionType').value = type;
-    document.getElementById('missionStatus').value = is_active;
+            document.getElementById('missionModalTitle').innerText = id ? 'Edit Mission' : 'Add New Mission';
+            document.getElementById('missionMethod').value = id ? 'PUT' : 'POST';
+            document.getElementById('missionId').value = id;
+            document.getElementById('missionName').value = name;
+            document.getElementById('missionType').value = type;
+            document.getElementById('missionStatus').value = is_active;
 
-    // Set selected countries
-    const countrySelect = document.querySelector('select[name="country_id[]"]');
-    if (countrySelect) {
-        [...countrySelect.options].forEach(option => {
-            option.selected = accreditedCountries.includes(parseInt(option.value));
-        });
+            // Set selected countries
+            const countrySelect = document.querySelector('select[name="country_id[]"]');
+            if (countrySelect) {
+                [...countrySelect.options].forEach(option => {
+                    option.selected = accreditedCountries.includes(parseInt(option.value));
+                });
 
-        // Trigger change if using select2 or similar
-        if ($(countrySelect).hasClass('js-example-basic-multiple')) {
-            $(countrySelect).trigger('change');
+                // Trigger change if using select2 or similar
+                if ($(countrySelect).hasClass('js-example-basic-multiple')) {
+                    $(countrySelect).trigger('change');
+                }
+            }
         }
-    }
-}
 
         function confirmDelete(id, type) {
             if (confirm(`Are you sure you want to delete this ${type}?`)) {

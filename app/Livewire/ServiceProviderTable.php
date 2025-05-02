@@ -4,10 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Service;
 use Livewire\Component;
-use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
-use App\Http\Requests\StoreServiceProviderRequest;
-use App\Http\Controllers\ServiceProviderController;
 
 class ServiceProviderTable extends Component
 {
@@ -50,21 +47,10 @@ class ServiceProviderTable extends Component
             'inputs' => $this->selectedServices,
         ];
 
-        // @dd($data);
-
-        $request = new StoreServiceProviderRequest($data);
-        $serviceProviderController = app(ServiceProviderController::class);
-        $serviceProviderController->store($request);
 
         $this->reset(['editingId', 'name', 'selectedServices']);
-        $this->mount(); // reload data
+        $this->mount(); // Reload data
         $this->dispatchBrowserEvent('close-modal');
-    }
-
-    public function delete($id)
-    {
-        app()->call([ServiceProviderController::class, 'destroy'], ['id' => $id]);
-        $this->mount();
     }
 
     public function render()
