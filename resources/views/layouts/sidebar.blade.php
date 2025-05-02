@@ -56,11 +56,10 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="/account-management">
-                        <i class="las la-flask"></i> <span>Account Management</span>
+                    <a class="nav-link menu-link" href="/authentication">
+                        <i class="las la-flask"></i> <span>Authentication</span>
                     </a>
                 </li>
-
             </ul>
         </div>
         <!-- Sidebar -->

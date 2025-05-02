@@ -23,12 +23,20 @@
                         <td>{{ $service->name }}</td>
                         <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>                    
                         <td>
-                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".service-modal" wire:click="openForm({{ $service->id }})">
-                                <i class="bx bx-edit-alt"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm" wire:click="delete({{ $service->id }})">
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".service-modal"
+                            onclick="openServiceModal({{ $service->id }}, '{{ $service->name }}', {{ $service->service_provider_id ?? 'null' }})">
+                            <i class="bx bx-edit-alt"></i>
+                        </button>
+                        
+                        <!-- Delete with confirmation -->
+                        <form method="POST" action="{{ route('service.destroy', $service->id) }}" onsubmit="return confirm('Are you sure you want to delete this service?')" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">
                                 <i class="bx bxs-trash"></i>
                             </button>
+                        </form>
+                        
                         </td>
                     </tr>
                 @endforeach
@@ -72,4 +80,38 @@
         let modal = bootstrap.Modal.getInstance(document.querySelector('.service-modal'));
         if (modal) modal.hide();
     });
+
+    function openServiceModal(id = '', name = '', providerId = '') {
+        // Set modal title
+        document.querySelector('.service-modal h4').innerText = id ? 'Edit Service' : 'New Service';
+
+        // Update form action and method
+        const form = document.querySelector('.service-modal form');
+        const methodField = form.querySelector('input[name="_method"]');
+
+        if (id) {
+            form.action = `/service/${id}`;
+            if (!methodField) {
+                const methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'PUT';
+                form.appendChild(methodInput);
+            } else {
+                methodField.value = 'PUT';
+            }
+        } else {
+            form.action = `/service`;
+            if (methodField) methodField.remove();
+        }
+
+        // Populate fields
+        form.querySelector('input[name="name"]').value = name || '';
+        form.querySelector('select[name="service_provider_id"]').value = providerId || '';
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.querySelector('.service-modal'));
+        modal.show();
+    }
+
 </script>

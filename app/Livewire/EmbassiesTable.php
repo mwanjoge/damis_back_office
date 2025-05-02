@@ -6,17 +6,16 @@ use App\Http\Requests\StoreEmbassyRequest;
 use Livewire\Component;
 use App\Models\Embassy;
 use App\Models\Country;
-use Illuminate\Http\Request;
 use App\Http\Controllers\EmbassyController;
 
 class EmbassiesTable extends Component
 {
     public $embassies = [];
-
     public $editingId = null;
     public $name;
     public $type;
     public $is_active = 1;
+    public $states = [];
 
     protected $listeners = ['refreshEmbassies' => '$refresh'];
 
@@ -38,8 +37,9 @@ class EmbassiesTable extends Component
             $this->name = $embassy->name;
             $this->type = $embassy->type;
             $this->is_active = $embassy->is_active;
+            $this->states = $embassy->countries->pluck('id')->toArray(); // Prepopulate countries for editing
         } else {
-            $this->reset(['editingId', 'name', 'type', 'is_active']);
+            $this->reset(['editingId', 'name', 'type', 'is_active', 'states']);
         }
     }
 
@@ -51,39 +51,19 @@ class EmbassiesTable extends Component
             'is_active' => $this->is_active,
         ];
 
-         dd($data);
 
-        $request2 = new StoreEmbassyRequest( $data);
-        $embassyController = app(EmbassyController::class);
-        $response = $embassyController->store($request2);
-        dd($response);
-
-        // $request = Request::create(
-        //     '/fake',
-        //     $this->editingId ? 'PUT' : 'POST',
-        //     array_merge($data, ['id' => $this->editingId])
-        // );
-
-        // app()->call([EmbassyController::class, 'storeOrUpdate'], ['request' => $request]);
-
-        $this->reset(['editingId', 'name', 'type', 'is_active']);
-        $this->mount(); // reload list
+        $this->reset(['editingId', 'name', 'type', 'is_active', 'states']);
+        $this->mount(); // reload the list of embassies
         $this->dispatchBrowserEvent('close-modal');
     }
 
-    public function delete($id)
-    {
-        app()->call([EmbassyController::class, 'destroy'], ['id' => $id]);
-        $this->mount();
-    }
 
     public function render()
     {
-        return view('livewire.embassies-table',
-    [
-            'countries' => Country::query()->pluck('name','id'),
-            'embassies' => Embassy::query()->get(),
-        ]
-    );
+        return view('livewire.embassies-table', [
+            'countries' => Country::pluck('name', 'id'),
+            'embassies' => $this->embassies,
+        ]);
     }
 }
+
