@@ -1,9 +1,9 @@
 @extends('layouts.master')
 @section('content')
     <div class="row">
-        <div class="col-xxl-9">
+        <div class="col-xxl-9 pt-4">
             <h4 class="p-1 font-italic">Authentication</h4>
-            <div class=" mt-xxl-n5">
+            <div class="card mb-xxl-n5">
                 <div class="card-header">
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                         <li class="nav-item">

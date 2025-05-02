@@ -41,10 +41,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/authentication', [HomeController::class, 'authenticationIndex'])->name('authentication');
 
+    Route::get('/embassies/{id}', [HomeController::class, 'showEmbassy'])->name('embassies.show');
+
     // routes/web.php
     Route::get('/roles', [HomeController::class, 'roles'])->name('roles.index');
     Route::get('/roles', [HomeController::class, 'rolesIndex'])->name('roles.index');
     Route::get('/roles/{id}', [HomeController::class, 'show'])->name('roles.show');
+
+    // Route::get('/embassies/{id}', [EmbassyController::class, 'show'])->name('embassies.show');
+    // Route::post('/embassies/{id}/accredit-country', [EmbassyController::class, 'accreditCountry'])->name('embassies.accreditCountry');
+    // Route::delete('/embassies/{embassy}/country/{country}', [EmbassyController::class, 'removeCountry'])->name('embassies.removeCountry');
 });
-
-

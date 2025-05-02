@@ -1,5 +1,5 @@
 {{-- @section('content') --}}
-    @php
+ @php
         $roles = [(object) ['id' => 1, 'name' => 'admin'], (object) ['id' => 2, 'name' => 'editor']];
 
         $users = [
@@ -20,8 +20,8 @@
         ];
     @endphp
 
-    <div class="container my-5">
-        <div class="d-flex justify-content-end align-items-center mb-4">
+    <div class="container">
+        <div class="d-flex justify-content-end align-items-center">
            
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal"
                 onclick="openUserModal('create')">+ Add User</button>
