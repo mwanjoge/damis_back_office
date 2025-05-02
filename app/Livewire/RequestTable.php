@@ -8,10 +8,22 @@ use App\Models\Request;
 class RequestTable extends Component
 {
     public $requests;
+    public $status = 'Pending';
 
-    public function mount()
+    public function mount($requests = null)
     {
-        $this->requests = Request::all();
+        $this->status = 'Pending';
+        $this->requests = $requests ?? \App\Models\Request::all();
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function getFilteredRequestsProperty()
+    {
+        return $this->requests->where('status', $this->status);
     }
 
     public function render()

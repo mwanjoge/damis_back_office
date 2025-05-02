@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\RequestItemFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'request_id',
+        'service_id',
+        'certificate_holder_name',
+        'certificate_index_number',
+        'attachment',
+    ];
 }

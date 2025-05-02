@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-xxl-9">
             <h4 class="p-1 font-italic">Authentication</h4>
-            <div class="card mt-xxl-n5">
+            <div class=" mt-xxl-n5">
                 <div class="card-header">
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                         <li class="nav-item">
@@ -21,16 +21,15 @@
 
                 <div class="card-body px-4" style="background-color: white">
                     <div class="tab-content">
-                        <!-- Mission -->
-                        <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel" wire:ignore.self>
-                            @livewire('embassies-table')
+                        <!-- Users -->
+                        <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel">
+                            @include('authentication.users.users_table')
                         </div>
 
-                        <!-- Countries -->
-                        <div class="tab-pane fade" id="tab-countries" role="tabpanel" wire:ignore.self>
-                            @livewire('countries-table')
+                        <!-- Roles -->
+                        <div class="tab-pane fade" id="tab-countries" role="tabpanel">
+                            @include('authentication.roles.index')
                         </div>
-                        
                     </div>
                 </div>
             </div>
@@ -39,9 +38,9 @@
 @endsection
 @section('script')
     <script>
-        $(function () {
+        $(function() {
             // for bootstrap 3 use 'shown.bs.tab', for bootstrap 2 use 'shown' in the next line
-            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
                 // save the latest tab; use cookies if you like 'em better:
                 localStorage.setItem('lastTab', $(this).attr('href'));
             });
@@ -52,6 +51,5 @@
                 $('[href="' + lastTab + '"]').tab('show');
             }
         });
-
     </script>
 @endsection

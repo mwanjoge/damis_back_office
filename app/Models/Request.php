@@ -13,8 +13,6 @@ class Request extends Model
     protected $fillable = [
         'account_id',
         'embassy_id',
-        'service_id',
-        'service_provider_id',
         'member_id',
         'country_id',
         'type',
@@ -41,16 +39,6 @@ class Request extends Model
     public function embassy()
     {
         return $this->belongsTo(Embassy::class);
-    }
-
-    public function service()
-    {
-        return $this->belongsTo(Service::class);
-    }
-
-    public function serviceProvider()
-    {
-        return $this->belongsTo(ServiceProvider::class);
     }
 
     public function member()

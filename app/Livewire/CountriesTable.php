@@ -43,38 +43,9 @@ class CountriesTable extends Component
         }
     }
 
-    public function save()
-    {
-        $data = [
-            'name' => $this->name,
-            'code' => $this->code,
-            'phone_code' => $this->phone_code,
-            'embassy_id' => $this->embassy_id,
-        ];
+    
 
 
-        $request = new StoreCountryRequest($data);
-
-
-        $countryController = app(CountryController::class);
-
-
-        if ($this->editingId) {
-            $data['id'] = $this->editingId;
-            $request = new UpdateCountryRequest($data);
-        }
-
-        $countryController->store($request);
-        $this->reset(['editingId', 'name', 'code', 'phone_code', 'embassy_id']);
-        $this->mount(); 
-        $this->dispatchBrowserEvent('close-modal');
-    }
-
-    public function delete($id)
-    {
-        app()->call([CountryController::class, 'destroy'], ['id' => $id]);
-        $this->mount();
-    }
 
     public function render()
     {

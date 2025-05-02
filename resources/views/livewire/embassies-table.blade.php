@@ -1,5 +1,5 @@
 @include('modal.alert')
-
+<div>
 <div class="tab-pane px-4" id="embassy" role="tabpanel">
     <div class="text-end pb-4">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".mission-modal"
@@ -29,20 +29,17 @@
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                 data-bs-target=".mission-modal"
-                                onclick="openMissionModal(
-                                    '{{ $embassy->id }}',
-                                    '{{ $embassy->name }}',
-                                    '{{ $embassy->type }}',
-                                    '{{ $embassy->is_active }}',
-                                    @json($embassy->countries->pluck('id')->toArray())
-                                )">
+                                onclick="openMissionModal({{ json_encode($embassy) }})">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
 
-                            <button class="btn btn-danger btn-sm"
-                                onclick="confirmDelete({{ $embassy->id }}, 'mission')">
-                                <i class="bx bxs-trash"></i>
-                            </button>
+                            <form method="POST" action="{{ route('embassy.destroy', $embassy->id) }}" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bx bxs-trash"></i>
+                                </button>
+                            </form>
                             <button class="btn btn-info btn-sm">
                                 <i class="bx bxs-show"></i>
                             </button>
@@ -56,95 +53,92 @@
             </tbody>
         </table>
     </div>
+</div>
 
-    <div wire:ignore.self class="modal fade mission-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form id="missionForm" method="post"
-                    action="{{ $editingId ? route('embassy.update', $editingId) : route('embassy.store') }}">
-                    @csrf
-                    
+<!-- Mission Modal -->
+<div wire:ignore.self class="modal fade mission-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="missionForm" method="post">
+                @csrf
+                <div class="modal-header text-center">
+                    <h4 id="missionModalTitle">Add New Mission</h4>
+                </div>
 
-                    <div class="modal-header text-center">
-                        <h4 id="missionModalTitle">
-                            {{ $editingId ? 'Edit Mission' : 'Add New Mission' }}
-                        </h4>
+                <div class="modal-body px-5">
+                    <input type="hidden" name="_method" id="missionMethod">
+                    <input type="hidden" name="id" id="missionId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Mission Name</label>
+                        <input type="text" name="name" id="missionName" class="form-control" required>
                     </div>
 
-                    <div class="modal-body px-5">
-                        <input type="hidden" id="missionMethod" name="_method" value="POST">
-                        <input type="hidden" id="missionId" name="id" value="">
-
-                        <div class="mb-3">
-                            <label class="form-label">Mission Name</label>
-                            <input type="text" name="name" id="missionName" class="form-control" wire:model="name" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Type</label>
-                            <select name="type" id="missionType" class="form-select" wire:model="type" required>
-                                <option value="Embassy">Embassy</option>
-                                <option value="Permanent Mission">Permanent Mission</option>
-                                <option value="High Commission">High Commission</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select name="is_active" id="missionStatus" class="form-select" wire:model="is_active" required>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
-
-                        <p class="mt-4">Accredited Countries</p>
-                        <select wire:model="states" name="country_id[]" class="js-example-basic-multiple" multiple>
-                            @foreach (json_decode($countries) as $index => $country)
-                                <option value="{{ $index }}">{{ $country }}</option>
-                            @endforeach
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        <select name="type" id="missionType" class="form-select" required>
+                            <option value="Embassy">Embassy</option>
+                            <option value="Permanent Mission">Permanent Mission</option>
+                            <option value="High Commission">High Commission</option>
                         </select>
-
-                        <div class="hstack gap-2 justify-content-center mt-4">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">
-                                {{ $editingId ? 'Update Mission' : 'Save Mission' }}
-                            </button>
-                        </div>
                     </div>
-                </form>
-            </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="is_active" id="missionStatus" class="form-select" required>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
+                    <p class="mt-4">Accredited Countries</p>
+                    <select name="country_id[]" class="js-example-basic-multiple" multiple></select>
+
+                    <div class="hstack gap-2 justify-content-center mt-4">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Mission</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <script>
-        function openMissionModal(id = '', name = '', type = 'embassy', is_active = 1, accreditedCountries = []) {
-            document.getElementById('missionModalTitle').innerText = id ? 'Edit Mission' : 'Add New Mission';
-            document.getElementById('missionMethod').value = id ? 'PUT' : 'POST';
-            document.getElementById('missionId').value = id;
-            document.getElementById('missionName').value = name;
-            document.getElementById('missionType').value = type;
-            document.getElementById('missionStatus').value = is_active;
+<script>
+    function openMissionModal(data = {}) {
+        document.getElementById('missionModalTitle').innerText = data.id ? 'Edit Mission' : 'Add New Mission';
+        document.getElementById('missionMethod').value = data.id ? 'PUT' : 'POST';
+        document.getElementById('missionId').value = data.id || '';
+        document.getElementById('missionName').value = data.name || '';
+        document.getElementById('missionType').value = data.type || 'Embassy';
+        document.getElementById('missionStatus').value = data.is_active || '1';
 
-            // Set selected countries
-            const countrySelect = document.querySelector('select[name="country_id[]"]');
-            if (countrySelect) {
-                [...countrySelect.options].forEach(option => {
-                    option.selected = accreditedCountries.includes(parseInt(option.value));
-                });
+        const formActionBase = "{{ url('embassy') }}";
+        document.getElementById('missionForm').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
 
-                // Trigger change if using select2 or similar
-                if ($(countrySelect).hasClass('js-example-basic-multiple')) {
-                    $(countrySelect).trigger('change');
-                }
-            }
+        const countrySelect = document.querySelector('select[name="country_id[]"]');
+        countrySelect.innerHTML = '';
+
+        if (data.countries) {
+            data.countries.forEach(id => {
+                let option = document.createElement('option');
+                option.value = id;
+                option.selected = true;
+                countrySelect.appendChild(option);
+            });
         }
 
-        function confirmDelete(id, type) {
-            if (confirm(`Are you sure you want to delete this ${type}?`)) {
-                // Perform the delete action
-                // You can use AJAX or a form submission here
-                console.log(`Deleting ${type} with ID: ${id}`);
-            }
+        if ($(countrySelect).hasClass('js-example-basic-multiple')) {
+            $(countrySelect).trigger('change');
         }
-    </script>
+
+        new bootstrap.Modal(document.querySelector('.mission-modal')).show();
+    }
+
+    function confirmDelete(id, type) {
+        if (confirm(`Are you sure you want to delete this ${type}?`)) {
+            console.log(`Deleting ${type} with ID: ${id}`);
+        }
+    }
+</script>
 </div>

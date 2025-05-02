@@ -1,8 +1,7 @@
 @extends('layouts.master')
-
 @include('authentication.roles.role_modal')
 
-@section('content')
+{{-- @section('content') --}}
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold">Roles</h4>
@@ -26,12 +25,19 @@
                         <td>{{ $loop ->iteration }}</td>
                         <td class="text-capitalize">{{ $role->name }}</td>
                         <td>
-                            <a href="{{ route('roles.show', $role->id) }}" class="btn btn-sm btn-primary">View</a>
+                            <a href="{{ route('roles.show', $role->id) }}" class="btn btn-sm btn-primary">
+                                <i class="bx bx-show"></i>
+                            </a>
                             <button class="btn btn-sm btn-warning"
                             data-bs-toggle="modal" data-bs-target="#roleModal"
-                            onclick="openRoleModal('edit', {{ $role->id }}, '{{ $role->name }}')">Edit</button>
+                            onclick="openRoleModal('edit', {{ $role->id }}, '{{ $role->name }}')">
+                                <i class="bx bx-edit-alt"></i>
+                            </button>
                             <a href="#" class="btn btn-sm btn-danger"
-                               onclick="return confirm('Are you sure you want to delete this role?')">Delete</a>
+                               {{-- onclick="return confirm('Are you sure you want to delete this role?')" --}}
+                               >
+                                <i class="bx bxs-trash"></i>
+                            </a>
                         </td>
                     </tr>
                     @endforeach
@@ -41,7 +47,7 @@
         </div>
     </div>
     </div>
-@endsection
+{{-- @endsection --}}
 
 
 @push('scripts')
