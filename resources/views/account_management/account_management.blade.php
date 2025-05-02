@@ -2,28 +2,18 @@
 @section('content')
     <div class="row">
         <div class="col-xxl-9">
-            <h4 class="p-1 font-italic">Settings</h4>
+            <h4 class="p-1 font-italic">Account Management</h4>
             <div class="card mt-xxl-n5">
                 <div class="card-header">
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#tab-embassy" role="tab">
-                                <i class="far fa-user"></i> Mission
+                                <i class="far fa-user"></i> Billing
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#tab-countries" role="tab">
-                                <i class="fas fa-home"></i> Countries
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#tab-service-provider" role="tab">
-                                <i class="far fa-user"></i> Service Providers
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#tab-services" role="tab">
-                                <i class="far fa-user"></i> Services
+                                <i class="fas fa-home"></i> Employees
                             </a>
                         </li>
                     </ul>
@@ -55,22 +45,4 @@
             </div>
         </div>
     </div>
-@endsection
-@section('script')
-    <script>
-        $(function () {
-            // for bootstrap 3 use 'shown.bs.tab', for bootstrap 2 use 'shown' in the next line
-            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-                // save the latest tab; use cookies if you like 'em better:
-                localStorage.setItem('lastTab', $(this).attr('href'));
-            });
-
-            // go to the latest tab, if it exists:
-            var lastTab = localStorage.getItem('lastTab');
-            if (lastTab) {
-                $('[href="' + lastTab + '"]').tab('show');
-            }
-        });
-
-    </script>
 @endsection

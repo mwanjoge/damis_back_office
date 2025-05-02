@@ -63,7 +63,7 @@
                     <div class="col-4">
                         <div class="form-check card-radio">
                             <input id="customizer-layout02" name="data-layout" type="radio" value="horizontal"
-                                class="form-check-input">
+                                class="form-check-input" selected>
                             <label class="form-check-label p-0 avatar-md w-100" for="customizer-layout02">
                                 <span class="d-flex h-100 flex-column gap-1">
                                     <span class="bg-light d-flex p-1 gap-1 align-items-center">

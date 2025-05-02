@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Service;
+use Exception;
 
 class ServiceController extends Controller
 {
@@ -29,7 +30,12 @@ class ServiceController extends Controller
      */
     public function store(StoreServiceRequest $request)
     {
-        Service::query()->create($request->all());
+        try {
+            Service::query()->create($request->all());
+            session()->flash('success', 'Country created successfully!');
+        } catch (Exception $e) {
+            session()->flash('error', 'Something went wrong!');
+        }
         return redirect()->route('settings');
     }
 

@@ -9,34 +9,41 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceProviderController;
 use App\Http\Controllers\RequestController;
 
-//Language Translation
-Route::get('token_check', function () {
-    return csrf_token();
-});
 
-Route::resource('embassy', EmbassyController::class)->names('embassy');
 
-Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
-
-//Update User Details
-Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
-Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function() {
+    Route::resource('embassy', EmbassyController::class)->names('embassy');
+//Language Translation
+Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
+
+
+    //Update User Details
+Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
+Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
+Route::get('/profile/{id}', function () {
+    return view('pages-profile');
+})->name('pages-profile');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resource('embassy', EmbassyController::class)->names('embassy');
+    Route::resource('country', CountryController::class)->names('country');
+    Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
+    Route::resource('service', \App\Http\Controllers\ServiceController::class)->names('service');
+    Route::resource('requests', RequestController::class)->names('requests');
+    Route::get('settings', function () {
+        return view('settings');
+    })->name('settings');
+});
+
 
 //Route::get('/settings', SettingsPage::class)->name('settings');
 
 //Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-Route::resource('embassy', EmbassyController::class)->names('embassy');
-Route::resource('country', CountryController::class)->names('country');
-Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
-Route::resource('service', \App\Http\Controllers\ServiceController::class)->names('service');
-Route::resource('requests', RequestController::class)->names('requests');
-Route::get('settings', function () {
-    return view('settings');
-})->name('settings');
+

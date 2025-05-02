@@ -1,4 +1,4 @@
-
+{{-- 
 <div>
     @section('content')
         <div class="row">
@@ -735,4 +735,4 @@
 {{-- @section('script')
         <script src="{{ URL::asset('build/js/pages/profile-setting.init.js') }}"></script>
         <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    @endsection --}}
+    @endsection --}} --}}

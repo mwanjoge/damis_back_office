@@ -1,3 +1,4 @@
+@include("modal.alert")
 <div class="px-4" id="service-provider" role="tabpanel">
     <div class="justify-content-end text-end align-content-start pb-4">
         <!-- New Service Provider Button -->
@@ -18,7 +19,7 @@
             <tbody>
                 @foreach ($serviceProviders as $serviceProvider)
                     <tr>
-                        <td>{{ $serviceProvider['id'] }}</td>
+                        <td>{{ $loop ->iteration }}</td>
                         <td>{{ $serviceProvider['name'] }}</td>
                         <td>
                             <!-- Edit Button -->
@@ -107,7 +108,7 @@
                            
                             <div class="hstack gap-2 justify-content-center mt-4">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
                             </div>
                         </form>
                     </div>
