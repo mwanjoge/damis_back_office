@@ -14,5 +14,7 @@ class MemberSeeder extends Seeder
         foreach ($accountIds as $accountId) {
             Member::factory()->count(2)->create(['account_id' => $accountId]);
         }
+
+        Member::factory()->count(6)->create();
     }
 }

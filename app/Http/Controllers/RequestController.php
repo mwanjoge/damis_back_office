@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
 use App\Models\Request;
+use App\Models\Service;
+use App\Models\ServiceProvider; 
 
 class RequestController extends Controller
 {
@@ -13,11 +15,17 @@ class RequestController extends Controller
      */
     public function index()
     {
-        //
-        // Fetch all requests from the database
-        $requests = Request::all();
-        // Return the requests to the view
-        return view('requests.index', compact('requests'));
+        $requests = \App\Models\Request::all();
+
+        // Calculate summary counts
+        $summary = [
+            'Pending' => $requests->where('status', 'Pending')->count(),
+            'In Progress' => $requests->where('status', 'In Progress')->count(),
+            'Completed' => $requests->where('status', 'Completed')->count(),
+            'Cancelled' => $requests->where('status', 'Cancelled')->count(),
+        ];
+
+        return view('Requests.index', compact('requests', 'summary'));
     }
 
     /**
@@ -25,8 +33,13 @@ class RequestController extends Controller
      */
     public function create()
     {
-        //
+        $services = \App\Models\Service::all();
+        $serviceProviders = \App\Models\ServiceProvider::all();
+        $embassies = \App\Models\Embassy::all();
+        $countries = \App\Models\Country::all();
+        $members = \App\Models\Member::all();
 
+        return view('Requests.create', compact('services', 'serviceProviders', 'embassies', 'countries', 'members'));
     }
 
     /**
@@ -34,7 +47,35 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        // Set a default account_id (e.g., from the authenticated user or the first account)
+        $accountId = \App\Models\Account::first()?->id;
+
+        $mainRequest = \App\Models\Request::create([
+            'account_id' => $accountId, // required by DB, set a default
+            'embassy_id' => $data['embassy_id'],
+            'member_id' => $data['member_id'],
+            'country_id' => $data['country_id'],
+            'type' => $data['type'],
+            'tracking_number' => \Illuminate\Support\Str::ulid(),
+            'total_cost' => collect($data['request_items'] ?? [])->sum('price'),
+        ]);
+
+        foreach ($data['request_items'] ?? [] as $item) {
+            \App\Models\RequestItem::create([
+                'request_id' => $mainRequest->id,
+                'service_id' => $item['service_id'],
+                'service_provider_id' => $item['service_provider_id'],
+                'certificate_holder_name' => $item['certificate_holder_name'],
+                'certificate_index_number' => $item['certificate_index_number'] ?? null,
+                'price' => $item['price'] ?? null,
+                'attachment' => $item['attachment'] ?? null,
+                'account_id' => $mainRequest->account_id, // add this line if account_id is required in request_items table
+            ]);
+        }
+
+        return redirect()->route('requests.index')->with('success', 'Request created successfully!');
     }
 
     /**
@@ -42,11 +83,8 @@ class RequestController extends Controller
      */
     public function show(Request $request)
     {
-        //
-        // Fetch the request from the database
-        // Return the request to the view
-        return view('requests.show', compact('request'));
-        
+        // Show the request details
+        return view('Requests.show', compact('request'));
     }
 
     /**
@@ -54,7 +92,7 @@ class RequestController extends Controller
      */
     public function edit(Request $request)
     {
-        //
+        // Not implemented
     }
 
     /**
@@ -62,7 +100,7 @@ class RequestController extends Controller
      */
     public function update(UpdateRequestRequest $request, Request $requestModel)
     {
-        // ...
+        // Not implemented
     }
 
     /**
@@ -70,6 +108,6 @@ class RequestController extends Controller
      */
     public function destroy(Request $requestModel)
     {
-        // ...
+        // Not implemented
     }
 }
