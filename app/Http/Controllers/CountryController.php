@@ -60,7 +60,8 @@ class CountryController extends Controller
      */
     public function update(UpdateCountryRequest $request, Country $country)
     {
-        //
+        $country->update($request->all());
+        return redirect()->route('settings')->with('success', 'Country updated successfully!');
     }
 
     /**

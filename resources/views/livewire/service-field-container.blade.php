@@ -13,7 +13,7 @@
         <div class="col-12">
             @foreach($inputs as $key => $value)
                 <div class="service-field mb-3 d-flex">
-                    <input type="text" wire:model="inputs.{{ $key }}" class="form-control me-2" placeholder="Enter service" name="service_name[]" required>
+                    <input type="text" wire:model="inputs.{{ $key }}" class="form-control me-2" placeholder="Enter service" name="service_name[]" >
                     <button wire:click="removeInput({{ $key }})" class="btn btn-danger">
                         <i class="bx bx-trash"></i>
                     </button>

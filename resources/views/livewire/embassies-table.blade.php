@@ -63,9 +63,7 @@
                 <form id="missionForm" method="post"
                     action="{{ $editingId ? route('embassy.update', $editingId) : route('embassy.store') }}">
                     @csrf
-                    @if ($editingId)
-                        @method('PUT')
-                    @endif
+                    
 
                     <div class="modal-header text-center">
                         <h4 id="missionModalTitle">

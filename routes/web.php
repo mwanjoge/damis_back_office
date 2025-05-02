@@ -17,6 +17,7 @@ use App\Http\Controllers\RequestController;
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
+    //Route::post('embassy/update/{id}', [EmbassyController::class,'update'])->name('embassy.update');
     Route::resource('embassy', EmbassyController::class)->names('embassy');
     //Language Translation
     Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
@@ -34,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::resource('embassy', EmbassyController::class)->names('embassy');
+    //Route::resource('embassy', EmbassyController::class)->names('embassy');
     Route::resource('country', CountryController::class)->names('country');
     Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
     Route::resource('service', \App\Http\Controllers\ServiceController::class)->names('service');

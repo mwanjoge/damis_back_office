@@ -60,7 +60,14 @@ class ServiceController extends Controller
      */
     public function update(UpdateServiceRequest $request, Service $service)
     {
-        //
+        if($service){
+            $service->update($request->all());
+            session()->flash('success', 'Service updated successfully!');
+        }
+        else{
+            session()->flash('error', 'Service not found!');
+        }
+        return redirect()->route('settings');
     }
 
     /**

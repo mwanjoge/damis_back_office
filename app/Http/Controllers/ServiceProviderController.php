@@ -37,7 +37,8 @@ class ServiceProviderController extends Controller
                 'name' => $request->name,
             ]);
 
-            if($request->service_name){
+            if($request->service_name[0] != null){
+                dd($request->service_name);
                 foreach ($request->service_name as $service) {
                     $serviceProvider->services()
                         ->create(
@@ -51,6 +52,7 @@ class ServiceProviderController extends Controller
             // Dispatch the event to push the service provider data to the public server
             event(new EmbassyCreated($serviceProvider));
             session()->flash('success', 'Service Provider saved successfully!');
+            return redirect()->route('settings');
         });
     }
 
@@ -75,7 +77,8 @@ class ServiceProviderController extends Controller
      */
     public function update(UpdateServiceProviderRequest $request, ServiceProvider $serviceProvider)
     {
-        //
+        $serviceProvider->update($request->all());
+        return redirect()->route('settings')->with('success', 'Service Provider updated successfully!');
     }
 
     /**

@@ -42,19 +42,16 @@
                         <i class="lab la-delicious"></i> <span>Requests</span>
                     </a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="/reports" >
                         <i class="las la-columns"></i> <span>Reports</span>
                     </a>
                 </li>
-
                 <li class="nav-item {{ Request::is('settings*')?'active':'' }}">
                     <a class="nav-link menu-link {{ Request::is('settings*')?'active':'' }}" href="/settings">
                         <i class="las la-flask"></i> <span>Settings</span>
                     </a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="/authentication">
                         <i class="las la-flask"></i> <span>Authentication</span>
