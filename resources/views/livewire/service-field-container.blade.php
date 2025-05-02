@@ -1,5 +1,5 @@
 @include("modal.alert")
-<div>
+<div wire.ignore.self>
     <div class="row mt-3">
         <div class="col">Add provider's services</div>
         <div class="col">
@@ -16,7 +16,7 @@
                     <input type="text" wire:model="inputs.{{ $key }}" class="form-control me-2" placeholder="Enter service" name="service_name[]" >
                     <button wire:click="removeInput({{ $key }})" class="btn btn-danger">
                         <i class="bx bx-trash"></i>
-                    </button>
+                    </a>
                 </div>
             @endforeach
         </div>

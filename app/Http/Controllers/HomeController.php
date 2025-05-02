@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Embassy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -101,11 +102,16 @@ class HomeController extends Controller
         return view('authentication.roles.show', compact('role', 'groupedPermissions'));
     }
 
-    public function authenticationIndex() 
+    public function authenticationIndex()
     {
-      $permissions = $this->permissions;
-      $roles = $this->roles;
-      return view('authentication.authentication_home', compact('permissions', 'roles'));
+        $permissions = $this->permissions;
+        $roles = $this->roles;
+        return view('authentication.authentication_home', compact('permissions', 'roles'));
     }
-     
+
+    public function showEmbassy($id)
+    {
+        $embassy = Embassy::with('countries')->findOrFail($id);
+        return view('embassy_profile', compact('embassy'));
+    }
 }

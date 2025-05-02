@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+
     <div class="row">
         <div class="col-xxl-9">
             <h4 class="p-1 font-italic">Settings</h4>

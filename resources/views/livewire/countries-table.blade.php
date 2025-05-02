@@ -14,7 +14,7 @@
                     <th>Mission</th>
                     <th>Code</th>
                     <th>Phone Code</th>
-                    <th>Actions</th>
+                    <th  class="text-end" style="width: 180px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +25,7 @@
                         <td>{{ $country->embassy?->name}}</td>
                         <td>{{ $country->code }}</td>
                         <td>{{ $country->phone_code }}</td>
-                        <td>
+                        <td class="text-end">
                             <!-- Edit Button -->
                             <button class="btn btn-warning btn-sm"
                                 data-bs-toggle="modal" data-bs-target=".country-modal"

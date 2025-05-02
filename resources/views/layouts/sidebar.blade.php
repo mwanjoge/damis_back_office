@@ -32,18 +32,18 @@
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                <li class="nav-item {{ Request::is('/')?'active':'' }}">
-                    <a class="nav-link menu-link {{ Request::is('/')?'active':'' }}" href="/" >
+                <li class="nav-item">
+                    <a class="nav-link menu-link active" href="/" >
                         <i class="las la-tachometer-alt"></i> <span>Dashboard</span>
                     </a>
                 </li> 
-                <li class="nav-item {{ Request::is('requests*')?'active':'' }}">
-                    <a class="nav-link menu-link {{ Request::is('requests*')?'active':'' }}" href="/requests" >
-                        <i class="lab la-delicious"></i> <span>Requests</span>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="/requests" >
+                        <i class="las la-list-alt"></i> <span>Requests</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="/reports" >
+                    <a class="nav-link menu-link" href="#" >
                         <i class="las la-columns"></i> <span>Reports</span>
                     </a>
                 </li>
@@ -54,7 +54,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="/authentication">
-                        <i class="las la-flask"></i> <span>Authentication</span>
+                        <i class="las la-lock"></i> <span>Authentication</span>
                     </a>
                 </li>
             </ul>
