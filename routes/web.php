@@ -11,8 +11,10 @@ use App\Http\Controllers\RequestController;
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth'])->group(function () {
     Route::resource('embassy', EmbassyController::class)->names('embassy');
+    //Language Translation
+    Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
     //Language Translation
     Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
@@ -35,6 +37,15 @@ Route::middleware(['auth'])->group(function() {
     Route::get('settings', function () {
         return view('settings');
     })->name('settings');
+
+    Route::get('authentication', function () {
+        return view('authentication.authentication');
+    })->name('authentication');
+
+    // routes/web.php
+Route::get('/roles', [HomeController::class, 'roles'])->name('roles.index');
+Route::get('/roles', [HomeController::class, 'rolesIndex'])->name('roles.index');
+Route::get('/roles/{id}', [HomeController::class, 'show'])->name('roles.show');
 });
 
 
