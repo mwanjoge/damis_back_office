@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
-use App\Models\Request;
-use App\Models\Service;
-use App\Models\ServiceProvider; 
+use Illuminate\Http\Request;
 
 class RequestController extends Controller
 {
@@ -47,10 +45,14 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->all();
+        return $data;
 
         // Set a default account_id (e.g., from the authenticated user or the first account)
-        $accountId = \App\Models\Account::first()?->id;
+        $accountId = \App\Models\Account::query()->where('embassy_id', $data['embassy_id'])->first()->id;
+        if (!$accountId) {
+            return redirect()->back()->with('error', 'Account not found for the specified embassy.');
+        }
 
         $mainRequest = \App\Models\Request::create([
             'account_id' => $accountId, // required by DB, set a default
@@ -64,6 +66,7 @@ class RequestController extends Controller
 
         foreach ($data['request_items'] ?? [] as $item) {
             \App\Models\RequestItem::create([
+                'account_id' => $accountId,
                 'request_id' => $mainRequest->id,
                 'service_id' => $item['service_id'],
                 'service_provider_id' => $item['service_provider_id'],
@@ -71,7 +74,6 @@ class RequestController extends Controller
                 'certificate_index_number' => $item['certificate_index_number'] ?? null,
                 'price' => $item['price'] ?? null,
                 'attachment' => $item['attachment'] ?? null,
-                'account_id' => $mainRequest->account_id, // add this line if account_id is required in request_items table
             ]);
         }
 
