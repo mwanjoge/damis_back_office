@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Events\EmbassyCreated;
 use Illuminate\Database\Seeder;
 use App\Models\ServiceProvider;
 use App\Models\Service;
@@ -56,6 +57,8 @@ class ServiceProviderSeeder extends Seeder
                     'name' => $serviceName,
                 ]);
             }
+            // Fire the event for each service provider created
+            event(new EmbassyCreated($provider));
         }
     }
 }
