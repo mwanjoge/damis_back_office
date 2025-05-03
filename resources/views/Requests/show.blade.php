@@ -2,7 +2,7 @@
 @section('title', 'Show Request')
 @section('content')
 <div class="row mt-4">
-    <div class="col-lg-7 mb-3">
+    <div class="col-lg-5 mb-3">
         <div class="card h-100">
             <div class="card-header">
                 <h4>Request Details</h4>
@@ -19,13 +19,10 @@
                         <tr><th>Total Cost</th><td>{{ $request->total_cost }}</td></tr>
                         <tr><th>Is Approved (Admin)</th><td>{{ $request->is_approved ? 'Yes' : 'No' }}</td></tr>
                         <tr><th>Is Paid (User)</th><td>{{ $request->is_paid ? 'Yes' : 'No' }}</td></tr>
-                        <tr><th>Created At</th><td>{{ $request->created_at }}</td></tr>
-                        <tr><th>Updated At</th><td>{{ $request->updated_at }}</td></tr>
+           
                     </tbody>
                 </table>
-                @if(!$request->is_approved)
-                    <button wire:click="approve" class="btn btn-success btn-sm">Approve</button>
-                @endif
+            
                 <a href="{{ route('requests.index') }}" class="btn btn-secondary btn-sm">Back</a>
                 @if(session()->has('success'))
                     <div class="alert alert-success mt-2">{{ session('success') }}</div>
@@ -33,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-5 d-flex flex-column gap-3">
+    <div class="col-lg-7 d-flex flex-column gap-3">
         <div class="card">
             <div class="card-header">
                 <h6 class="mb-0">Request Invoice</h6>

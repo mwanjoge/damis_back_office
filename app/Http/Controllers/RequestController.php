@@ -45,8 +45,8 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-        $data = $request->all();
-        return $data;
+      
+        $data = $request->validated();
 
         // Set a default account_id (e.g., from the authenticated user or the first account)
         $accountId = \App\Models\Account::query()->where('embassy_id', $data['embassy_id'])->first()->id;
@@ -83,11 +83,11 @@ class RequestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(\App\Models\Request $request)
     {
-        // Show the request details
+        $request->load('items.serviceProvider', 'items.service');
         return view('Requests.show', compact('request'));
-    }
+      }
 
     /**
      * Show the form for editing the specified resource.

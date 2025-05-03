@@ -51,4 +51,8 @@ class Request extends Model
         return $this->belongsTo(Country::class);
     }
 
+    public function items()
+    {
+        return $this->hasMany(\App\Models\RequestItem::class, 'request_id');
+    }
 }
