@@ -24,4 +24,9 @@ class Embassy extends Model
     {
         return $this->hasMany(Country::class);
     }
+
+    public function billableItems()
+    {
+        return $this->hasMany(BillableItem::class);
+    }
 }

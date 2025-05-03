@@ -31,6 +31,7 @@
                                 <i class="bx bx-edit-alt"></i>
                             </button>
 
+
                             <!-- Delete Button -->
                             <button class="btn btn-danger btn-sm" wire:click="delete({{ $serviceProvider['id'] }})">
                                 <i class="bx bxs-trash"></i>

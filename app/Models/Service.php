@@ -12,7 +12,6 @@ class Service extends Model
     protected $fillable = [
         'name',
         'service_provider_id',
-        'account_id',
         'synced',
     ];
 
@@ -21,13 +20,13 @@ class Service extends Model
         return $this->belongsTo(ServiceProvider::class);
     }
 
-    public function account()
+    public function requestItems()
     {
-        return $this->belongsTo(Account::class);
+        return $this->hasMany(RequestItem::class);
     }
 
-    public function requests()
+    public function billableItems()
     {
-        return $this->hasMany(Request::class);
+        return $this->morphMany(BillableItem::class, 'billable');
     }
 }

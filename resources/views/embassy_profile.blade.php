@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+@include("modal.alert")
     <div class="profile-foreground position-relative mx-n4 mt-n4">
         <div class="profile-wid-bg">
             <img src="{{ URL::asset('build/images/profile-bg.jpg') }}" alt="" class="profile-wid-img" />
@@ -30,7 +31,7 @@
 
     <!-- Profile Details -->
     <div class="row">
-        <div class="col-xl-6">
+        <div class="col-xl-5">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Embassy Details</h5>
@@ -67,7 +68,7 @@
         </div>
 
         <!-- Accredited Countries -->
-        <div class="col-xl-6">
+        <div class="col-xl-7">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Accredited Countries</h5>
@@ -76,16 +77,51 @@
                     @else
                         <ul class="list-group list-group-flush">
                             @foreach ($embassy->countries as $country)
-                                <li class="list-group-item">{{ $country->name }}
+                                <li class="list-group-item">
+                                    @include('embassies._generate_bills_modal')
+                                    {{ $country->name }}
                                     {{-- <form method="POST" action="{{ route('embassy.destroy', [$embassy->id, $country->id]) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bx bxs-trash"></i></button>
                                     </form> --}}
+                                    <span class="float-end">
+                                        <a class="btn btn-success"><i class="bx bxs-trash text-danger" wire:click="removeCountry({{ $country->id }})"></i></a>
+                                        <a class="btn btn-success" href="javascript:void(0)" title="Generate Bills" data-bs-toggle="modal" data-bs-target="#generateBillsModal{{ $country->id }}">
+                                            <i class="bx bx-money"></i>
+                                        </a>
+                                    </span>
 
                                 </li>
                             @endforeach
                         </ul>
+                    @endif
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Services Fees</h5>
+                    @if ($embassy->billableItems == null)
+                        <p class="text-muted">No service fees</p>
+                    @else
+                        <table class="table table-bordered table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Service Provider</th>
+                                    <th>Price</th>
+                                    <th>Currency</th>
+                                </tr>
+                            @foreach ($embassy->billableItems as $bill)
+                                <tr>
+                                    <td>{{ $bill->billable->name }}</td>
+                                    <td>{{ $bill->billable->serviceProvider->name }}</td>
+                                    <td class="text-end">{{ $bill->price }}</td>
+                                    <td>{{ $bill->currency }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                       
                     @endif
                 </div>
             </div>

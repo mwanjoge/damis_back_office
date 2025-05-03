@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Route::resource('embassy', EmbassyController::class)->names('embassy');
     Route::resource('country', CountryController::class)->names('country');
+    Route::post('bills', [App\Http\Controllers\BillableItemController::class, 'store'])->name('bills.store');
     Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
     Route::resource('service', \App\Http\Controllers\ServiceController::class)->names('service');
     Route::resource('requests', RequestController::class)->names('requests');

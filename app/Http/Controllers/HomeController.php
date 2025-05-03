@@ -111,7 +111,7 @@ class HomeController extends Controller
 
     public function showEmbassy($id)
     {
-        $embassy = Embassy::with('countries')->findOrFail($id);
+        $embassy = Embassy::query()->with('billableItems','countries')->findOrFail($id);
         return view('embassy_profile', compact('embassy'));
     }
 }

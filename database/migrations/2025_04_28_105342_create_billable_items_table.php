@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('billable_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('account_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('embassy_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->morphs('billable');
             $table->decimal('price', 22, 2)->default(0);
             $table->string('currency', 10)->default('TZS');
             $table->boolean('synced')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
