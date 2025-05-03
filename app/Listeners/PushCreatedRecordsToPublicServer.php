@@ -47,20 +47,21 @@ class PushCreatedRecordsToPublicServer
         }
 
         if($record instanceof \App\Models\ServiceProvider){
-
+            Log::info('Pushing service provider data to public server');
             // Push the service provider data to the public server
-            Http::public()->post('api/service_provider', [
+            $response = Http::public()->post('api/service_provider', [
                 'name' => $record->name,
-                'account_id' => $record->email,
                 'id' => $record->id,
                 'services' => $record->services->map(function ($service) {
                     return [
                         'name' => $service->name,
-                        'account_id' => $service->account_id,
                         'id' => $service->id,
                         'service_provider_id' => $service->service_provider_id,
                     ];
                 }),
+            ]);
+            Log::info('Service provider data pushed to public server', [
+                'response' => $response
             ]);
         }
     }

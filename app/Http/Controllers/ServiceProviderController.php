@@ -31,6 +31,7 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
+        //dd($request->all());
         DB::transaction(function () use ($request) {
             $serviceProvider = ServiceProvider::query()
             ->create([
