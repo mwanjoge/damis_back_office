@@ -86,8 +86,8 @@
                                         <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bx bxs-trash"></i></button>
                                     </form> --}}
                                     <span class="float-end">
-                                        <a class="btn btn-success"><i class="bx bxs-trash text-danger" wire:click="removeCountry({{ $country->id }})"></i></a>
-                                        <a class="btn btn-success" href="javascript:void(0)" title="Generate Bills" data-bs-toggle="modal" data-bs-target="#generateBillsModal{{ $country->id }}">
+                                        <a class="btn btn-danger btn-sm"><i class="bx bxs-trash" wire:click="removeCountry({{ $country->id }})"></i></a>
+                                        <a class="btn btn-success btn-sm" href="javascript:void(0)" title="Generate Bills" data-bs-toggle="modal" data-bs-target="#generateBillsModal{{ $country->id }}">
                                             <i class="bx bx-money"></i>
                                         </a>
                                     </span>
