@@ -37,14 +37,8 @@ class MemberController extends Controller
             'phone' => 'nullable|string|max:20',
         ]);
     
-        $member = Member::create($request->only(['name', 'email', 'phone','account_id']));
-        $accountId = \App\Models\Account::query()->where('embassy_id', $member['embassy_id'])->first()->id;
-        if (!$accountId) {
-            return redirect()->back()->with('error', 'Account not found for the specified embassy.');
-        }
-        if ($request->expectsJson()) {
-            return response()->json(['id' => $member->id, 'name' => $member->name]);
-        }
+        $member = Member::create($request->only(['name', 'email', 'phone']));
+       
     
         return redirect()->back()->with('success', 'Member created.');
     }

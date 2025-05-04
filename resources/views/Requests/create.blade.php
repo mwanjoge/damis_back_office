@@ -26,7 +26,8 @@
                     <div class="input-group">
                     <select id="member_id" name="member_id" class="data-choices" required>      <option value="">Select Member</option>
                                @foreach($members as $member) 
-                                 <option value="{{ $member->id }}">{{ $member->name }}</option> 
+
+                               <option value="{{ $member->id }}" data-type="{{ $member->type }}">{{ $member->name }}</option> 
                                 @endforeach 
                         </select>
                         <button aria-atomic="" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addMemberModal">
@@ -120,103 +121,39 @@
 </form>
 
 <!-- Member Modal -->
-<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="memberForm" method="POST" action="{{ route('members.store') }}">
-      @csrf
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addMemberModalLabel">Add Member</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="member_name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="member_name" name="name" required>
-          </div>
-          <div class="mb-3">
-            <label for="member_email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="member_email" name="email">
-          </div>
-          <div class="mb-3">
-            <label for="member_phone" class="form-label">Phone</label>
-            <input type="text" class="form-control" id="member_phone" name="phone">
-          </div>
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary btn-sm">Save Member</button>
-        </div>
-      </div>
-    </form>
-  </div>
+ <div>
+@livewire('add-member-modal')
+
 </div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const addButton = document.getElementById('add-request-item');
-        const requestItemsList = document.getElementById('request-items-list');
-        const templateRow = document.getElementById('request-item-template');
+    window.addEventListener('member-added', () => {
+        // Close the modal
+        const modal = document.getElementById('addMemberModal');
+        const bootstrapModal = bootstrap.Modal.getInstance(modal);        bootstrapModal.hide();
 
-        function initSelect2(container) {
-            container.querySelectorAll('select').forEach(select => {
-                $(select).select2({
-                    theme: 'bootstrap-5',
-                    width: '100%',
-                    placeholder: 'Select an option'
-                });
-            });
-        }
-
-        // Init Select2 on static fields
-        $('#embassySelect').select2({ theme: 'bootstrap-5', width: '100%', placeholder: 'Select Embassy' });
-        $('#countrySelect').select2({ theme: 'bootstrap-5', width: '100%', placeholder: 'Select Country' });
-        $('#member_id').select2({ theme: 'bootstrap-5', width: '100%', placeholder: 'Select Member' });
-
-        // Init Select2 on the first visible row
-        initSelect2(requestItemsList);
-
-        // Add dynamic item row
-        addButton.addEventListener('click', function () {
-            const newRow = templateRow.cloneNode(true);
-            newRow.classList.remove('d-none');
-            newRow.removeAttribute('id');
-
-            newRow.querySelectorAll('input, select').forEach(input => {
-                if (input.type !== 'file') input.value = '';
-            });
-
-            requestItemsList.appendChild(newRow);
-            initSelect2(newRow);
-        });
-
-        // Remove row
-        requestItemsList.addEventListener('click', function (e) {
-            if (e.target.closest('.remove-item')) {
-                const row = e.target.closest('.request-item-row');
-                if (row && requestItemsList.children.length > 1) {
-                    row.remove();
-                }
-            }
+        // Optionally, show a success message
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Member added successfully!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
         });
     });
-   
- document.addEventListener('DOMContentLoaded', function () {
-    const typeSelect = document.getElementById('type');
-    const domesticFields = document.querySelector('.domestic-only');
-
-    function toggleDomesticFields() {
-        if (typeSelect.value === 'Domestic') {
-            domesticFields.classList.remove('d-none');
-        } else {
-            domesticFields.classList.add('d-none');
-        }
-    }
-
-    typeSelect.addEventListener('change', toggleDomesticFields);
-    toggleDomesticFields(); // on page load
-});
-
+</script>
+<script>
+    document.addEventListener('livewire:load', function () {
+        Livewire.on('memberAdded', function (id, name) {
+            let memberSelect = document.getElementById('member_id');
+            // Add the new member as an option if not present
+            let exists = Array.from(memberSelect.options).some(opt => opt.value == id);
+            if (!exists) {
+                let option = new Option(name, id, true, true);
+                memberSelect.add(option);
+            }
+            // Select the new member
+            memberSelect.value = id;
+            // Trigger change event if needed
+            memberSelect.dispatchEvent(new Event('change'));        });    });
 </script>
 @endsection

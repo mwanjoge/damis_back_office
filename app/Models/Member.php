@@ -11,7 +11,6 @@ class Member extends Model
     use HasFactory;
 
     protected $fillable = [
-        'account_id',
         'name',
         'email',
         'phone',
