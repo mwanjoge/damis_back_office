@@ -16,7 +16,7 @@
                         <th>Mission</th>
                         <th>Type</th>
                         <th>Status</th>
-                        <th  class="text-end" style="width: 180px;">Actions</th>
+                        <th class="text-end" style="width: 180px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,7 +94,13 @@
                         </div>
 
                         <p class="mt-4">Accredited Countries</p>
-                        <select name="country_id[]" class="js-example-basic-multiple" multiple></select>
+                        <select name="country_id[]" class="js-example-basic-multiple form-select" multiple required>
+                            @foreach ($countries as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+
+
 
                         <div class="hstack gap-2 justify-content-center mt-4">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -113,20 +119,23 @@
             document.getElementById('missionId').value = data.id || '';
             document.getElementById('missionName').value = data.name || '';
             document.getElementById('missionType').value = data.type || 'Embassy';
-            document.getElementById('missionStatus').value = data.is_active || '1';
+            document.getElementById('missionStatus').value = data.is_active ? '1' : '0';
 
             const formActionBase = "{{ url('embassy') }}";
             document.getElementById('missionForm').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
 
             const countrySelect = document.querySelector('select[name="country_id[]"]');
-            countrySelect.innerHTML = '';
 
+            // Reset all to unselected
+            Array.from(countrySelect.options).forEach(option => {
+                option.selected = false;
+            });
+
+            // Mark existing country IDs as selected
             if (data.countries) {
                 data.countries.forEach(id => {
-                    let option = document.createElement('option');
-                    option.value = id;
-                    option.selected = true;
-                    countrySelect.appendChild(option);
+                    const option = Array.from(countrySelect.options).find(opt => opt.value == id);
+                    if (option) option.selected = true;
                 });
             }
 
@@ -136,6 +145,7 @@
 
             new bootstrap.Modal(document.querySelector('.mission-modal')).show();
         }
+
 
         function confirmDelete(id, type) {
             if (confirm(`Are you sure you want to delete this ${type}?`)) {

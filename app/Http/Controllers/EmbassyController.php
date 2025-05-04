@@ -52,7 +52,7 @@ class EmbassyController extends Controller
             // });
         } catch (\Exception $e) {
             DB::rollBack();
-            // Log::error('Failed to store embassy: ' . $e->getMessage());
+            //  Log::error('Failed to store embassy: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to store embassy'], 500);
         }
         DB::commit();
