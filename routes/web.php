@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CountryController;
+use App\Livewire\RequestItems;
 use App\Livewire\SettingsPage;
+use App\Models\RequestItem;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmbassyController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/authentication', [HomeController::class, 'authenticationIndex'])->name('authentication');
 
     Route::get('/embassies/{id}', [HomeController::class, 'showEmbassy'])->name('embassies.show');
-
+Route::get('/requestItem', RequestItems::class);
     // routes/web.php
     Route::get('/roles', [HomeController::class, 'roles'])->name('roles.index');
     Route::get('/roles', [HomeController::class, 'rolesIndex'])->name('roles.index');

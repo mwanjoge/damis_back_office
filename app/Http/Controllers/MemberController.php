@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
+use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
@@ -27,10 +28,27 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMemberRequest $request)
+    public function store(Request $request)
     {
-        //
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|string|max:20',
+        ]);
+    
+        $member = Member::create($request->only(['name', 'email', 'phone','account_id']));
+        $accountId = \App\Models\Account::query()->where('embassy_id', $member['embassy_id'])->first()->id;
+        if (!$accountId) {
+            return redirect()->back()->with('error', 'Account not found for the specified embassy.');
+        }
+        if ($request->expectsJson()) {
+            return response()->json(['id' => $member->id, 'name' => $member->name]);
+        }
+    
+        return redirect()->back()->with('success', 'Member created.');
     }
+    
 
     /**
      * Display the specified resource.
