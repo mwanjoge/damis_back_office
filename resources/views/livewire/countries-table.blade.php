@@ -4,7 +4,6 @@
             New Country
         </button>
     </div>
-
     <div class="table-responsive table-card">
         <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
             <thead class="text-muted table-light pt-3">
@@ -32,6 +31,7 @@
                                 wire:click="openForm({{ $country->id }})">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
+
                         
                             <!-- Delete Button -->
                             <form method="POST" action="{{ route('country.destroy', $country->id) }}" style="display:inline-block;">
