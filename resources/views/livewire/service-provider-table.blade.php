@@ -61,7 +61,7 @@
                                 </div>
 
                                 <!-- Custom Field Component -->
-                                <div >
+                                <div  id="service-field-container">
                                     @livewire('service-field-container')
                                 </div>
 

@@ -90,7 +90,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Select Mission</label>
-                            <select class="form-select" wire:model="embassy_id" name="embassy_id">
+                            <select class="form-control" wire:model="embassy_id" data-choices name="embassy_id">
                                 <option value="">Select Mission</option>
                                 @foreach ($embassies as $embassy)
                                     <option value="{{ $embassy['id'] }}">{{ $embassy['name'] }}</option>

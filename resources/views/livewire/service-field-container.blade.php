@@ -1,4 +1,4 @@
-@include("modal.alert")
+
 <div wire.ignore.self>
     <div class="row mt-3">
         <div class="col">Add provider's services</div>
@@ -13,8 +13,8 @@
         <div class="col-12">
             @foreach($inputs as $key => $value)
                 <div class="service-field mb-3 d-flex">
-                    <input type="text" wire:model="inputs.{{ $key }}" class="form-control me-2" placeholder="Enter service" name="service_name[]" >
-                    <button wire:click="inputs." class="btn btn-danger">
+                    <input type="text" wire:model="input.({{ $key }})" class="form-control me-2" placeholder="Enter service" name="service_name[]" >
+                    <a wire:click="inputs." wire:click.prevent="removeInput({{ $key }})" class="btn btn-danger">
                         <i class="bx bx-trash"></i>
                     </a>
                 </div>
