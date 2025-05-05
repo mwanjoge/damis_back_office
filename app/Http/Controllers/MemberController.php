@@ -28,19 +28,14 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMemberRequest $request)
     {
-        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email',
-            'phone' => 'nullable|string|max:20',
-        ]);
-    
-        $member = Member::create($request->only(['name', 'email', 'phone']));
-       
-    
-        return redirect()->back()->with('success', 'Member created.');
+        try {
+            $member = Member::create($request->only(['name', 'email', 'phone']));
+            return redirect()->back()->with('success', 'Member created.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create member: ' . $e->getMessage());
+        }
     }
     
 

@@ -15,7 +15,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="member_email" class="form-label">Email</label>
-                            <input type="email" id="member_email" class="form-control" wire:model="email">
+                            <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="member_phone" class="form-label">Phone</label>
@@ -31,6 +34,13 @@
         </div>
     </div>
 </div>
+
+
+@if(session('error'))
+    <script>
+        toastr.error("{{ session('error') }}");
+    </script>
+@endif
 
 <script>
     document.addEventListener('livewire:load', function () {

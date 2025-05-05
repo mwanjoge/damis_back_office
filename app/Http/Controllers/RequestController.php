@@ -63,7 +63,7 @@ class RequestController extends Controller
             'tracking_number' => \Illuminate\Support\Str::ulid(),
             'total_cost' => collect($data['request_items'] ?? [])->sum('price'),
         ]);
-
+        
         foreach ($data['request_items'] ?? [] as $item) {
             \App\Models\RequestItem::create([
                 'account_id' => $accountId,

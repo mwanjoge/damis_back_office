@@ -15,8 +15,8 @@ class AddMemberModal extends Component
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255 |unique:members,email',
+            'phone' => 'nullable|string|max:255|unique:members,phone',
         ]);
 
         $member = Member::create([
@@ -27,7 +27,7 @@ class AddMemberModal extends Component
 
         $this->reset(); // Clear the form fields
         $this->dispatch('member-added');
-        $this->dispatch('refreshMembers'); // Notify parent component to refresh members
+        $this->dispatch('refreshMembers'); 
         $this->dispatch('memberAdded', $member->id, $member->name);
     }
 

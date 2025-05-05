@@ -23,6 +23,8 @@ class StoreServiceProviderRequest extends FormRequest
     {
         return [
             //
+            "name"=> "required|string|max:255,unique:service_providers,name",
+
         ];
     }
 }

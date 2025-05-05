@@ -7,6 +7,7 @@ use App\Http\Requests\StoreServiceProviderRequest;
 use App\Http\Requests\UpdateServiceProviderRequest;
 use App\Models\ServiceProvider;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class ServiceProviderController extends Controller
 {
@@ -31,30 +32,36 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
-        //dd($request->all());
-        DB::transaction(function () use ($request) {
-            $serviceProvider = ServiceProvider::query()
-            ->create([
-                'name' => $request->name,
-            ]);
+        try {
+            DB::transaction(function () use ($request) {
+                $serviceProvider = ServiceProvider::query()
+                ->create([
+                    'name' => $request->name,
+                ]);
 
-            if($request->service_name[0] != null){
-                foreach ($request->service_name as $service) {
-                    $serviceProvider->services()
-                        ->create(
-                            [
-                                'name' => $service,
-                                'service_provider_id' => $serviceProvider->id,
-                            ]);
+                if($request->service_name[0] != null){
+                    foreach ($request->service_name as $service) {
+                        $serviceProvider->services()
+                            ->create(
+                                [
+                                    'name' => $service,
+                                    'service_provider_id' => $serviceProvider->id,
+                                ]);
+                    }
                 }
-            }
 
-            // Dispatch the event to push the service provider data to the public server
-            event(new EmbassyCreated($serviceProvider));
-            session()->flash('success', 'Service Provider saved successfully!');
-            
-        });
-        return redirect()->route('settings');
+                // Dispatch the event to push the service provider data to the public server
+                event(new EmbassyCreated($serviceProvider));
+                session()->flash('success', 'Service Provider saved successfully!');
+                
+            });
+            return redirect()->route('settings');
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) { // Integrity constraint violation
+                return redirect()->back()->with('error', 'Service name already exists!');
+            }
+            throw $e;
+        }
     }
 
     /**

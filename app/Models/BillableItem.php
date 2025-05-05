@@ -24,4 +24,17 @@ class BillableItem extends Model
     {
         return $this->morphTo();
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+    public function embassy()
+    {
+        return $this->belongsTo(Empassy::class);
+    }
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

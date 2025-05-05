@@ -31,10 +31,11 @@
 
     <!-- Profile Details -->
     <div class="row">
-        <div class="col-xl-5">
+        <!-- Left Column: Embassy Details & Accredited Countries -->
+        <div class="col-xl-5 d-flex flex-column gap-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">Embassy Details</h5>
+                <h5 class="card-title mb-3">Embassy Details</h5>
                     <table class="table table-borderless mb-0">
                         <tbody>
                             <tr>
@@ -65,13 +66,8 @@
                     </table>
                 </div>
             </div>
-        </div>
-
-        <!-- Accredited Countries -->
-        <div class="col-xl-7">
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">Accredited Countries</h5>
+                <div class="card-body">  <h5 class="card-title mb-3">Accredited Countries</h5>
                     @if ($embassy->countries->isEmpty())
                         <p class="text-muted">No accredited countries listed.</p>
                     @else
@@ -80,25 +76,22 @@
                                 <li class="list-group-item">
                                     @include('embassies._generate_bills_modal')
                                     {{ $country->name }}
-                                    {{-- <form method="POST" action="{{ route('embassy.destroy', [$embassy->id, $country->id]) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bx bxs-trash"></i></button>
-                                    </form> --}}
                                     <span class="float-end">
                                         <a class="btn btn-danger btn-sm"><i class="bx bxs-trash" wire:click="removeCountry({{ $country->id }})"></i></a>
                                         <a class="btn btn-success btn-sm" href="javascript:void(0)" title="Generate Bills" data-bs-toggle="modal" data-bs-target="#generateBillsModal{{ $country->id }}">
                                             <i class="bx bx-money"></i>
                                         </a>
                                     </span>
-
                                 </li>
                             @endforeach
                         </ul>
-                    @endif
+                    @endif 
                 </div>
             </div>
-            <div class="card">
+        </div>
+        <!-- Right Column: Services Fees -->
+        <div class="col-xl-7">
+            <div class="card h-95">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Services Fees</h5>
                     @if ($embassy->billableItems == null)
@@ -111,17 +104,21 @@
                                     <th>Service Provider</th>
                                     <th>Price</th>
                                     <th>Currency</th>
+                                    <th>Country</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                             @foreach ($embassy->billableItems as $bill)
                                 <tr>
                                     <td>{{ $bill->billable->name }}</td>
                                     <td>{{ $bill->billable->serviceProvider->name }}</td>
                                     <td class="text-end">{{ $bill->price }}</td>
                                     <td>{{ $bill->currency }}</td>
+                                    <td>{{ $bill->country->name }}</td>
                                 </tr>
                             @endforeach
+                            </tbody>
                         </table>
-                       
                     @endif
                 </div>
             </div>

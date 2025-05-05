@@ -3,6 +3,15 @@
 @section('content')
 <form action="{{ route('requests.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <h2 class="mb-0">Create Request</h2>
        </div>
@@ -14,22 +23,28 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Embassy</label>
-                    <select id="embassySelect" name="embassy_id" class="data-choices" required>
+                    <select id="embassySelect" name="embassy_id" class="data-choices form-control @error('embassy_id') is-invalid @enderror" required>
                        <option value="">Select Embassy</option>
                            @foreach($embassies as $embassy) 
-                             <option value="{{ $embassy->id }}">{{ $embassy->name }}</option> 
+                             <option value="{{ $embassy->id }}" {{ old('embassy_id') == $embassy->id ? 'selected' : '' }}>{{ $embassy->name }}</option> 
                           @endforeach 
                     </select>
+                    @error('embassy_id')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Member</label>
                     <div class="input-group">
-                    <select id="member_id" name="member_id" class="data-choices" required>      <option value="">Select Member</option>
+                    <select id="member_id" name="member_id" class="form-control data-choices @error('member_id') is-invalid @enderror" required>     
+                         <option value="">Select Member</option>
                                @foreach($members as $member) 
-
-                               <option value="{{ $member->id }}" data-type="{{ $member->type }}">{{ $member->name }}</option> 
+                               <option value="{{ $member->id }}" data-type="{{ $member->type }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>{{ $member->name }}</option> 
                                 @endforeach 
                         </select>
+                        @error('member_id')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
                         <button aria-atomic="" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addMemberModal">
                             <i class="bx bx-plus"></i>
                         </button>
@@ -37,19 +52,25 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Country</label>
-                    <select id="countrySelect" name="country_id" class="data-choices" required>
+                    <select id="countrySelect" name="country_id" class="form-control data-choices @error('country_id') is-invalid @enderror" required>
                         <option value="">Select Country</option>
                             @foreach($countries as $country) 
-                                 <option value="{{ $country->id }}">{{ $country->name }}</option> 
+                                 <option value="{{ $country->id }}" {{ old('country_id') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option> 
                             @endforeach 
                     </select>
+                    @error('country_id')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Type</label>
-                    <select name="type" class="form-select" required>
-                        <option value="Diaspora">Diaspora</option>
-                        <option value="Domestic">Domestic</option>
+                    <select name="type" class="form-select @error('type') is-invalid @enderror" required>
+                        <option value="Diaspora" {{ old('type') == 'Diaspora' ? 'selected' : '' }}>Diaspora</option>
+                        <option value="Domestic" {{ old('type') == 'Domestic' ? 'selected' : '' }}>Domestic</option>
                     </select>
+                    @error('type')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>

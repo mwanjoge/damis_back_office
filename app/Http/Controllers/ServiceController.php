@@ -32,7 +32,7 @@ class ServiceController extends Controller
     {
         try {
             Service::query()->create($request->all());
-            session()->flash('success', 'Country created successfully!');
+            session()->flash('success', 'Service created successfully!');
         } catch (Exception $e) {
             session()->flash('error', 'Something went wrong!');
         }
