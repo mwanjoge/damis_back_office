@@ -73,7 +73,6 @@
                 // Automatically open corresponding modal if there are errors
                 @if ($errors->any())
                     $(document).ready(function() {
-                        // First, force-close any open modals and remove all backdrops
                         $('.modal.show').each(function() {
                             const instance = bootstrap.Modal.getInstance(this);
                             if (instance) {
