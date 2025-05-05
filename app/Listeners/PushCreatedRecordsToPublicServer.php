@@ -41,7 +41,18 @@ class PushCreatedRecordsToPublicServer
             Http::public()->post('api/country', [
                 'name' => $record->name,
                 'code' => $record->code,
+                'embassy_id' => $record->embassy_id,
                 'phone_code' => $record->phone_code,
+                'id' => $record->id,
+            ]);
+        }
+
+        if($record instanceof \App\Models\Service){
+
+            // Push the country data to the public server
+            Http::public()->post('api/service', [
+                'name' => $record->name,
+                'service_provider_id' => $record->service_provider_id,
                 'id' => $record->id,
             ]);
         }

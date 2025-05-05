@@ -1,7 +1,7 @@
-@include("modal.alert")
+@include('modal.alert')
 <div id="services" role="tabpanel">
     <div class="text-end pb-4">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".service-modal" wire:click="openForm">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".services-modal" wire:click="openForm">
             New Service
         </button>
     </div>
@@ -13,30 +13,33 @@
                     <th>#</th>
                     <th>Service</th>
                     <th>Service Provider</th>
-                    <th  class="text-end" style="width: 180px;">Actions</th>
+                    <th class="text-end" style="width: 180px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($services as $service)
                     <tr>
-                        <td>{{ $loop ->iteration }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $service->name }}</td>
-                        <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>                    
+                        <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>
                         <td class="text-end">
-                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".service-modal"
-                            onclick="openServiceModal({{ $service->id }}, '{{ $service->name }}', {{ $service->service_provider_id ?? 'null' }})">
-                            <i class="bx bx-edit-alt"></i>
-                        </button>
-                        
-                        <!-- Delete with confirmation -->
-                        <form method="POST" action="{{ route('service.destroy', $service->id) }}" onsubmit="return confirm('Are you sure you want to delete this service?')" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="bx bxs-trash"></i>
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                data-bs-target=".services-modal"
+                                onclick="openServiceModal({{ $service->id }}, '{{ $service->name }}', {{ $service->service_provider_id ?? 'null' }})">
+                                <i class="bx bx-edit-alt"></i>
                             </button>
-                        </form>
-                        
+
+                            <!-- Delete with confirmation -->
+                            <form method="POST" action="{{ route('service.destroy', $service->id) }}"
+                                onsubmit="return confirm('Are you sure you want to delete this service?')"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bx bxs-trash"></i>
+                                </button>
+                            </form>
+
                         </td>
                     </tr>
                 @endforeach
@@ -45,20 +48,31 @@
     </div>
 
     <!-- Shared Modal -->
-    <div wire:ignore.self class="modal fade service-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div wire:ignore.self class="modal fade services-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body text-start p-5">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <h4 class="mb-3 text-center">{{ $editingId ? 'Edit' : 'New' }} Service</h4>
                     <form action="{{ route('service.store') }}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Service Name</label>
-                            <input type="text" class="form-control" wire:model="name" name="name" placeholder="Service Name" required>
+                            <input type="text" class="form-control" wire:model="name" name="name"
+                                placeholder="Service Name" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Service Provider</label>
-                            <select wire:model="selectedProvider" name="service_provider_id" class="form-select" required>
+                            <select wire:model="selectedProvider" name="service_provider_id" class="form-select"
+                                required>
                                 <option value="">-- Select --</option>
                                 @foreach ($serviceProviders as $provider)
                                     <option value="{{ $provider->id }}">{{ $provider->name }}</option>
@@ -77,16 +91,16 @@
 </div>
 <script>
     window.addEventListener('close-modal', () => {
-        let modal = bootstrap.Modal.getInstance(document.querySelector('.service-modal'));
-        if (modal) modal.hide();
+        let modal = bootstrap.Modal.getInstance(document.querySelector('.services-modal'));
+        if (modal) modal.dispose();
     });
 
     function openServiceModal(id = '', name = '', providerId = '') {
         // Set modal title
-        document.querySelector('.service-modal h4').innerText = id ? 'Edit Service' : 'New Service';
+        document.querySelector('.services-modal h4').innerText = id ? 'Edit Service' : 'New Service';
 
         // Update form action and method
-        const form = document.querySelector('.service-modal form');
+        const form = document.querySelector('.services-modal form');
         const methodField = form.querySelector('input[name="_method"]');
 
         if (id) {
@@ -110,8 +124,7 @@
         form.querySelector('select[name="service_provider_id"]').value = providerId || '';
 
         // Show the modal
-        const modal = new bootstrap.Modal(document.querySelector('.service-modal'));
+        const modal = new bootstrap.Modal(document.querySelector('.services-modal'));
         modal.show();
     }
-
 </script>

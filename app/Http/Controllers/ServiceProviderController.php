@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateServiceProviderRequest;
 use App\Models\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Exception;
 
 class ServiceProviderController extends Controller
 {
@@ -32,7 +33,7 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
-        dd($request);
+        // dd($request);
         try {
             DB::transaction(function () use ($request) {
                 $serviceProvider = ServiceProvider::query()
@@ -57,11 +58,9 @@ class ServiceProviderController extends Controller
                 
             });
             return redirect()->route('settings');
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) { // Integrity constraint violation
-                return redirect()->back()->with('error', 'Service name already exists!');
-            }
-            throw $e;
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Request Failed: ' . $e->getMessage()]);
+            
         }
     }
 
