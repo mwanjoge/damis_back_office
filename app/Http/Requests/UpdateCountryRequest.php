@@ -22,7 +22,13 @@ class UpdateCountryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'embassy_id'     => 'nullable|exists:embassies,id',
+            'name'           => 'required|string|max:255|unique:countries,name,' . $this->route('country')->id,
+            'code'           => 'nullable|string|max:255|unique:countries,code,' . $this->route('country')->id,
+            'phone_code'     => 'nullable|string|max:255',
+            'currency'       => 'nullable|string|max:255',
+            'currency_code'  => 'nullable|string|max:255',
+            'synced'         => 'boolean',
         ];
     }
 }

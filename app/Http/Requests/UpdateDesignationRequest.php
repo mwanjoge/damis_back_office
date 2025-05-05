@@ -11,7 +11,7 @@ class UpdateDesignationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateDesignationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'account_id' => 'required|exists:accounts,id',
+            'name' => 'nullable|string|max:255',
         ];
     }
 }

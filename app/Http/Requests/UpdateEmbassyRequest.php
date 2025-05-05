@@ -11,7 +11,7 @@ class UpdateEmbassyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateEmbassyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'      => 'required|string|max:255|unique:embassies,name,' . $this->route('embassy')->id,
+            'type'      => 'required|in:Embassy,Permanent Mission,High Commission',
+            'is_active' => 'boolean',
         ];
     }
 }

@@ -61,35 +61,43 @@
             @if($editingId)
                 @method('PUT')
             @endif
+            @if($errors->has('error'))
+                <div class="alert alert-danger">{{ $errors->first('error') }}</div>
+            @endif
             <div class="modal-body justify-content-center p-5">
                 <div class="mt-4 text-start">
                     <h4 class="mb-3 text-center">{{ $editingId ? 'Edit Country' : 'Add New Country' }}</h4>
-
-                    <div class="mb-3">
-                        <label class="form-label">Country Name</label>
-                        <input type="text" class="form-control" wire:model="name" name="name" required>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Country Name</label>
+                            <input type="text" class="form-control" wire:model="name" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Country Code</label>
+                            <input type="text" class="form-control" wire:model="code" name="code">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone Code</label>
+                            <input type="text" class="form-control" wire:model="phone_code" name="phone_code">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Currency</label>
+                            <input type="text" class="form-control" wire:model="currency" name="currency">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Currency Code</label>
+                            <input type="text" class="form-control" wire:model="currency_code" name="currency_code">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Select Mission</label>
+                            <select class="form-select" wire:model="embassy_id" name="embassy_id">
+                                <option value="">Select Mission</option>
+                                @foreach ($embassies as $embassy)
+                                    <option value="{{ $embassy['id'] }}">{{ $embassy['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Country Code</label>
-                        <input type="text" class="form-control" wire:model="code" name="code">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Phone Code</label>
-                        <input type="text" class="form-control" wire:model="phone_code" name="phone_code">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Select Mission</label>
-                        <select class="form-select" wire:model="embassy_id" name="embassy_id">
-                            <option value="">Select Mission</option>
-                            @foreach ($embassies as $embassy)
-                                <option value="{{ $embassy['id'] }}">{{ $embassy['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
                     <div class="hstack gap-2 justify-content-center mt-4">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">

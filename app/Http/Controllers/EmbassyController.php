@@ -37,27 +37,50 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
-        //return "ok";
         DB::beginTransaction();
+    
         try {
-            // DB::transaction(function () use ($request) {
-                $embassy = $this->embassyService->create($request);
-                $account = $this->embassyService->createAccount($request);
-                $embassy->account()->save($account);
-
-                $this->embassyService->attachCountries($embassy, $request);
-
-                // Dispatch the event to push the embassy data to the public server
-                event(new EmbassyCreated($embassy));
-            // });
+            $embassy = $this->embassyService->create($request);
+            $account = $this->embassyService->createAccount($request);
+            $embassy->account()->save($account);
+    
+            $this->embassyService->attachCountries($embassy, $request);
+    
+            event(new EmbassyCreated($embassy));
+    
+            DB::commit();
+            session()->flash('success', 'Emmbassy created successfully!');
+      
+       return redirect()->route('settings');
         } catch (\Exception $e) {
             DB::rollBack();
-            //  Log::error('Failed to store embassy: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to store embassy'], 500);
+    
+            // Log error for debugging
+            Log::error('Failed to store embassy: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+    
+            // Return failure response
+            return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create embassy: ' . $e->getMessage()]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Something went wrong!');
+            // Optionally, you can log the error message for debugging
+            return redirect()->route('settings');
+       
+            // // Log error for debugging
+            // Log::error('Failed to store embassy: ' . $e->getMessage(), [
+            //     'trace' => $e->getTraceAsString()
+            // ]);
+    
+            // // Return failure response
+            // return response()->json([
+            //     'error' => 'Failed to store embassy',
+            //     'message' => $e->getMessage()
+            // ], 500);
         }
-        DB::commit();
-        return redirect()->route('settings');
     }
+    
 
     /**
      * Display the specified resource.

@@ -31,12 +31,14 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request)
     {
-        $country = Country::query()->create($request->all());
-
-        event(new EmbassyCreated($country));
-
-        session()->flash('success', 'Country created successfully!');
-        return redirect()->route('settings');
+        try {
+            $country = Country::query()->create($request->all());
+            event(new EmbassyCreated($country));
+            session()->flash('success', 'Country created successfully!');
+            return redirect()->route('settings');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create country: ' . $e->getMessage()]);
+        }
     }
 
     /**

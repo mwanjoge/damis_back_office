@@ -11,7 +11,7 @@ class UpdateBillableItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateBillableItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'account_id' => 'required|exists:accounts,id',
+            'embassy_id' => 'required|exists:embassies,id',
+            'country_id' => 'required|exists:countries,id',
+            'price' => 'required|numeric|min:0',
+            'currency' => 'required|string|max:10',
         ];
     }
 }

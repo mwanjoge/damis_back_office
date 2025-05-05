@@ -22,7 +22,13 @@ class StoreCountryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'embassy_id'     => 'nullable|exists:embassies,id',
+            'name'           => 'required|string|max:255|unique:countries,name',
+            'code'           => 'nullable|string|max:255|unique:countries,code',
+            'phone_code'     => 'nullable|string|max:255',
+            'currency'       => 'nullable|string|max:255',
+            'currency_code'  => 'nullable|string|max:255',
+            'synced'         => 'boolean',
         ];
     }
 }

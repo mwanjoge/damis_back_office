@@ -73,9 +73,24 @@
             }
         });
     </script>
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: @json(session('success')),
+                confirmButtonColor: '#3085d6',
+            });
+        </script>
+    @endif
     @if(session('error'))
         <script>
-            toastr.error("{{ session('error') }}");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: @json($errors->first('error')),
+                confirmButtonColor: '#d33',
+            });
         </script>
     @endif
 @endsection

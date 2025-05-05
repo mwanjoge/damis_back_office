@@ -22,7 +22,8 @@ class UpdateServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'service_provider_id' => 'required|exists:service_providers,id',
+            'name' => 'required|string|max:255|unique:services,name,' . $this->route('service')->id,
         ];
     }
 }

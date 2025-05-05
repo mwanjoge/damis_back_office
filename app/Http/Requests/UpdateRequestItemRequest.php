@@ -22,7 +22,15 @@ class UpdateRequestItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'account_id'     => 'required|exists:accounts,id',
+            'request_id'     => 'required|exists:requests,id',
+            'member_id'      => 'required|exists:members,id',
+            'invoice_date'   => 'required|date',
+            'due_date'       => 'required|date|after_or_equal:invoice_date',
+            'customer_name'  => 'nullable|string|max:255',
+            'ref_no'         => 'nullable|string|max:255',
+            'status'         => 'required|in:pending,paid,cancelled,overdue',
+            'sent_status'    => 'required|in:sent,failed',
         ];
     }
 }
