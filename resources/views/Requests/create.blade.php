@@ -1,9 +1,10 @@
 @extends('layouts.master')
 @section('title', 'Create Request')
 @section('content')
+
 <form action="{{ route('requests.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @if ($errors->any())
+    <!-- @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">
                 @foreach ($errors->all() as $error)
@@ -11,7 +12,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif -->
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <h2 class="mb-0">Create Request</h2>
        </div>
@@ -23,7 +24,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Embassy</label>
-                    <select id="embassySelect" name="embassy_id" class="data-choices form-control @error('embassy_id') is-invalid @enderror" required>
+                    <select id="embassySelect" name="embassy_id" class="data-choices form-control  data-choices @error('embassy_id') is-invalid @enderror" required>
                        <option value="">Select Embassy</option>
                            @foreach($embassies as $embassy) 
                              <option value="{{ $embassy->id }}" {{ old('embassy_id') == $embassy->id ? 'selected' : '' }}>{{ $embassy->name }}</option> 
@@ -52,7 +53,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Country</label>
-                    <select id="countrySelect" name="country_id" class="form-control data-choices @error('country_id') is-invalid @enderror" required>
+                    <select id="countrySelect" name="country_id" data-choices class="form-control  @error('country_id') is-invalid @enderror" required>
                         <option value="">Select Country</option>
                             @foreach($countries as $country) 
                                  <option value="{{ $country->id }}" {{ old('country_id') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option> 
@@ -132,7 +133,7 @@
         </div>
     </div> -->
 
-    <div>
+    <div name="request_items">
         @livewire('request-items')
     </div>
 
@@ -162,7 +163,7 @@
         });
     });
 </script>
-<script>
+<!-- <script>
     document.addEventListener('livewire:load', function () {
         Livewire.on('memberAdded', function (id, name) {
             let memberSelect = document.getElementById('member_id');
@@ -176,5 +177,5 @@
             memberSelect.value = id;
             // Trigger change event if needed
             memberSelect.dispatchEvent(new Event('change'));        });    });
-</script>
+</script> -->
 @endsection

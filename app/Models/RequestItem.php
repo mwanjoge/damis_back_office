@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RequestItem extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'request_id',
         'account_id',

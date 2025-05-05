@@ -45,39 +45,44 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-      
-        $data = $request->validated();
+ 
 
-        // Set a default account_id (e.g., from the authenticated user or the first account)
-        $accountId = \App\Models\Account::query()->where('embassy_id', $data['embassy_id'])->first()->id;
-        if (!$accountId) {
-            return redirect()->back()->with('error', 'Account not found for the specified embassy.');
-        }
+        try {
+            $data = $request->validated();
 
-        $mainRequest = \App\Models\Request::create([
-            'account_id' => $accountId, // required by DB, set a default
-            'embassy_id' => $data['embassy_id'],
-            'member_id' => $data['member_id'],
-            'country_id' => $data['country_id'],
-            'type' => $data['type'],
-            'tracking_number' => \Illuminate\Support\Str::ulid(),
-            'total_cost' => collect($data['request_items'] ?? [])->sum('price'),
-        ]);
-        
-        foreach ($data['request_items'] ?? [] as $item) {
-            \App\Models\RequestItem::create([
+            // Set a default account_id (e.g., from the authenticated user or the first account)
+            $accountId = \App\Models\Account::query()->where('embassy_id', $data['embassy_id'])->first()->id ?? null;
+            if (!$accountId) {
+                return redirect()->back()->withInput()->withErrors(['embassy_id' => 'Account not found for the specified embassy.']);
+            }
+
+            $mainRequest = \App\Models\Request::create([
                 'account_id' => $accountId,
-                'request_id' => $mainRequest->id,
-                'service_id' => $item['service_id'],
-                'service_provider_id' => $item['service_provider_id'],
-                'certificate_holder_name' => $item['certificate_holder_name'],
-                'certificate_index_number' => $item['certificate_index_number'] ?? null,
-                'price' => $item['price'] ?? null,
-                'attachment' => $item['attachment'] ?? null,
+                'embassy_id' => $data['embassy_id'],
+                'member_id' => $data['member_id'],
+                'country_id' => $data['country_id'],
+                'type' => $data['type'],
+                'tracking_number' => \Illuminate\Support\Str::ulid(),
+                'total_cost' => collect($data['request_items'] ?? [])->sum('price'),
             ]);
-        }
+            
+            foreach ($data['request_items'] ?? [] as $item) {
+                \App\Models\RequestItem::create([
+                    'account_id' => $accountId,
+                    'request_id' => $mainRequest->id,
+                    'service_id' => $item['service_id'],
+                    'service_provider_id' => $item['service_provider_id'],
+                    'certificate_holder_name' => $item['certificate_holder_name'],
+                    'certificate_index_number' => $item['certificate_index_number'] ?? null,
+                    'price' => $item['price'] ?? null,
+                    'attachment' => $item['attachment'] ?? null,
+                ]);
+            }
 
-        return redirect()->route('requests.index')->with('success', 'Request created successfully!');
+            return redirect()->route('requests.index')->with('success', 'Request created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
+        }
     }
 
     /**
