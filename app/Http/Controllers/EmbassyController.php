@@ -46,10 +46,10 @@ class EmbassyController extends Controller
             $embassy->account()->save($account);
     
             $this->embassyService->attachCountries($embassy, $request);
-    
-            event(new EmbassyCreated($embassy));
-    
+
             DB::commit();
+                
+            event(new EmbassyCreated($embassy));
             session()->flash('success', 'Emmbassy created successfully!');
       
        return redirect()->route('settings');

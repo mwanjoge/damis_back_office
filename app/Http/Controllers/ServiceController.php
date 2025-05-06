@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EmbassyCreated;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Service;
@@ -31,12 +32,13 @@ class ServiceController extends Controller
     public function store(StoreServiceRequest $request)
     {
         try {
-            Service::query()->create($request->all());
+            $service = Service::query()->create($request->all());
+            event(new EmbassyCreated($service));
             session()->flash('success', 'Service created successfully!');
         } catch (Exception $e) {
             session()->flash('error', 'Something went wrong!');
         }
-        return redirect()->route('settings');
+        return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
     }
 
     /**
@@ -60,11 +62,10 @@ class ServiceController extends Controller
      */
     public function update(UpdateServiceRequest $request, Service $service)
     {
-        if($service){
+        if ($service) {
             $service->update($request->all());
             session()->flash('success', 'Service updated successfully!');
-        }
-        else{
+        } else {
             session()->flash('error', 'Service not found!');
         }
         return redirect()->route('settings');

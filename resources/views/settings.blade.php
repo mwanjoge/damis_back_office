@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('content')
-
     <div class="row">
         <div class="col-xxl-9">
             <h4 class="p-1 font-italic">Settings</h4>
@@ -60,37 +59,46 @@
 @section('script')
     <script>
         $(function() {
-            // for bootstrap 3 use 'shown.bs.tab', for bootstrap 2 use 'shown' in the next line
+            // Save the last opened tab on click
             $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                // save the latest tab; use cookies if you like 'em better:
                 localStorage.setItem('lastAuthTab', $(this).attr('href'));
             });
 
-            // go to the latest tab, if it exists:
+            // Get the last active tab
             var lastTab = localStorage.getItem('lastAuthTab');
             if (lastTab) {
-                $('[href="' + lastTab + '"]').tab('show');
+                // Activate the tab
+                $('a[data-bs-toggle="tab"][href="' + lastTab + '"]').tab('show');
+
+                // Automatically open corresponding modal if there are errors
+                @if ($errors->any())
+                    $(document).ready(function() {
+                        $('.modal.show').each(function() {
+                            const instance = bootstrap.Modal.getInstance(this);
+                            if (instance) {
+                                instance.hide();
+                                instance.dispose();
+                            }
+                        });
+                        $('.modal-backdrop').remove();
+                        // Convert tab ID to modal class name
+                        let modalClass = lastTab.replace('#tab-', '') + '-modal';
+                        let modalSelector = '.' + modalClass;
+
+                        const modalEl = document.querySelector(modalSelector);
+                        console.log('Trying to open modal:', modalSelector);
+                        if (modalEl) {
+                            const modal = new bootstrap.Modal(modalEl, {
+                                // backdrop: 'static',
+                                // keyboard: false
+                            });
+                            modal.show();
+                        } else {
+                            console.warn('Modal not found for selector:', modalSelector);
+                        }
+                    });
+                @endif
             }
         });
     </script>
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: @json(session('success')),
-                confirmButtonColor: '#3085d6',
-            });
-        </script>
-    @endif
-    @if(session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: @json($errors->first('error')),
-                confirmButtonColor: '#d33',
-            });
-        </script>
-    @endif
 @endsection
