@@ -22,10 +22,9 @@ class StoreEmbassyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'      => 'required|string|max:255|unique:embassies,name',
-            'type'      => 'required|in:Embassy,Permanent Mission,High Commission',
+            'name' => 'required|unique:embassies',
+            'type' => 'required|in:Embassy,Permanent Mission,High Commission',
             'is_active' => 'boolean',
-            'synced'    => 'boolean',
         ];
     }
 }

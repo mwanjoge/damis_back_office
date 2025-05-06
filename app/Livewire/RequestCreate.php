@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Livewire\EmbassiesTable;
 use Livewire\Component;
 use App\Models\Service;
 use App\Models\ServiceProvider;
@@ -16,34 +17,21 @@ class RequestCreate extends Component
     public $member_id;
     public $country_id;
     public $type = 'Diaspora';
-    public $status = 'Pending';
-    public $is_approved = false;
-    public $is_paid = false;
     public $total_cost = 0;
-    public $sent_status = 'sent';
+    public $selectedEmmmbassy;
 
-    public $request_items = [
-        [
-            'service_id' => '',
-            'service_provider_id' => '',
-            'amount' => '',
-            'certificate_holder_name' => '',
-            'certificate_index_number' => '',
-            'attachment' => '',
-        ]
-    ];
-
-    public function addRequestItem()
+    public function updatedCountryId($value)
     {
-        $this->request_items[] = [
-            'service_id' => '',
-            'service_provider_id' => '',
-            'amount' => '',
-            'certificate_holder_name' => '',
-            'certificate_index_number' => '',
-            'attachment' => '',
-        ];
+        $country = \App\Models\Country::find($value);
+        if ($country) {
+            $this->selectedEmmmbassy = $country?->embassy;
+            $this->emit('countrySelected', $this->selectedEmmmbassy?->name);
+        } else {
+            $this->selectedEmmmbassy = null;
+            $this->embassy_id = null;
+        }
     }
+
 
     public function removeRequestItem($index)
     {
@@ -63,9 +51,6 @@ class RequestCreate extends Component
             'embassy_id' => 'required|exists:embassies,id',
             'member_id' => 'required|exists:members,id',
             'country_id' => 'required|exists:countries,id',
-            'type' => 'required|in:Diaspora,Domestic',
-            'status' => 'required|in:Pending,In Progress,Completed,Cancelled',
-            'sent_status' => 'required|in:sent,failed',
             'request_items.*.service_id' => 'required|exists:services,id',
             'request_items.*.service_provider_id' => 'required|exists:service_providers,id',
             'request_items.*.amount' => 'required|numeric|min:0',

@@ -60,11 +60,10 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value"
-                                                data-target="559.25">0</span>k
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            ${{ number_format($totalEarnings, 2) }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted">View net
-                                            earnings</a>
+                                        <a href="" class="text-decoration-underline text-muted">View net earnings</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -88,10 +87,10 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                data-target="36894">0</span></h4>
-                                        <a href="" class="text-decoration-underline text-muted">View all
-                                            applications</a>
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            {{ $applicationsCount }}
+                                        </h4>
+                                        <a href="" class="text-decoration-underline text-muted">View all applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -115,11 +114,10 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                data-target="183.35">0</span>M
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            {{ $customersCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted" style="font-style: none;">Total
-                                            customers</a>
+                                        <a href="" class="text-decoration-underline text-muted" style="font-style: none;">Total customers</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -143,11 +141,10 @@
                                 </div>
                                 <div class="d-flex align-items-end justify-content-between mt-4">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                data-target="165">0</span>k
+                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                            {{ $newApplicationsCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted">New Applications
-                                            </a>
+                                        <a href="" class="text-decoration-underline text-muted">New Applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -213,96 +210,23 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="apps-ecommerce-order-details"
-                                                        class="fw-medium link-primary">#VZ2112</a>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        
-                                                        <div class="flex-grow-1">Alex Smith</div>
-                                                    </div>
-                                                </td>
-                                                <td>Birth certificate verification</td>
-                                                
-                                                <td>
-                                                    <span class="badge bg-success-subtle text-success">Paid</span>
-                                                </td>
-                                               
-                                            </tr><!-- end tr -->
-                                            <tr>
-                                                <td>
-                                                    <a href="apps-ecommerce-order-details"
-                                                        class="fw-medium link-primary">#VZ2111</a>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                     
-                                                        <div class="flex-grow-1">Jansh Brown</div>
-                                                    </div>
-                                                </td>
-                                                <td>Education certificate verification</td>
-                                               
-                                                <td>
-                                                    <span class="badge bg-warning-subtle text-warning">Pending</span>
-                                                </td>
-                                               
-                                            </tr><!-- end tr -->
-                                            <tr>
-                                                <td>
-                                                    <a href="apps-ecommerce-order-details"
-                                                        class="fw-medium link-primary">#VZ2109</a>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                      
-                                                        <div class="flex-grow-1">Ayaan Bowen</div>
-                                                    </div>
-                                                </td>
-                                                <td>Education certificate verification</td>
-                                                
-                                                <td>
-                                                    <span class="badge bg-success-subtle text-success">Paid</span>
-                                                </td>
-                                                
-                                            </tr><!-- end tr -->
-                                            <tr>
-                                                <td>
-                                                    <a href="apps-ecommerce-order-details"
-                                                        class="fw-medium link-primary">#VZ2108</a>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                     
-                                                        <div class="flex-grow-1">Prezy Mark</div>
-                                                    </div>
-                                                </td>
-                                                <td>Education certificate verification</td>
-                                            
-                                                <td>
-                                                    <span class="badge bg-danger-subtle text-danger">Unpaid</span>
-                                                </td>
-                                            </tr><!-- end tr -->
-                                            <tr>
-                                                <td>
-                                                    <a href="apps-ecommerce-order-details"
-                                                        class="fw-medium link-primary">#VZ2107</a>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                      
-                                                        <div class="flex-grow-1">Vihan Hudda</div>
-                                                    </div>
-                                                </td>
-                                                <td>Education certificate verification</td>
-                                               
-                                                <td>
-                                                    <span class="badge bg-success-subtle text-success">Paid</span>
-                                                </td>
-                                             
-                                            </tr><!-- end tr -->
-                                        </tbody><!-- end tbody -->
+                                            @foreach($recentApplications as $application)
+                                                <tr>
+                                                    <td>
+                                                        <a href="#" class="fw-medium link-primary">#{{ $application->id }}</a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-grow-1">{{ $application->member->name ?? 'N/A' }}</div>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $application->items->first()->service->name ?? 'N/A' }}</td>
+                                                    <td>
+                                                        <span class="badge bg-success-subtle text-success">{{ $application->status }}</span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table><!-- end table -->
                                 </div>
                             </div>

@@ -32,7 +32,7 @@ class ServiceProviderController extends Controller
      */
     public function store(StoreServiceProviderRequest $request)
     {
-        dd($request);
+        // dd($request);
         try {
             DB::transaction(function () use ($request) {
                 $serviceProvider = ServiceProvider::query()

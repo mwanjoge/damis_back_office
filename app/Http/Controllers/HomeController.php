@@ -58,15 +58,44 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if (view()->exists($request->path())) {
-            return view($request->path());
-        }
-        return abort(404);
+        $totalEarnings = \App\Models\Invoice::where('status', 'paid')->sum('price');
+        $applicationsCount = \App\Models\Request::count();
+        $customersCount = \App\Models\Member::count();
+        $newApplicationsCount = \App\Models\Request::where('created_at', '>=', now()->subMonth())->count();
+
+        $recentApplications = \App\Models\Request::with(['member', 'items.service'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('index', compact(
+            'totalEarnings',
+            'applicationsCount',
+            'customersCount',
+            'newApplicationsCount',
+            'recentApplications'
+        ));
     }
 
     public function root()
     {
-        return view('index');
+        $totalEarnings = \App\Models\Invoice::where('status', 'paid')->sum('price');
+        $applicationsCount = \App\Models\Request::count();
+        $customersCount = \App\Models\Member::count();
+        $newApplicationsCount = \App\Models\Request::where('created_at', '>=', now()->subMonth())->count();
+
+        $recentApplications = \App\Models\Request::with(['member', 'items.service'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('index', compact(
+            'totalEarnings',
+            'applicationsCount',
+            'customersCount',
+            'newApplicationsCount',
+            'recentApplications'
+        ));
     }
 
     public function settings()
