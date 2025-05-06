@@ -49,6 +49,15 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body p-3">
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                         <div class="mt-4">
                             <h4 class="mb-3 text-center" id="modalTitle">New Service Provider</h4>
                             <form action="{{ route('service_provider.store') }}" method="post">
