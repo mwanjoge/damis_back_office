@@ -49,6 +49,14 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Countries list pagination">
+                <ul class="pagination pagination-rounded justify-content-center">
+                    {{ $countries->links('pagination::bootstrap-5') }}
+                </ul>
+            </nav>
+        </div>
+        
     </div>
 
     <!-- Country Modal -->
@@ -145,13 +153,6 @@
         window.addEventListener('close-modal', () => {
             $('.countries-modal').modal('hide');
         });
-
-        // Automatically reopen modal if there are errors
-        // @if ($errors->any())
-        //     $(document).ready(function () {
-        //         $('.countries-modal').modal('show');
-        //     });
-        // @endif
     </script>
 @endpush
 

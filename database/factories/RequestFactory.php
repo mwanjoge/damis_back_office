@@ -21,7 +21,7 @@ class RequestFactory extends Factory
             'account_id' => $this->faker->numberBetween(1, 43),
             'embassy_id' => $this->faker->numberBetween(1, 43), // Assuming you have 10 embassies
             'member_id' => $this->faker->numberBetween(1, 95),
-            'country_id' => $this->faker->numberBetween(1, 100),
+            'country_id' => $this->faker->numberBetween(1, 25),
             'type' => $this->faker->randomElement(['Diaspora', 'Domestic']),
             'status' => $this->faker->randomElement(['Pending', 'In Progress', 'Completed', 'Cancelled']),
             'tracking_number' => $this->faker->unique()->uuid(),
