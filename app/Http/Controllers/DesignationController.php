@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDesignationRequest;
 use App\Http\Requests\UpdateDesignationRequest;
 use App\Models\Designation;
+use Illuminate\Http\Request;
 
 class DesignationController extends Controller
 {
@@ -29,7 +30,13 @@ class DesignationController extends Controller
      */
     public function store(StoreDesignationRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+            Designation::create($data);
+            return redirect()->route('humanresors')->with('success', 'Designation created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to create designation: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -53,7 +60,13 @@ class DesignationController extends Controller
      */
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
-        //
+        try {
+            $data = $request->validated();
+            $designation->update($data);
+            return redirect()->route('humanresors')->with('success', 'Designation updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to update designation: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -61,6 +74,11 @@ class DesignationController extends Controller
      */
     public function destroy(Designation $designation)
     {
-        //
+        try {
+            $designation->delete();
+            return redirect()->route('humanresors')->with('success', 'Designation deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to delete designation: ' . $e->getMessage());
+        }
     }
 }

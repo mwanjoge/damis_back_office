@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['Diaspora', 'Domestic']);
             $table->enum('status', ['Pending', 'In Progress', 'Completed', 'Cancelled']);
-            $table->ulid('tracking_number')->unique();
+            $table->uuid('tracking_number')->unique();
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_paid')->default(false);
             $table->decimal('total_cost', 22, 2)->default(0);

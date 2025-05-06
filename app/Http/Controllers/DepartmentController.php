@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
+use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
@@ -13,7 +14,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        $departments = Department::all();
+        return view('departments.index', compact('departments'));
     }
 
     /**
@@ -29,7 +31,12 @@ class DepartmentController extends Controller
      */
     public function store(StoreDepartmentRequest $request)
     {
-        //
+        try {
+            Department::create($request->validated());
+            return redirect()->route('humanresors')->with('success', 'Department created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to create department: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -53,7 +60,12 @@ class DepartmentController extends Controller
      */
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
-        //
+        try {
+            $department->update($request->validated());
+            return redirect()->route('humanresors')->with('success', 'Department updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to update department: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -61,6 +73,11 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        try {
+            $department->delete();
+            return redirect()->route('humanresors')->with('success', 'Department deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to delete department: ' . $e->getMessage());
+        }
     }
 }

@@ -40,9 +40,9 @@ class DatabaseSeeder extends Seeder
         // \App\Models\ServiceProvider::factory()->count(2)->create();
 
         // Only call Country::factory() if your countries table has the correct columns!
-        // \App\Models\Country::factory()->count(2)->create();
+         \App\Models\Country::factory()->count(100)->create();
 
-        \App\Models\Request::factory()->count(100)->create();
+        \App\Models\Request::factory()->count(10000)->create();
 
         // Seed related tables first
         $this->call([

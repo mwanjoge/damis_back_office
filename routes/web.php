@@ -39,16 +39,21 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('service', \App\Http\Controllers\ServiceController::class)->names('service');
     Route::resource('requests', RequestController::class)->names('requests');
     Route::resource('members', \App\Http\Controllers\MemberController::class)->names('members');
+    Route::resource('department', App\Http\Controllers\DepartmentController::class)->names('department');
+    Route::resource('designation', App\Http\Controllers\DesignationController::class)->names('designation');
+    Route::resource('employee', App\Http\Controllers\EmployeeController::class)->names('employee');
     Route::get('settings', function () {
         return view('settings');
     })->name('settings');
-
+    Route::get('humanresors', function () {
+        return view('humanresources');
+    })->name('humanresors');
     Route::get('/authentication', [HomeController::class, 'authenticationIndex'])->name('authentication');
 
     Route::get('/embassies/{id}', [HomeController::class, 'showEmbassy'])->name('embassies.show');
 Route::get('/requestItem', RequestItems::class);
     // routes/web.php
-    Route::get('/roles', [HomeController::class, 'roles'])->name('roles.index');
+    // Remove duplicate /roles route
     Route::get('/roles', [HomeController::class, 'rolesIndex'])->name('roles.index');
     Route::get('/roles/{id}', [HomeController::class, 'show'])->name('roles.show');
 

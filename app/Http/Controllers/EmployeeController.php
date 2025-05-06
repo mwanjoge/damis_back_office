@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
@@ -17,7 +18,6 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
      */
     public function create()
     {
@@ -29,7 +29,19 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+            // Get account_id from the selected designation
+            $designation = \App\Models\Designation::find($data['designation_id']);
+            if (!$designation) {
+                return redirect()->route('humanresors')->with('error', 'Invalid designation selected.');
+            }
+            $data['account_id'] = $designation->account_id;
+            Employee::create($data);
+            return redirect()->route('humanresors')->with('success', 'Employee created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to create employee: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -37,7 +49,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return view('employee.show', compact('employee'));
     }
 
     /**
@@ -53,7 +65,18 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        //
+        try {
+            $data = $request->validated();
+            $designation = \App\Models\Designation::find($data['designation_id']);
+            if (!$designation) {
+                return redirect()->route('humanresors')->with('error', 'Invalid designation selected.');
+            }
+            $data['account_id'] = $designation->account_id;
+            $employee->update($data);
+            return redirect()->route('humanresors')->with('success', 'Employee updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to update employee: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -61,6 +84,11 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        try {
+            $employee->delete();
+            return redirect()->route('humanresors')->with('success', 'Employee deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('humanresors')->with('error', 'Failed to delete employee: ' . $e->getMessage());
+        }
     }
 }
