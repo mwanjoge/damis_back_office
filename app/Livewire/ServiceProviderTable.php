@@ -17,6 +17,13 @@ class ServiceProviderTable extends Component
 
     protected $listeners = ['refreshServiceProviders' => '$refresh'];
 
+    protected function rules()
+    {
+        return [
+            'name' => 'required|max:5|string|unique:service_providers,name'
+        ];
+    }
+
     public function mount()
     {
         $this->loadData();
@@ -38,6 +45,12 @@ class ServiceProviderTable extends Component
         } else {
             $this->reset(['editingId', 'name', 'selectedServices']);
         }
+    }
+
+    public function updated($propertyName): void
+    {
+        //dd($propertyName);
+        $this->validateOnly($propertyName, $this->rules());
     }
 
     public function save()
