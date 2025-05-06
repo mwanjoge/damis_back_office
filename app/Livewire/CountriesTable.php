@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Country;
 use App\Models\Embassy;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Controllers\CountryController;
@@ -12,7 +13,9 @@ use App\Http\Requests\UpdateCountryRequest;
 
 class CountriesTable extends Component
 {
-    public $countries = [];
+    use WithPagination;
+
+    // public $countries = [];
     public $embassies = [];
 
     public $editingId = null;
@@ -26,7 +29,7 @@ class CountriesTable extends Component
     public function mount()
     {
         $this->embassies = Embassy::query()->get();
-        $this->countries = Country::with('embassy')->get();
+        // $this->countries = Country::with('embassy')->get();
     }
 
     public function openForm($id = null)
@@ -43,12 +46,10 @@ class CountriesTable extends Component
         }
     }
 
-    
-
-
-
     public function render()
     {
-        return view('livewire.countries-table');
+        return view('livewire.countries-table', [
+            'countries' => Country::with('embassy')->paginate(10)
+        ]);
     }
 }
