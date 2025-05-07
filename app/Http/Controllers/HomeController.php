@@ -58,93 +58,42 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $totalEarnings = \App\Models\Invoice::where('status', 'paid')->sum('price');
-        $applicationsCount = \App\Models\Request::count();
-        $customersCount = \App\Models\Member::count();
-        $newApplicationsCount = \App\Models\Request::where('created_at', '>=', now()->subMonth())->count();
-
-        $recentApplications = \App\Models\Request::with(['member', 'items.service'])
-            ->latest()
-            ->take(5)
-            ->get();
-
-        return view('index', compact(
-            'totalEarnings',
-            'applicationsCount',
-            'customersCount',
-            'newApplicationsCount',
-            'recentApplications'
-        ));
+        $data = \Cache::get('dashboard_data', [
+            'totalEarnings' => 0,
+            'applicationsCount' => 0,
+            'customersCount' => 0,
+            'newApplicationsCount' => 0,
+            'recentApplications' => collect(),
+            'activeServiceProvidersData' => [],
+            'activeRequestsData' => [],
+            'activeServicesData' => [],
+            'requestsPerEmbassy' => collect(),
+            'monthlyRequests' => collect(),
+            'topServices' => collect(),
+            'providerStats' => collect(),
+            'countryCoverage' => collect(),
+        ]);
+        return view('index', $data);
     }
 
     public function root()
     {
-        $applicationsCount = \App\Models\Request::count();
-        $customersCount = \App\Models\Member::count();
-        $newApplicationsCount = \App\Models\Request::where('created_at', '>=', now()->subMonth())->count();
-
-        $recentApplications = \App\Models\Request::with(['member', 'items.service'])
-            ->latest()
-            ->take(5)
-            ->get();
-
-        // Monthly Service Providers
-        $activeServiceProvidersData = \App\Models\ServiceProvider::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('count', 'month')
-            ->toArray();
-
-        // Monthly Requests
-        $activeRequestsData = \App\Models\Request::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->whereNull('deleted_at') // if using soft deletes
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('count', 'month')
-            ->toArray();
-
-        // Monthly Services
-        $activeServicesData = \App\Models\Service::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('count', 'month')
-            ->toArray();
-
-        $requestsPerEmbassy = \App\Models\Request::selectRaw('embassy_id, COUNT(*) as total')
-            ->groupBy('embassy_id')
-            ->with('embassy')
-            ->get();
-
-        $monthlyRequests = \App\Models\Request::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('count', 'month');
-
-        $topServices = \App\Models\RequestItem::with('service')
-            ->selectRaw('service_id, COUNT(*) as count')
-            ->groupBy('service_id')
-            ->orderByDesc('count')
-            ->take(5)
-            ->get();
-
-        $providerStats = \App\Models\ServiceProvider::withCount('services')->get();
-
-        $countryCoverage = \App\Models\Embassy::withCount('countries')->get();
-
-        return view('index', [
-            'applicationsCount' => $applicationsCount,
-            'customersCount' => $customersCount,
-            'newApplicationsCount' => $newApplicationsCount,
-            'recentApplications' => $recentApplications,
-            'activeServiceProvidersData' => $activeServiceProvidersData,
-            'activeRequestsData' => $activeRequestsData,
-            'activeServicesData' => $activeServicesData,
-            'requestsPerEmbassy' => $requestsPerEmbassy,
-            'monthlyRequests' => $monthlyRequests,
-            'topServices' => $topServices,
-            'providerStats' => $providerStats,
-            'countryCoverage' => $countryCoverage,
+        $data = \Cache::get('dashboard_data', [
+            'totalEarnings' => 0,
+            'applicationsCount' => 0,
+            'customersCount' => 0,
+            'newApplicationsCount' => 0,
+            'recentApplications' => collect(),
+            'activeServiceProvidersData' => [],
+            'activeRequestsData' => [],
+            'activeServicesData' => [],
+            'requestsPerEmbassy' => collect(),
+            'monthlyRequests' => collect(),
+            'topServices' => collect(),
+            'providerStats' => collect(),
+            'countryCoverage' => collect(),
         ]);
+        return view('index', $data);
     }
 
     public function settings()

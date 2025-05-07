@@ -13,58 +13,55 @@
         type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
-
-
     @include('layouts.head-css')
 </head>
 
-@section('body')
+<body>
     @include('layouts.body')
-@show
-<!-- Begin page -->
-<div id="layout-wrapper">
-    @include('layouts.topbar')
-    @include('layouts.sidebar')
-    <!-- ============================================================== -->
-    <!-- Start right Content here -->
-    <!-- ============================================================== -->
-    <div class="main-content">
-        <div class="page-content">
-            <div class="container-fluid">
-                @yield('content')
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+        @include('layouts.topbar')
+        @include('layouts.sidebar')
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
+                <!-- container-fluid -->
             </div>
-            <!-- container-fluid -->
+            <!-- End Page-content -->
+            @include('layouts.footer')
         </div>
-        <!-- End Page-content -->
-        @include('layouts.footer')
+        <!-- end main content-->
     </div>
-    <!-- end main content-->
-</div>
-<!-- END layout-wrapper -->
+    <!-- END layout-wrapper -->
 
-{{-- @include('layouts.customizer') --}}
+    {{-- @include('layouts.customizer') --}}
 
-<!-- JAVASCRIPT -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-@include('layouts.vendor-scripts')
-<!--select2 cdn-->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script src="{{ URL::asset('build/js/pages/select2.init.js') }}"></script>
+    <!-- JAVASCRIPT -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    @include('layouts.vendor-scripts')
+    <!--select2 cdn-->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="{{ URL::asset('build/js/pages/select2.init.js') }}"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const elements = document.querySelectorAll('[data-choices]');
-        elements.forEach(el => {
-            new Choices(el, {
-                searchEnabled: true,
-                itemSelectText: '',
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('[data-choices]');
+            elements.forEach(el => {
+                new Choices(el, {
+                    searchEnabled: true,
+                    itemSelectText: '',
+                });
             });
         });
-    });
-</script>
-@yield('script')
+    </script>
+    @yield('script')
 </body>
 
 </html>

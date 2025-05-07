@@ -42,23 +42,24 @@
                 </div>
                 <!--end row-->
 
-                <div class="row">
+                <div class="row g-4 mb-4">
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100">
+                        <div class="card card-animate h-100 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                            Total Earnings</p>
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
+                                            Total Earnings
+                                        </p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             ${{ number_format($totalEarnings ?? 0) }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted">View net earnings</a>
+                                        <a href="" class="text-decoration-underline text-muted small">View net earnings</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -72,20 +73,20 @@
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100">
+                        <div class="card card-animate h-100 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
                                             Applications</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $applicationsCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted">View all applications</a>
+                                        <a href="" class="text-decoration-underline text-muted small">View all applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -99,20 +100,20 @@
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100">
+                        <div class="card card-animate h-100 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
                                             Customers</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $customersCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted" style="font-style: none;">Total customers</a>
+                                        <a href="" class="text-decoration-underline text-muted small" style="font-style: none;">Total customers</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -126,20 +127,20 @@
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100">
+                        <div class="card card-animate h-100 shadow-sm">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
                                             NEW APPLICATIONS</p>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
-                                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $newApplicationsCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted">New Applications</a>
+                                        <a href="" class="text-decoration-underline text-muted small">New Applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -153,26 +154,26 @@
                 </div> <!-- end row-->
 
                 {{-- Donut and Recent Applications --}}
-                <div class="row mb-4">
-                    <div class="col-lg-4 mb-3">
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-4 mb-3 mb-lg-0">
                         <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
                             <div class="card-body w-100">
-                                <h6 class="text-center">Yearly Distribution</h6>
+                                <h6 class="text-center mb-3">Yearly Distribution</h6>
                                 <canvas id="dashboard-donut-chart" height="260"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 mb-3">
+                    <div class="col-lg-8">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6>Recent Applications</h6>
-                                <table class="table table-bordered table-striped mb-0">
-                                    <thead>
+                                <h6 class="mb-3">Recent Applications</h6>
+                                <table class="table table-bordered table-striped mb-0 align-middle">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th>Member</th>
-                                            <th>Service</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
+                                            <th class="text-nowrap">Member</th>
+                                            <th class="text-nowrap">Service</th>
+                                            <th class="text-nowrap">Date</th>
+                                            <th class="text-nowrap">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -196,15 +197,16 @@
                     <div class="col-12">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6>Top 5 Embassies (Qualitative Data)</h6>
+                                <h6 class="mb-3">Top 5 Embassies (Qualitative Data)</h6>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped mb-0">
-                                        <thead>
+                                    <table class="table table-bordered table-striped mb-0 align-middle">
+                                        <thead class="table-light">
                                             <tr>
-                                                <th>Embassy</th>
-                                                <th>Country Coverage</th>
-                                                <th>Requests</th>
-                                                <th>Top Service</th>
+                                                <th class="text-nowrap">Embassy</th>
+                                                <th class="text-nowrap">Country Coverage</th>
+                                                <th class="text-nowrap">Requests</th>
+                                                <th class="text-nowrap">Top Service</th>
+                                                <th class="text-nowrap">Earnings</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -225,6 +227,14 @@
                                                         @endphp
                                                         {{ $service ?? 'N/A' }}
                                                     </td>
+                                                    <td>
+                                                        @php
+                                                            $earn = $requestsPerEmbassy->firstWhere('embassy_id', $embassy->id);
+                                                            $amount = $earn->total_earnings ?? 0;
+                                                            $currency = $earn->currency ?? '';
+                                                        @endphp
+                                                        {{ $amount ? number_format($amount) : 0 }} {{ $currency }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -237,50 +247,54 @@
 
 
                 {{-- Charts Section --}}
-                <div class="row mb-4">
-                    <div class="col-lg-6 mb-3">
+              
+
+
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6>Requests per Embassy</h6>
+                                <h6 class="mb-3">Requests per Embassy</h6>
                                 <canvas id="requestsPerEmbassyChart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 mb-3">
+                    <div class="col-lg-6">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6>Monthly Requests</h6>
+                                <h6 class="mb-3">Monthly Requests</h6>
                                 <canvas id="monthlyRequestsChart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row mb-4">
-                    <div class="col-lg-6 mb-3">
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6>Top Services</h6>
+                                <h6 class="mb-3">Top Services</h6>
                                 <canvas id="topServicesChart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 mb-3">
+                    <div class="col-lg-6">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6>Provider Activity</h6>
+                                <h6 class="mb-3">Provider Activity</h6>
                                 <canvas id="providerStatsChart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row mb-4">
+                {{-- Embassy Earnings Over Time --}}
+                <div class="row g-4 mb-4">
                     <div class="col-md-12">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6>Embassy Country Coverage</h6>
-                                <canvas id="countryCoverageChart" height="150"></canvas>
+                                <h6 class="mb-3">Embassy Earnings Over Time</h6>
+                                <canvas id="embassyEarningsOverTimeChart" height="220"></canvas>
                             </div>
                         </div>
                     </div>
@@ -289,6 +303,7 @@
         </div>
     </div>
 @endsection
+
 
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -316,15 +331,49 @@
         // Requests per Embassy
         const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
         const embassyData = @json($requestsPerEmbassy->pluck('total'));
+        // Prepare earnings and currency per embassy (ensure these fields exist in your data)
+        const embassyEarnings = @json($requestsPerEmbassy->pluck('total_earnings'));
+        const embassyCurrencies = @json($requestsPerEmbassy->pluck('currency'));
+
         new Chart(document.getElementById('requestsPerEmbassyChart'), {
             type: 'bar',
             data: {
-                labels: embassyLabels,
+                labels: embassyLabels.map(() => ''), // Hide labels on axis
                 datasets: [{
                     label: 'Requests',
                     data: embassyData,
                     backgroundColor: '#4e73df',
                 }]
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                // Show embassy name in tooltip
+                                return embassyLabels[context[0].dataIndex] || '';
+                            },
+                            afterBody: function(context) {
+                                // Show earnings and currency in tooltip
+                                const idx = context[0].dataIndex;
+                                const earning = embassyEarnings[idx] ?? 'N/A';
+                                const currency = embassyCurrencies[idx] ?? '';
+                                if (earning && currency) {
+                                    return `Earnings: ${earning} ${currency}`;
+                                } else if (earning) {
+                                    return `Earnings: ${earning}`;
+                                }
+                                return '';
+                            }
+                        }
+                    },
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        ticks: { display: false }
+                    }
+                }
             }
         });
 
@@ -385,4 +434,24 @@
             }
         });
     </script>
+<!-- apexcharts -->
+    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
+    <!-- dashboard init -->
+    <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
+
+{{-- 
+    PERFORMANCE NOTE:
+    The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being negligible.
+    This means your dashboard's performance bottleneck is in the backend logic (queries, data aggregation, service providers, etc.), not in the Blade view rendering.
+    To improve dashboard speed:
+    - Move heavy data aggregation to scheduled jobs or queue workers (pre-calculate and cache).
+    - Use Cache::remember() for dashboard data, updating it periodically (every 5-10 minutes).
+    - Optimize Eloquent queries and eager load relationships.
+    - Only pass minimal, required data to the view.
+    - See: https://laravel.com/docs/10.x/scheduling and https://laravel.com/docs/10.x/cache
+--}}
