@@ -1,0 +1,51 @@
+<?php
+namespace App\Services;
+
+use App\Mail\InvoiceMail;
+use App\Models\GeneralLineItem;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Invoice;
+
+class RequestService{
+
+    public function createInvoice($request)
+    {
+        $invoice = new Invoice();
+        $invoice->account_id = $request->account_id;
+        $invoice->amount = $request->amount;
+        $invoice->status = 'pending';
+        $invoice->save();
+
+        return $invoice;
+    }
+    public function sendInvoice($invoice)
+    {
+        // Logic to send invoice to the user
+        Mail::to($invoice->account->email)->send(new InvoiceMail($invoice));
+    }
+
+    public function getInvoice($id)
+    {
+        return Invoice::find($id);
+    }
+
+    public function addInvoiceLineItems($invoice, $lineItems)
+    {
+        foreach ($lineItems as $item) {
+            $lineItem = new GeneralLineItem();
+            $lineItem->invoice_id = $invoice->id;
+            $lineItem->description = $item['description'];
+            $lineItem->amount = $item['amount'];
+            $lineItem->save();
+        }
+    }
+
+    public function removeInvoiceLineItem($invoice, $lineItemId)
+    {
+        $lineItem = GeneralLineItem::find($lineItemId);
+        if ($lineItem && $lineItem->invoice_id == $invoice->id) {
+            $lineItem->delete();
+        }
+    }
+
+}

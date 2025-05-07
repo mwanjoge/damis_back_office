@@ -23,7 +23,7 @@ class RequestController extends Controller
             'Cancelled' => $requests->where('status', 'Cancelled')->count(),
         ];
 
-        return view('Requests.index', compact('requests', 'summary'));
+        return view('requests.index', compact('requests', 'summary'));
     }
 
     /**
@@ -31,13 +31,13 @@ class RequestController extends Controller
      */
     public function create()
     {
-        $services = \App\Models\Service::all();
-        $serviceProviders = \App\Models\ServiceProvider::all();
-        $embassies = \App\Models\Embassy::all();
-        $countries = \App\Models\Country::all();
-        $members = \App\Models\Member::all();
+        $services = \App\Models\Service::query()->select('id', 'name')->get();
+        $serviceProviders = \App\Models\ServiceProvider::query()->select('id', 'name');
+        $embassies = \App\Models\Embassy::query()->select('id', 'name');
+        $countries = \App\Models\Country::query()->select('id', 'name');
+        $members = \App\Models\Member::query()->select('id', 'name');
 
-        return view('Requests.create', compact('services', 'serviceProviders', 'embassies', 'countries', 'members'));
+        return view('requests.create', compact('services', 'serviceProviders', 'embassies', 'countries', 'members'));
     }
 
     /**
