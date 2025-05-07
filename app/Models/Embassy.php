@@ -29,4 +29,9 @@ class Embassy extends Model
     {
         return $this->hasMany(BillableItem::class);
     }
+
+    public function requests()
+    {
+        return $this->hasMany(\App\Models\Request::class, 'embassy_id');
+    }
 }

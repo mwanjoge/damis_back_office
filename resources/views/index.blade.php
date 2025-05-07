@@ -7,6 +7,33 @@
     <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
+    @php
+        $months = collect(range(1,12))->map(function($m){ return DateTime::createFromFormat('!m', $m)->format('M'); });
+        $embassyNames = $requestsPerEmbassy->pluck('embassy.name', 'embassy_id');
+        $earningsData = [];
+        $embassyCurrencies = [];
+        foreach($countryCoverage as $embassy) {
+            $currency = optional($embassy->countries->first())->currency ?? 'USD';
+            $embassyCurrencies[$embassy->id] = $currency;
+        }
+        foreach($embassyNames as $embassyId => $embassyName) {
+            $earningsData[$embassyName] = array_fill(1, 12, 0);
+            foreach($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
+                $earningsData[$embassyName][(int)$row->month] = (float)$row->earnings;
+            }
+        }
+        $embassyEarningsDatasets = [];
+        foreach($earningsData as $embassy => $data) {
+            $embassyId = $requestsPerEmbassy->firstWhere('embassy.name', $embassy)?->embassy_id;
+            $currency = $embassyCurrencies[$embassyId] ?? 'USD';
+            $embassyEarningsDatasets[] = [
+                // No label as requested
+                'data' => array_values($data),
+                'fill' => false,
+                'currency' => $currency
+            ];
+        }
+    @endphp
     <div class="row">
         <div class="col">
             <div class="h-100">
@@ -177,7 +204,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($recentApplications as $request)
+                                        @foreach ($recentApplications->where('status', 'Completed') as $request)
                                             <tr>
                                                 <td>{{ $request->member->name ?? 'N/A' }}</td>
                                                 <td>{{ $request->items->first()->service->name ?? 'N/A' }}</td>
@@ -211,30 +238,19 @@
                                         </thead>
                                         <tbody>
                                             @foreach($countryCoverage->take(5) as $embassy)
+                                                @php
+                                                    $req = $requestsPerEmbassy->firstWhere('embassy_id', $embassy->id);
+                                                    $count = $req->count ?? 0;
+                                                    $earn = $embassyEarningsOverTime->where('embassy_id', $embassy->id)->sum('earnings');
+                                                    $country = $embassy->countries->first();
+                                                    $currency = $country->currency ?? 'USD';
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $embassy->name }}</td>
                                                     <td>{{ $embassy->countries_count }}</td>
-                                                    <td>
-                                                        {{ $requestsPerEmbassy->firstWhere('embassy_id', $embassy->id)?->total ?? 0 }}
-                                                    </td>
-                                                    <td>
-                                                        @php
-                                                            $req = $requestsPerEmbassy->firstWhere('embassy_id', $embassy->id);
-                                                            $service = null;
-                                                            if ($req && $req->embassy && isset($req->embassy->services) && is_iterable($req->embassy->services) && count($req->embassy->services)) {
-                                                                $service = $req->embassy->services->first()->name ?? null;
-                                                            }
-                                                        @endphp
-                                                        {{ $service ?? 'N/A' }}
-                                                    </td>
-                                                    <td>
-                                                        @php
-                                                            $earn = $requestsPerEmbassy->firstWhere('embassy_id', $embassy->id);
-                                                            $amount = $earn->total_earnings ?? 0;
-                                                            $currency = $earn->currency ?? '';
-                                                        @endphp
-                                                        {{ $amount ? number_format($amount) : 0 }} {{ $currency }}
-                                                    </td>
+                                                    <td>{{ $count }}</td>
+                                                    <td>N/A</td>
+                                                    <td>{{ $earn ? number_format($earn) : 0 }} {{ $currency }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -330,10 +346,17 @@
 
         // Requests per Embassy
         const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
-        const embassyData = @json($requestsPerEmbassy->pluck('total'));
-        // Prepare earnings and currency per embassy (ensure these fields exist in your data)
-        const embassyEarnings = @json($requestsPerEmbassy->pluck('total_earnings'));
-        const embassyCurrencies = @json($requestsPerEmbassy->pluck('currency'));
+        const embassyData = @json($requestsPerEmbassy->pluck('count'));
+        // Prepare embassy earnings and currency for tooltips
+        const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
+            // Sum earnings for this embassy
+            $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
+            return $earn ? number_format($earn, 2) : '0.00';
+        }));
+        // If you have a currency field, map it here; otherwise, set a default
+        const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
+            return $item->embassy->currency ?? 'USD';
+        }));
 
         new Chart(document.getElementById('requestsPerEmbassyChart'), {
             type: 'bar',
@@ -354,16 +377,14 @@
                                 return embassyLabels[context[0].dataIndex] || '';
                             },
                             afterBody: function(context) {
-                                // Show earnings and currency in tooltip
                                 const idx = context[0].dataIndex;
-                                const earning = embassyEarnings[idx] ?? 'N/A';
-                                const currency = embassyCurrencies[idx] ?? '';
-                                if (earning && currency) {
-                                    return `Earnings: ${earning} ${currency}`;
-                                } else if (earning) {
-                                    return `Earnings: ${earning}`;
-                                }
-                                return '';
+                                const earning = embassyEarnings[idx] ?? '0.00';
+                                const currency = embassyCurrencies[idx] ?? 'USD';
+                                const requests = embassyData[idx] ?? 0;
+                                return [
+                                    `Requests: ${requests}`,
+                                    `Earnings: ${earning} ${currency}`
+                                ];
                             }
                         }
                     },
@@ -392,8 +413,8 @@
         });
 
         // Top Requested Services
-        const topServiceLabels = @json($topServices->pluck('service.name'));
-        const topServiceData = @json($topServices->pluck('count'));
+        const topServiceLabels = @json($topServices->map(function($item) { return $item->service->name ?? 'N/A'; }));
+        const topServiceData = @json($topServices->map(function($item) { return $item->count; }));
         new Chart(document.getElementById('topServicesChart'), {
             type: 'pie',
             data: {
@@ -420,17 +441,32 @@
             }
         });
 
-        // Country Coverage
-        const coverageLabels = @json($countryCoverage->pluck('name'));
-        const coverageData = @json($countryCoverage->pluck('countries_count'));
-        new Chart(document.getElementById('countryCoverageChart'), {
-            type: 'doughnut',
+        // Embassy Earnings Over Time
+        const embassyEarningsLabels = @json($months);
+        const embassyEarningsDatasets = @json($embassyEarningsDatasets);
+        new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
+            type: 'line',
             data: {
-                labels: coverageLabels,
-                datasets: [{
-                    data: coverageData,
-                    backgroundColor: ['#36b9cc', '#4e73df', '#1cc88a', '#e74a3b', '#f6c23e'],
-                }]
+                labels: embassyEarningsLabels,
+                datasets: embassyEarningsDatasets.map((ds, idx) => ({
+                    ...ds,
+                    borderColor: `hsl(${idx * 60}, 70%, 50%)`,
+                    backgroundColor: `hsl(${idx * 60}, 70%, 80%)`,
+                    label: undefined // Remove label
+                }))
+            },
+            options: {
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const currency = embassyEarningsDatasets[context.datasetIndex].currency || 'USD';
+                                return `Earnings: ${context.parsed.y} ${currency}`;
+                            }
+                        }
+                    }
+                }
             }
         });
     </script>

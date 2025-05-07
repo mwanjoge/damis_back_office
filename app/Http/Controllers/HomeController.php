@@ -90,6 +90,8 @@ class HomeController extends Controller
             'requestsPerEmbassy' => collect(),
             'monthlyRequests' => collect(),
             'topServices' => collect(),
+            'topEmbassies' => collect(),
+            'embassyEarningsOverTime' => collect(),
             'providerStats' => collect(),
             'countryCoverage' => collect(),
         ]);

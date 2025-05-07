@@ -22,6 +22,11 @@ return new class extends Migration
             $table->string('ref_no')->nullable();
             $table->enum('status', ['pending','paid','cancelled','overdue'])->default('pending');
             $table->enum('sent_status', ['sent','failed']);
+            $table->boolean('is_paid')->default(false);
+            $table->decimal('amount', 12, 2)->default(0);
+            $table->decimal('payable_amount', 12, 2)->default(0);
+            $table->decimal('balance', 12, 2)->default(0);
+            $table->decimal('paid', 12, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
