@@ -28,10 +28,10 @@ class DatabaseSeeder extends Seeder
 
         // Example: Add sample data for requests and related tables
        // \App\Models\Account::factory()->count(43)->create();
-        \App\Models\Embassy::factory()->count(43)->create()->each(function ($embassy) {
-            $embassy->account()->save(\App\Models\Account::factory()->create());
-        });
-        \App\Models\Member::factory()->count(95)->create();
+        // \App\Models\Embassy::factory()->count(43)->create()->each(function ($embassy) {
+        //     $embassy->account()->save(\App\Models\Account::factory()->create());
+        // });
+        // \App\Models\Member::factory()->count(95)->create();
 
         // Only call Service::factory() if your services table has an account_id column!
         // \App\Models\Service::factory()->count(2)->create();
@@ -40,18 +40,19 @@ class DatabaseSeeder extends Seeder
         // \App\Models\ServiceProvider::factory()->count(2)->create();
 
         // Only call Country::factory() if your countries table has the correct columns!
-        // \App\Models\Country::factory()->count(2)->create();
+        // \App\Models\Country::factory()->count(100)->create();
 
-        \App\Models\Request::factory()->count(100)->create();
+        // \App\Models\Request::factory()->count(100)->create();
+        
 
         // Seed related tables first
         $this->call([
             //AccountSeeder::class,
-            //EmbassySeeder::class,
+            EmbassySeeder::class,
             // ServiceSeeder::class,
             ServiceProviderSeeder::class,
             //MemberSeeder::class,
-            //CountrySeeder::class,
+            CountrySeeder::class,
             //RequestSeeder::class, // Requests last!
         ]);
     }

@@ -31,6 +31,7 @@ class CountryController extends Controller
      */
     public function store(StoreCountryRequest $request)
     {
+        $request->validated();
         try {
             $country = Country::query()->create($request->all());
             event(new EmbassyCreated($country));

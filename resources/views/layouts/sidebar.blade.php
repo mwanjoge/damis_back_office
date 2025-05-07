@@ -52,6 +52,11 @@
                         <i class="las la-flask"></i> <span>Settings</span>
                     </a>
                 </li>
+                <li class="nav-item {{ Request::is('humanresors*')?'active':'' }}">
+                    <a class="nav-link menu-link {{ Request::is('humanresors*')?'active':'' }}" href="/humanresors">
+                        <i class="las la-flask"></i> <span>HR</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="/authentication">
                         <i class="las la-lock"></i> <span>Authentication</span>

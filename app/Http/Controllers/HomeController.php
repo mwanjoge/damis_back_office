@@ -58,15 +58,44 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if (view()->exists($request->path())) {
-            return view($request->path());
-        }
-        return abort(404);
+        $data = \Cache::get('dashboard_data', [
+            'totalEarnings' => 0,
+            'applicationsCount' => 0,
+            'customersCount' => 0,
+            'newApplicationsCount' => 0,
+            'recentApplications' => collect(),
+            'activeServiceProvidersData' => [],
+            'activeRequestsData' => [],
+            'activeServicesData' => [],
+            'requestsPerEmbassy' => collect(),
+            'monthlyRequests' => collect(),
+            'topServices' => collect(),
+            'providerStats' => collect(),
+            'countryCoverage' => collect(),
+        ]);
+        return view('index', $data);
     }
 
     public function root()
     {
-        return view('index');
+        $data = \Cache::get('dashboard_data', [
+            'totalEarnings' => 0,
+            'applicationsCount' => 0,
+            'customersCount' => 0,
+            'newApplicationsCount' => 0,
+            'recentApplications' => collect(),
+            'activeServiceProvidersData' => [],
+            'activeRequestsData' => [],
+            'activeServicesData' => [],
+            'requestsPerEmbassy' => collect(),
+            'monthlyRequests' => collect(),
+            'topServices' => collect(),
+            'topEmbassies' => collect(),
+            'embassyEarningsOverTime' => collect(),
+            'providerStats' => collect(),
+            'countryCoverage' => collect(),
+        ]);
+        return view('index', $data);
     }
 
     public function settings()

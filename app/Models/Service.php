@@ -25,6 +25,11 @@ class Service extends Model
         return $this->hasMany(RequestItem::class);
     }
 
+    public function requests()
+    {
+        return $this->hasMany(\App\Models\RequestItem::class, 'service_id');
+    }
+
     public function billableItems()
     {
         return $this->morphMany(BillableItem::class, 'billable');

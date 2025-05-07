@@ -11,17 +11,27 @@ class Employee extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'middle_name',
-        'email',
-        'department_id',
         'account_id',
         'designation_id',
+        'depertment_id',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'email',
         'is_active',
     ];
 
     public function user(){
         return $this->morphOne(User::class, 'userable');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'depertment_id');
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
     }
 }

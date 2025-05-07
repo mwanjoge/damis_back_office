@@ -14,8 +14,8 @@ class StoreDesignationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'account_id' => 'required|exists:accounts,id',
             'name' => 'nullable|string|max:255',
+            'account_id' => 'required|exists:accounts,id',
         ];
     }
 }

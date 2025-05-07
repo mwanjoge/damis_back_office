@@ -37,6 +37,7 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
+        $request->validated();
         DB::beginTransaction();
     
         try {
