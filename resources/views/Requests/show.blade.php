@@ -1,8 +1,8 @@
-@extends('layouts.layouts-horizontal')
+@extends('layouts.master')
 @section('title', 'Show Request')
 @section('content')
-<div class="container mt-5 mb-5">
-    <div class="row g-4">
+
+    <div class="row g-4 mt-3">
         <!-- Left column: Request Details -->
         <div class="col-lg-5">
             <div class="card h-100">
@@ -169,5 +169,5 @@
             </div>
         </div>
     </div>
-</div>
+
 @endsection

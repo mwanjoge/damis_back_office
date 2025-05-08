@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="horizontal" data-topbar="light"
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="horizontal" data-layout-position="fixed"  data-topbar="light"
     data-sidebar="dark" data-sidebar-size="sm-hover" data-sidebar-image="none" data-preloader="disable">
 
 <head>
@@ -18,7 +18,6 @@
 </head>
 
 <body>
-    @include('layouts.body')
     <!-- Begin page -->
     <div id="layout-wrapper">
         @include('layouts.topbar')
