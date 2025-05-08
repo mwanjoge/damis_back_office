@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Requests')
 @section('content')
-<div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Requests</h2>
         <a href="{{ route('requests.create') }}" class="btn btn-primary">Create Request</a>
@@ -18,5 +17,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

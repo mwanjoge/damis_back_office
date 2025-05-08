@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.layouts-horizontal')
 @section('title', 'Edit Request')
 @section('content')
     <div class="container">

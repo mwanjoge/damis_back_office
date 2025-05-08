@@ -4,13 +4,7 @@
 </button>
 
 <!--preloader-->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner-border text-primary avatar-sm" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
-</div>
+{{-- <div id="preloader"> ... </div> --}}
 
 <!--end back-to-top-->
 <div class="customizer-setting d-none d-md-block">
@@ -89,7 +83,7 @@
                                             <span class="d-block p-1 bg-primary-subtle mb-2"></span>
                                             <span class="d-block p-1 pb-0 bg-primary-subtle"></span>
                                             <span class="d-block p-1 pb-0 bg-primary-subtle"></span>
-                                            <span class="d-block p-1 pb-0 bg-primary-subtle"></span>
+                                            <span class="d-block p-1 px-2 pb-0 bg-primary-subtle"></span>
                                         </span>
                                     </span>
                                     <span class="flex-shrink-0">
@@ -732,7 +726,7 @@
                             <div class="form-check sidebar-setting card-radio">
                                 <input class="form-check-input" type="radio" name="data-preloader"
                                     id="preloader-view-custom" value="enable">
-                                <label class="form-check-label p-0 avatar-md w-100" for="preloader-view-custom">
+                                <label class="form-check-label p-0 avatar-md w-100" for="preloader-view-custom"></label>
                                     <span class="d-flex gap-1 h-100">
                                         <span class="flex-shrink-0">
                                             <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
@@ -795,7 +789,7 @@
 
     </div>
     <div class="offcanvas-footer border-top p-3 text-center">
-        <div class="row">
+        <div class="row"></div></div>
             <div class="col-6">
                 <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
             </div>

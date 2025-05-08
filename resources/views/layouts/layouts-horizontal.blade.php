@@ -37,6 +37,19 @@
     <!-- END Right Sidebar -->
 
     @include('layouts.vendor-scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('[data-choices]');
+            elements.forEach(el => {
+                new Choices(el, {
+                    searchEnabled: true,
+                    itemSelectText: '',
+                });
+            });
+        });
+    </script>
+    @yield('script')
 </body>
 
 </html>
+
