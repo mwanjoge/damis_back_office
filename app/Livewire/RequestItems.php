@@ -6,10 +6,11 @@ use App\Models\Service;
 use App\Models\ServiceProvider;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-use PHPUnit\Event\Code\Test;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class RequestItems extends Component
 {
+    use WithFileUploads;
     public $inputs = [['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
     public $services;
     public $servicesInputs = [];

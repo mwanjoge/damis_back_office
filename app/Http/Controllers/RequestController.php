@@ -50,7 +50,7 @@ class RequestController extends Controller
     public function store(StoreRequestRequest $request)
     {
  
-
+        
         try {
             $data = $request->validated();
 
