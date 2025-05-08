@@ -22,7 +22,7 @@
         
             .auth-page-wrapper::before {
                 min-height: 100vh;
-                max-height: 110vh;
+                max-height: 100vh;
                 content: "";
                 position: absolute;
                 inset: 0;
