@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title> @yield('title')| Velzon - Admin & Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico')}}">
     @include('layouts.head-css')
@@ -37,7 +38,7 @@
     <!-- END Right Sidebar -->
 
     @include('layouts.vendor-scripts')
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const elements = document.querySelectorAll('[data-choices]');
             elements.forEach(el => {
@@ -47,7 +48,7 @@
                 });
             });
         });
-    </script>
+    </script> -->
     @yield('script')
 </body>
 

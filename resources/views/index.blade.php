@@ -22,15 +22,23 @@
                 $earningsData[$embassyName][(int)$row->month] = (float)$row->earnings;
             }
         }
+        // Build embassy earnings datasets with meta info for chart tooltips
         $embassyEarningsDatasets = [];
-        foreach($earningsData as $embassy => $data) {
-            $embassyId = $requestsPerEmbassy->firstWhere('embassy.name', $embassy)?->embassy_id;
-            $currency = $embassyCurrencies[$embassyId] ?? 'USD';
+        foreach($requestsPerEmbassy as $embassy) {
+            $embassyId = $embassy->embassy_id;
+            $embassyName = $embassy->embassy->name ?? 'N/A';
+            $currency = $embassy->embassy->countries->first()->currency ?? 'USD';
+            $countryCoverage = $embassy->embassy->countries_count ?? ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
+            $data = array_fill(1, 12, 0);
+            foreach($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
+                $data[(int)$row->month] = (float)$row->earnings;
+            }
             $embassyEarningsDatasets[] = [
-                // No label as requested
                 'data' => array_values($data),
                 'fill' => false,
-                'currency' => $currency
+                'currency' => $currency,
+                'embassy_name' => $embassyName,
+                'country_coverage' => $countryCoverage
             ];
         }
     @endphp
@@ -204,7 +212,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($recentApplications->where('status', 'Completed') as $request)
+                                        @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
                                             <tr>
                                                 <td>{{ $request->member->name ?? 'N/A' }}</td>
                                                 <td>{{ $request->items->first()->service->name ?? 'N/A' }}</td>
@@ -219,53 +227,7 @@
                     </div>
                 </div>
 
-                {{-- Qualitative Embassy Data --}}
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <div class="card shadow h-100">
-                            <div class="card-body">
-                                <h6 class="mb-3">Top 5 Embassies (Qualitative Data)</h6>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped mb-0 align-middle">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="text-nowrap">Embassy</th>
-                                                <th class="text-nowrap">Country Coverage</th>
-                                                <th class="text-nowrap">Requests</th>
-                                                <th class="text-nowrap">Top Service</th>
-                                                <th class="text-nowrap">Earnings</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($countryCoverage->take(5) as $embassy)
-                                                @php
-                                                    $req = $requestsPerEmbassy->firstWhere('embassy_id', $embassy->id);
-                                                    $count = $req->count ?? 0;
-                                                    $earn = $embassyEarningsOverTime->where('embassy_id', $embassy->id)->sum('earnings');
-                                                    $country = $embassy->countries->first();
-                                                    $currency = $country->currency ?? 'USD';
-                                                @endphp
-                                                <tr>
-                                                    <td>{{ $embassy->name }}</td>
-                                                    <td>{{ $embassy->countries_count }}</td>
-                                                    <td>{{ $count }}</td>
-                                                    <td>N/A</td>
-                                                    <td>{{ $earn ? number_format($earn) : 0 }} {{ $currency }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
                 {{-- Charts Section --}}
-              
-
-
                 <div class="row g-4 mb-4">
                     <div class="col-lg-6">
                         <div class="card shadow h-100">
@@ -315,6 +277,49 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Qualitative Embassy Data --}}
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow h-100">
+                            <div class="card-body">
+                                <h6 class="mb-3">Top 5 Embassies (Qualitative Data)</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped mb-0 align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="text-nowrap">Embassy</th>
+                                                <th class="text-nowrap">Country Coverage</th>
+                                                <th class="text-nowrap">Requests</th>
+                                                <th class="text-nowrap">Top Service</th>
+                                                <th class="text-nowrap">Earnings</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(is_iterable($countryCoverage))
+                                            @foreach(collect($countryCoverage)->sortByDesc('requests_count')->take(5) as $embassy)
+                                                <tr>
+                                                    <td>{{ $embassy->name }}</td>
+                                                    <td>{{ $embassy->countries_count }}</td>
+                                                    <td>{{ $embassy->requests_count }}</td>
+                                                    <td>N/A</td>
+                                                    <td>{{ $embassy->earnings ? number_format($embassy->earnings) : 0 }} {{ $embassy->currency ?? 'USD' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="5" class="text-center text-danger">Country coverage data is not available.</td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -452,7 +457,8 @@
                     ...ds,
                     borderColor: `hsl(${idx * 60}, 70%, 50%)`,
                     backgroundColor: `hsl(${idx * 60}, 70%, 80%)`,
-                    label: undefined // Remove label
+                    label: ds.embassy_name,
+                    country_coverage: ds.country_coverage
                 }))
             },
             options: {
@@ -460,9 +466,24 @@
                     legend: { display: false },
                     tooltip: {
                         callbacks: {
+                            title: function(context) {
+                                const embassyName = context[0].dataset.label;
+                                const month = context[0].label;
+                                return `${embassyName} - ${month}`;
+                            },
                             label: function(context) {
-                                const currency = embassyEarningsDatasets[context.datasetIndex].currency || 'USD';
-                                return `Earnings: ${context.parsed.y} ${currency}`;
+                                const currency = context.dataset.currency || 'USD';
+                                const earnings = context.parsed.y;
+                                return `Earnings: ${earnings} ${currency}`;
+                            },
+                            afterLabel: function(context) {
+                                const total = context.dataset.data.reduce((a,b)=>a+b,0);
+                                const currency = context.dataset.currency || 'USD';
+                                const countryCoverage = context.dataset.country_coverage || 0;
+                                return [
+                                    `Total: ${total} ${currency}`,
+                                    `Country Coverage: ${countryCoverage}`
+                                ];
                             }
                         }
                     }

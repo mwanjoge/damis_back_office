@@ -4,7 +4,7 @@
 
     <form action="{{ route('requests.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <!-- @if ($errors->any())
+         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
@@ -12,7 +12,7 @@
     @endforeach
                 </ul>
             </div>
-        @endif -->
+        @endif
         <div class="mb-3 d-flex justify-content-between align-items-center">
             <h2 class="mb-0">Create Request</h2>
         </div>
@@ -71,8 +71,7 @@
                             <span class="invalid-feedback d-block">{{ $message }}</span>
                         @enderror
                     </div>
-                    
-                    
+                           
                     <div class="col-md-6">
                         <label class="form-label">Country</label>
                         <select id="countrySelect" name="country_id" data-choices

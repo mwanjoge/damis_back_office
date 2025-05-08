@@ -38,7 +38,7 @@ class RequestController extends Controller
         $services = \App\Models\Service::query()->select('id', 'name')->get();
         $serviceProviders = \App\Models\ServiceProvider::query()->select('id', 'name')->get();
         $embassies = \App\Models\Embassy::query()->select('id', 'name')->get();
-        $countries = \App\Models\Country::query()->select('id', 'name')->get();
+        $countries = \App\Models\Country::query()->select('id', 'name')->whereNotNull('embassy_id')->get();
         $members = \App\Models\Member::query()->select('id', 'name')->get();
 
         return view('requests.create', compact('services', 'serviceProviders', 'embassies', 'countries', 'members'));
@@ -49,27 +49,33 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
- 
+        //return $request->all();
 
-        try {
+        //try {
             $data = $request->validated();
 
-            // Set a default account_id (e.g., from the authenticated user or the first account)
-            $accountId = \App\Models\Account::query()->where('embassy_id', $data['embassy_id'])->first()->id ?? null;
+            //return $data['request_items'][0]['price'];
+
+            $country = $this->requestService->getCountry( $data['country_id']);
+
+
+            $accountId = \App\Models\Account::query()->where('embassy_id', $country->embassy_id)->first()->id;
             if (!$accountId) {
-                return redirect()->back()->withInput()->withErrors(['embassy_id' => 'Account not found for the specified embassy.']);
+                return redirect()->back()->withInput()->withErrors(['embassy_id' => 'Account not found for the specified embassy.']);    
             }
+
+            $this->requestService->setAccountId($country->id);
 
             $request = $this->requestService->createRequest($data);
             $invoice = $this->requestService->createInvoice($request);
-            $this->requestService->addRequestedItems($request, $data['request_items'], $accountId);
-            $this->requestService->addInvoiceItems($invoice, $request->items, $accountId);
-            
+            $this->requestService->addRequestedItems($request, $data['request_items']);
+            $this->requestService->addInvoiceItems($invoice, $request->requestItems);
+
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
-        }
+        // } catch (\Exception $e) {
+        //     return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
+        // }
     }
 
     /**
@@ -77,9 +83,11 @@ class RequestController extends Controller
      */
     public function show(\App\Models\Request $request)
     {
-        $request->load('items.serviceProvider', 'items.service');
+        $request->load('requestItems.serviceProvider', 'requestItems.service');
+
+        $request->load('embassy', 'member');
         return view('Requests.show', compact('request'));
-      }
+    }
 
     /**
      * Show the form for editing the specified resource.

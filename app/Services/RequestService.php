@@ -10,52 +10,51 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestService{
 
+    public $accountId;
+
     public function createRequest(array $data)
     {
-        $accountId = \App\Models\Account::query()->where('embassy_id', $data['embassy_id'])->first()->id ?? null;
-        if (!$accountId) {
-            return redirect()->back()->withInput()->withErrors(['embassy_id' => 'Account not found for the specified embassy.']);
-        }
+        
+        $country = $this->getCountry($data['country_id']);
 
-        return \App\Models\Request::create([
-            'account_id' => $accountId,
-            'embassy_id' => $data['embassy_id'],
+        return Request::create([
+            'account_id' => $this->getAccountId(),
+            'embassy_id' => $country->embassy_id,
             'member_id' => $data['member_id'],
             'country_id' => $data['country_id'],
             'type' => $data['type'],
             'tracking_number' => \Illuminate\Support\Str::ulid(),
-            'total_cost' => collect($data['request_items'] ?? [])->sum('price'),
+            'total_cost' =>  collect($data['request_items'] ?? [])->sum('price'),
         ]);
 
     }
 
-    public function addRequestedItems(Model|Request $request, array $requestedItems, $accountId = null){
-        foreach ($requestedItems as $item) {
+    public function addRequestedItems(Model|Request $request, array $requestedItems){
+        foreach ($requestedItems as $index => $item) {
+            //dd($item);
             \App\Models\RequestItem::create([
-                'account_id' => $accountId,
+                'account_id' => $this->getAccountId(),
                 'request_id' => $request->id,
                 'service_id' => $item['service_id'],
                 'service_provider_id' => $item['service_provider_id'],
                 'certificate_holder_name' => $item['certificate_holder_name'],
                 'certificate_index_number' => $item['certificate_index_number'] ?? null,
-                'price' => $item['price'] ?? null,
+                'price' => $item['price'] ,
                 'attachment' => $item['attachment'] ?? null,
             ]);
         }
     }
 
-
-
-    public function addInvoiceItems(Model|Invoice $invoice, array $requestedItems, $accountId = null){
+    public function addInvoiceItems(Model|Invoice $invoice, $requestedItems){
+        //dd($requestedItems);
         foreach ($requestedItems as $item) {
             $invoice->generalLineItems()->create([
-                'account_id' => $accountId,
-                'request_id' => $invoice->request_id,
+                'account_id' => $this->getAccountId(),
                 'service_id' => $item->service_id,
                 'service_provider_id' => $item->service_provider_id,
                 'request_item_id' => $item->id,
                 'price' => $item->price,
-                'currency' => $invoice->currency
+                'currency' => $invoice->currency?? 'TZS',
             ]);
         }
     }
@@ -63,17 +62,17 @@ class RequestService{
     public function createInvoice(Model|Request $request, array $requestedItems = [])
     {
         $invoice = new Invoice();
-        $invoice->account_id = $request->account_id;
+        $invoice->account_id = $this->getAccountId();
         $invoice->amount = $request->total_cost;
         $invoice->payable_amount = $request->total_cost;
         $invoice->paid_amount = $request->total_cost;
         $invoice->balance = $request->total_cost;
-        $invoice->status = $request->status;
+        $invoice->status = $request->status?? 'pending';
         $invoice->invoice_date = now();
-        $invoice->ref_no = \Illuminate\Support\Str::random_int(8);
-        $invoice->save();
+        $invoice->ref_no = \Illuminate\Support\Str::random(8);
+        $invoice->member_id = $request->member_id;
 
-        return $invoice;
+        return $request->invoice()->save($invoice);
     }
     public function sendInvoice($invoice)
     {
@@ -86,23 +85,26 @@ class RequestService{
         return Invoice::find($id);
     }
 
-    public function addInvoiceLineItems($invoice, $lineItems)
-    {
-        foreach ($lineItems as $item) {
-            $lineItem = new GeneralLineItem();
-            $lineItem->invoice_id = $invoice->id;
-            $lineItem->description = $item['description'];
-            $lineItem->amount = $item['amount'];
-            $lineItem->save();
-        }
-    }
-
     public function removeInvoiceLineItem($invoice, $lineItemId)
     {
         $lineItem = GeneralLineItem::find($lineItemId);
         if ($lineItem && $lineItem->invoice_id == $invoice->id) {
             $lineItem->delete();
         }
+    }
+
+    public function getCountry(int $countryId)
+    {
+        return \App\Models\Country::find($countryId);
+    }
+
+    public function setAccountId($accountId)
+    {
+        $this->accountId = $accountId;
+    }
+    public function getAccountId()
+    {
+        return $this->accountId;
     }
 
 }
