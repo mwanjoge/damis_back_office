@@ -36,10 +36,10 @@ class RequestController extends Controller
     public function create()
     {
         $services = \App\Models\Service::query()->select('id', 'name')->get();
-        $serviceProviders = \App\Models\ServiceProvider::query()->select('id', 'name');
-        $embassies = \App\Models\Embassy::query()->select('id', 'name');
-        $countries = \App\Models\Country::query()->select('id', 'name');
-        $members = \App\Models\Member::query()->select('id', 'name');
+        $serviceProviders = \App\Models\ServiceProvider::query()->select('id', 'name')->get();
+        $embassies = \App\Models\Embassy::query()->select('id', 'name')->get();
+        $countries = \App\Models\Country::query()->select('id', 'name')->get();
+        $members = \App\Models\Member::query()->select('id', 'name')->get();
 
         return view('requests.create', compact('services', 'serviceProviders', 'embassies', 'countries', 'members'));
     }
