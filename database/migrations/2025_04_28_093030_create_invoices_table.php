@@ -27,7 +27,7 @@ return new class extends Migration
             $table->decimal('amount', 12, 2)->default(0);
             $table->decimal('payable_amount', 12, 2)->default(0);
             $table->decimal('balance', 12, 2)->default(0);
-            $table->decimal('paid', 12, 2)->default(0);
+            $table->decimal('paid_amount', 12, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

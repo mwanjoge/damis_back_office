@@ -1683,7 +1683,7 @@ File: Main Js File
                         sessionStorage.setItem("data-preloader", "enable");
                         document.documentElement.setAttribute("data-preloader", "enable");
                         var preloader = document.getElementById("preloader");
-                        if (pre
+                        if (preloader) {
                             window.addEventListener("load", function () {
                                 preloader.style.opacity = "0";
                                 preloader.style.visibility = "hidden";

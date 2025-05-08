@@ -22,7 +22,7 @@ class StoreRequestRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'embassy_id' => 'required|exists:embassies,id',
+             'embassy_id' => 'nullable|exists:embassies,id',
              'member_id' => 'required|exists:members,id',
              'country_id' => 'required|exists:countries,id',
              'type' => 'required|in:Diaspora,Domestic',

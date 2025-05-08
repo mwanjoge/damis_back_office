@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('certificate_holder_name');
             $table->string('certificate_index_number')->nullable();
             $table->string('attachment')->nullable();
+            $table->decimal('price', 22, 2)->default(0);
+            $table->string('currency')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

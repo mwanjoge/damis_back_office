@@ -13,7 +13,7 @@ class RequestTable extends Component
     public function mount($requests = null)
     {
         $this->status = 'Pending';
-        $this->requests = $requests ?? \App\Models\Request::all();
+        $this->requests = $requests ?? Request::all();
     }
 
     public function setStatus($status)

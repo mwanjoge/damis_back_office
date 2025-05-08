@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('service_provider_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('request_item_id')->nullable()->constrained()->cascadeOnDelete();
             $table->decimal('price', 22, 2)->default(0);
-            $table->string('currency', 10)->default('TZS');
+            $table->string('currency')->default('TZS');
             $table->timestamps();
             $table->softDeletes();
         });

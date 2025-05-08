@@ -9,6 +9,10 @@ class Invoice extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'invoice_date' => 'datetime',
+    ];
+
     public function generalLineItems()
     {
         return $this->morphMany(GeneralLineItem::class, 'lineable');

@@ -7,6 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class GeneralLineItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\GeneralLineItemFactory> */
-    use HasFactory;
+    protected $guarded = [];
 }

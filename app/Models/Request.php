@@ -51,9 +51,9 @@ class Request extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function items()
+    public function requestItems()
     {
-        return $this->hasMany(\App\Models\RequestItem::class, 'request_id');
+        return $this->hasMany(RequestItem::class, 'request_id');
     }
 
     public function invoice()

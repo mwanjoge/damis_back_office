@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.layouts-horizontal')
 @section('title', 'Show Request')
 @section('content')
 <div class="container mt-5 mb-5">
@@ -34,14 +34,79 @@
         <div class="col-lg-7 d-flex flex-column gap-4">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="mb-0">Request Invoice</h6>
+                    <h6 class="mb-0">Invoice Details</h6>
                 </div>
                 <div class="card-body">
-                    <div>
-                        <strong>Invoice Number:</strong> {{ $request->invoice_number ?? '-' }}<br>
-                        <strong>Invoice Date:</strong> {{ $request->invoice_date ?? '-' }}<br>
-                        <strong>Amount:</strong> {{ $request->total_cost }}<br>
-                        <strong>Status:</strong> {{ $request->invoice_status ?? '-' }}
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Invoice No:</strong> {{ $request->invoice?->ref_no ?? '-' }}<br>
+                            <strong>Date:</strong> {{ $request->invoice?->invoice_date?->format('d M, Y') ?? '-' }}<br>
+                            <strong>Payment Status:</strong> <span class="badge bg-{{ $request->invoice?->status == 'paid' ? 'success' : 'warning' }}-subtle text-{{ $request->invoice?->status == 'paid' ? 'success' : 'warning' }} fs-11">{{ ucfirst($request->invoice?->status ?? 'Pending') }}</span><br>
+                            <strong>Total Amount:</strong> {{ number_format($request->total_cost, 2) }} {{ $request->invoice?->currency ?? 'USD' }}
+                        </div>
+                        <div class="col-6 text-end">
+                            @if($request->embassy)
+                                <img src="{{ URL::asset('build/images/logo-dark.png') }}" class="card-logo card-logo-dark mb-2" alt="logo dark" height="17">
+                                <img src="{{ URL::asset('build/images/logo-light.png') }}" class="card-logo card-logo-light mb-2" alt="logo light" height="17">
+                                <div class="text-muted small">
+                                    <div>{{ $request->embassy->name }}</div>
+                                    <div>{{ $request->embassy->country ?? '' }}</div>
+                                     <div>Email: {{ $request->embassy->email ?? '-' }}</div>
+                                    <div>Contact No: {{ $request->embassy->phone ?? '-' }}</div>
+                                </div>
+                            @endif
+                            <div class="mt-2">
+                                <strong>Applicant:</strong> {{ $request->member->name ?? '-' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive mt-4">
+                        <table class="table table-borderless text-center table-nowrap align-middle mb-0">
+                            <thead class="table-active">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Service</th>
+                                    <th>Certificate Holder</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($request->requestItems as $index => $item)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td class="text-start"><strong>{{ $item->service->name ?? '-' }}</strong></td>
+                                        <td>{{ $item->certificate_holder_name }}</td>
+                                        <td>{{ number_format($item->price, 2) }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-muted text-center">No items found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="border-top border-top-dashed mt-3 pt-2">
+                        <table class="table table-borderless table-nowrap align-middle mb-0 ms-auto" style="width:250px">
+                            <tbody>
+                                <tr>
+                                    <td>Total</td>
+                                    <td class="text-end">{{ number_format($request->total_cost, 2) }} {{ $request->invoice?->currency ?? 'USD' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Paid</td>
+                                    <td class="text-end">{{ number_format($request->invoice?->paid_amount ?? 0, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Balance</td>
+                                    <td class="text-end">{{ number_format($request->invoice?->balance ?? 0, 2) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4">
+                        <h6 class="text-muted text-uppercase fw-semibold mb-3">Payment Details:</h6>
+                        <p class="text-muted mb-1">Payment Method: <span class="fw-medium">{{ $request->invoice?->payment_method ?? '-' }}</span></p>
                     </div>
                 </div>
             </div>
@@ -76,7 +141,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($request->items ?? [] as $i => $item)
+                            @foreach($request->requestItems ?? [] as $i => $item)
                             <tr>
                                 <td>{{ $i+1 }}</td>
                                 <td>{{ optional($item->service)->name ?? $item->service_id }}</td>
@@ -93,7 +158,7 @@
                                 </td>
                             </tr>
                             @endforeach
-                            @if(empty($request->items) || count($request->items) == 0)
+                            @if(empty($request->requestItems) || count($request->requestItems) == 0)
                             <tr>
                                 <td colspan="7" class="text-center text-muted">No items found.</td>
                             </tr>
