@@ -3,9 +3,7 @@
     @lang('translation.signin')
 @endsection
 @section('content')
-    <div class="auth-page-wrapper pt-5">
-     
-
+    <div style="overflow-y: hidden; overflow-x: hidden;">
         <!-- auth page content -->
         <div class="auth-page-content">
             <div class="container">
@@ -28,14 +26,13 @@
 
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-6 col-xl-5">
-                        <div class="card mt-1">
-
-                            <div class="card-body p-2">
-                                <div class="text-center mt-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-center">
                                     <h5 class="text-white">Welcome Back !</h5>
                                     <p class="text-muted">Sign in to continue.</p>
                                 </div>
-                                <div class="p-2 mt-4">
+                                <div class="">
                                     <form action="{{ route('login') }}" method="POST">
                                         @csrf
                                         <div class="mb-3">
@@ -102,108 +99,21 @@
         <!-- end auth page content -->
 
         <!-- footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <p class="mb-0 text-muted">&copy;
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script>
-                            </p>
-                        </div>
+        <footer class="footer position-fixed m-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <p class="mb-0 text-muted">&copy;
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                        </p>
                     </div>
                 </div>
             </div>
         </footer>
         <!-- end Footer -->
-        <style>
-            .auth-page-wrapper {
-                background: url('{{ asset('images/flag.png') }}') no-repeat center center fixed;
-                background-size: cover;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                position: relative;
-            }
-        
-            .auth-page-wrapper::before {
-                content: "";
-                position: absolute;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.6); /* dark overlay for readability */
-                z-index: 0;
-            }
-        
-            .auth-page-content {
-                position: relative;
-                z-index: 1;
-            }
-        
-            .card {
-                margin: auto;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            color: #fff;
-            }
-        
-            .btn-success {
-                background-color: #157347; /* Tanzania green */
-                border-color: #157347;
-            }
-        
-            .btn-success:hover {
-                background-color: #105c38;
-                border-color: #105c38;
-            }
-        
-            .footer {
-                z-index: 2;
-                position: relative;
-            }
-
-            .header {
-            z-index: 3;
-            position: relative;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .header .title-area {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .header img {
-            height: 100px;
-        }
-
-        .header-text h1 {
-            font-size: 2rem;
-            margin: 0;
-            font-weight: bold;
-            letter-spacing: 0.3em;
-            color: #ffffff;
-        }
-
-        .header-text p {
-            font-size: 1rem;
-            margin: 0;
-            opacity: 0.9;
-            color: #ffffff;
-        }
-        </style>
+       
         
     </div>
 @endsection
