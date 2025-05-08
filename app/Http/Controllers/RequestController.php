@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
+use App\Services\RequestService;
 use Illuminate\Http\Request;
 
 class RequestController extends Controller
 {
+    public function __construct(protected RequestService $requestService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -56,28 +60,11 @@ class RequestController extends Controller
                 return redirect()->back()->withInput()->withErrors(['embassy_id' => 'Account not found for the specified embassy.']);
             }
 
-            $mainRequest = \App\Models\Request::create([
-                'account_id' => $accountId,
-                'embassy_id' => $data['embassy_id'],
-                'member_id' => $data['member_id'],
-                'country_id' => $data['country_id'],
-                'type' => $data['type'],
-                'tracking_number' => \Illuminate\Support\Str::ulid(),
-                'total_cost' => collect($data['request_items'] ?? [])->sum('price'),
-            ]);
+            $request = $this->requestService->createRequest($data);
+            $invoice = $this->requestService->createInvoice($request);
+            $this->requestService->addRequestedItems($request, $data['request_items'], $accountId);
+            $this->requestService->addInvoiceItems($invoice, $request->items, $accountId);
             
-            foreach ($data['request_items'] ?? [] as $item) {
-                \App\Models\RequestItem::create([
-                    'account_id' => $accountId,
-                    'request_id' => $mainRequest->id,
-                    'service_id' => $item['service_id'],
-                    'service_provider_id' => $item['service_provider_id'],
-                    'certificate_holder_name' => $item['certificate_holder_name'],
-                    'certificate_index_number' => $item['certificate_index_number'] ?? null,
-                    'price' => $item['price'] ?? null,
-                    'attachment' => $item['attachment'] ?? null,
-                ]);
-            }
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
         } catch (\Exception $e) {

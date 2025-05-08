@@ -55,4 +55,9 @@ class Request extends Model
     {
         return $this->hasMany(\App\Models\RequestItem::class, 'request_id');
     }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class);
+    }
 }

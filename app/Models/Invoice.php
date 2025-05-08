@@ -7,6 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    /** @use HasFactory<\Database\Factories\InvoiceFactory> */
-    use HasFactory;
+    protected $guarded = [];
+
+    public function generalLineItems()
+    {
+        return $this->morphMany(GeneralLineItem::class, 'lineable');
+    }
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class);
+    }
+
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }
