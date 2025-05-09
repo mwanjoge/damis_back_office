@@ -8,9 +8,6 @@ use App\Models\ServiceProvider;
 
 class ServiceProviderTable extends Component
 {
-    public $serviceProviders = [];
-    public $services = [];
-
     public $editingId = null;
     public $name;
     public $selectedServices = [];
@@ -22,17 +19,6 @@ class ServiceProviderTable extends Component
         return [
             'name' => 'required|max:5|string|unique:service_providers,name'
         ];
-    }
-
-    public function mount()
-    {
-        $this->loadData();
-    }
-
-    public function loadData()
-    {
-        $this->services = Service::all();
-        $this->serviceProviders = ServiceProvider::with('services')->get()->toArray();
     }
 
     public function openForm($id = null)
@@ -49,7 +35,6 @@ class ServiceProviderTable extends Component
 
     public function updated($propertyName): void
     {
-        //dd($propertyName);
         $this->validateOnly($propertyName, $this->rules());
     }
 
@@ -68,6 +53,9 @@ class ServiceProviderTable extends Component
 
     public function render()
     {
-        return view('livewire.service-provider-table');
+        return view('livewire.service-provider-table', [
+            'serviceProviders' => ServiceProvider::with('services')->paginate(10),
+            'services' => Service::all(),
+        ]);
     }
 }

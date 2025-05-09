@@ -92,7 +92,7 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            ${{ number_format($totalEarnings ?? 0) }}
+                                            {{ number_format($totalEarnings ?? 0) }}
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small">View net earnings</a>
                                     </div>
@@ -215,7 +215,7 @@
                                         @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
                                             <tr>
                                                 <td>{{ $request->member->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->items->first()->service->name ?? 'N/A' }}</td>
+                                                <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
                                                 <td>{{ $request->created_at->format('Y-m-d') }}</td>
                                                 <td><span class="badge bg-primary">{{ $request->status }}</span></td>
                                             </tr>

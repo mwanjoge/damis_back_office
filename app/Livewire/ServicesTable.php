@@ -8,23 +8,9 @@ use App\Models\ServiceProvider;
 
 class ServicesTable extends Component
 {
-    public $services = [];
-    public $serviceProviders = [];
-
     public $editingId = null;
     public $name = '';
     public $selectedProvider = '';
-
-    public function mount()
-    {
-        $this->loadData();
-    }
-
-    public function loadData()
-    {
-        $this->services = Service::with('serviceProvider')->get();
-        $this->serviceProviders = ServiceProvider::all();
-    }
 
     public function openForm($id = null)
     {
@@ -48,6 +34,9 @@ class ServicesTable extends Component
 
     public function render()
     {
-        return view('livewire.services-table');
+        return view('livewire.services-table', [
+            'services' => Service::with('serviceProvider')->paginate(10),
+            'serviceProviders' => ServiceProvider::all(),
+        ]);
     }
 }
