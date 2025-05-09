@@ -12,6 +12,16 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $model = 'department';
+        $this->middleware("permission:view {$model}")->only(['index', 'show']);
+        $this->middleware("permission:create {$model}")->only(['create', 'store']);
+        $this->middleware("permission:edit {$model}")->only(['edit', 'update']);
+        $this->middleware("permission:delete {$model}")->only(['destroy']);
+    }
+
     public function index()
     {
         $departments = Department::all();
@@ -33,9 +43,9 @@ class DepartmentController extends Controller
     {
         try {
             Department::create($request->validated());
-            return redirect()->route('humanresors')->with('success', 'Department created successfully.');
+            return redirect()->route('human_resources')->with('success', 'Department created successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('humanresors')->with('error', 'Failed to create department: ' . $e->getMessage());
+            return redirect()->route('human_resources')->with('error', 'Failed to create department: ' . $e->getMessage());
         }
     }
 
@@ -62,9 +72,9 @@ class DepartmentController extends Controller
     {
         try {
             $department->update($request->validated());
-            return redirect()->route('humanresors')->with('success', 'Department updated successfully.');
+            return redirect()->route('human_resources')->with('success', 'Department updated successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('humanresors')->with('error', 'Failed to update department: ' . $e->getMessage());
+            return redirect()->route('human_resources')->with('error', 'Failed to update department: ' . $e->getMessage());
         }
     }
 
@@ -75,9 +85,9 @@ class DepartmentController extends Controller
     {
         try {
             $department->delete();
-            return redirect()->route('humanresors')->with('success', 'Department deleted successfully.');
+            return redirect()->route('human_resources')->with('success', 'Department deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('humanresors')->with('error', 'Failed to delete department: ' . $e->getMessage());
+            return redirect()->route('human_resources')->with('error', 'Failed to delete department: ' . $e->getMessage());
         }
     }
 }

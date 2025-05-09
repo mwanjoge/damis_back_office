@@ -1,7 +1,7 @@
 <!-- Role Modal -->
 <div class="modal fade" id="roleModal" tabindex="-1" aria-labelledby="roleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <form id="roleForm" method="POST" action="#">
+      <form id="roleForm" method="POST" action="{{ route('roles.store') }}">
           @csrf
           <input type="hidden" name="_method" id="_method_field" value="POST">
           <input type="hidden" name="role_id" id="roleId" value="">

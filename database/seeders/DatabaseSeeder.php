@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
             ServiceProviderSeeder::class,
             //MemberSeeder::class,
             CountrySeeder::class,
+            PermissionSeeder::class,
             //RequestSeeder::class, // Requests last!
         ]);
     }

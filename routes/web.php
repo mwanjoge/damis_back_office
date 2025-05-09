@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceProviderController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\RoleController;
 
 Auth::routes();
 
@@ -45,17 +46,26 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings', function () {
         return view('settings');
     })->name('settings');
-    Route::get('humanresors', function () {
-        return view('humanresources');
-    })->name('humanresors');
-    Route::get('/authentication', [HomeController::class, 'authenticationIndex'])->name('authentication');
+    Route::get('human_resources', function () {
+        return view('human_resources');
+    })->name('human_resources');
+
+
+
 
     Route::get('/embassies/{id}', [HomeController::class, 'showEmbassy'])->name('embassies.show');
-Route::get('/requestItem', RequestItems::class);
+    Route::get('/requestItem', RequestItems::class);
     // routes/web.php
     // Remove duplicate /roles route
-    Route::get('/roles', [HomeController::class, 'rolesIndex'])->name('roles.index');
-    Route::get('/roles/{id}', [HomeController::class, 'show'])->name('roles.show');
+
+    Route::get('/roles', [RoleController::class, 'rolesIndex'])->name('roles.index');
+    Route::get('/roles/{id}', [RoleController::class, 'show'])->name('roles.show');
+    Route::get('/authentication', [RoleController::class, 'authenticationIndex'])->name('authentication');
+    Route::post('/roles', [RoleController::class, 'createRole'])->name('roles.store');
+    Route::put('/roles/{role}', [RoleController::class, 'updateRole'])->name('roles.update');
+    Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.update-permissions');
+    Route::post('/users/assign-role', [RoleController::class, 'assignRole'])->name('users.assignRole');
+
 
     // Route::get('/embassies/{id}', [EmbassyController::class, 'show'])->name('embassies.show');
     // Route::post('/embassies/{id}/accredit-country', [EmbassyController::class, 'accreditCountry'])->name('embassies.accreditCountry');
