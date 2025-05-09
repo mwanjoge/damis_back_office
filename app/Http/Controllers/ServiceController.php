@@ -13,6 +13,15 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $model = 'service';
+        $this->middleware("permission:view {$model}")->only(['index', 'show']);
+        $this->middleware("permission:create {$model}")->only(['create', 'store']);
+        $this->middleware("permission:edit {$model}")->only(['edit', 'update']);
+        $this->middleware("permission:delete {$model}")->only(['destroy']);
+    }
+
     public function index()
     {
         //

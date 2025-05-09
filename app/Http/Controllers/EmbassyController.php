@@ -13,9 +13,15 @@ use App\Http\Requests\UpdateEmbassyRequest;
 class EmbassyController extends Controller
 {
 
-    public function __construct(protected EmbassyService $embassyService)
+    public function __construct()
     {
+        $model = 'embassy';
+        $this->middleware("permission:view {$model}")->only(['index', 'show']);
+        $this->middleware("permission:create {$model}")->only(['create', 'store']);
+        $this->middleware("permission:edit {$model}")->only(['edit', 'update']);
+        $this->middleware("permission:delete {$model}")->only(['destroy']);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -39,28 +45,28 @@ class EmbassyController extends Controller
     {
         $request->validated();
         DB::beginTransaction();
-    
+
         try {
             $embassy = $this->embassyService->create($request);
             $account = $this->embassyService->createAccount($request);
             $embassy->account()->save($account);
-    
+
             $this->embassyService->attachCountries($embassy, $request);
 
             DB::commit();
-                
+
             event(new EmbassyCreated($embassy));
             session()->flash('success', 'Emmbassy created successfully!');
-      
-       return redirect()->route('settings');
+
+            return redirect()->route('settings');
         } catch (\Exception $e) {
             DB::rollBack();
-    
+
             // Log error for debugging
             Log::error('Failed to store embassy: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
-    
+
             // Return failure response
             return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create embassy: ' . $e->getMessage()]);
         } catch (\Exception $e) {
@@ -68,12 +74,12 @@ class EmbassyController extends Controller
             session()->flash('error', 'Something went wrong!');
             // Optionally, you can log the error message for debugging
             return redirect()->route('settings');
-       
+
             // // Log error for debugging
             // Log::error('Failed to store embassy: ' . $e->getMessage(), [
             //     'trace' => $e->getTraceAsString()
             // ]);
-    
+
             // // Return failure response
             // return response()->json([
             //     'error' => 'Failed to store embassy',
@@ -81,7 +87,7 @@ class EmbassyController extends Controller
             // ], 500);
         }
     }
-    
+
 
     /**
      * Display the specified resource.

@@ -33,9 +33,9 @@ class DesignationController extends Controller
         try {
             $data = $request->validated();
             Designation::create($data);
-            return redirect()->route('human_resors')->with('success', 'Designation created successfully.');
+            return redirect()->route('human_resources')->with('success', 'Designation created successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('human_resors')->with('error', 'Failed to create designation: ' . $e->getMessage());
+            return redirect()->route('human_resources')->with('error', 'Failed to create designation: ' . $e->getMessage());
         }
     }
 
@@ -63,9 +63,9 @@ class DesignationController extends Controller
         try {
             $data = $request->validated();
             $designation->update($data);
-            return redirect()->route('human_resors')->with('success', 'Designation updated successfully.');
+            return redirect()->route('human_resources')->with('success', 'Designation updated successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('human_resors')->with('error', 'Failed to update designation: ' . $e->getMessage());
+            return redirect()->route('human_resources')->with('error', 'Failed to update designation: ' . $e->getMessage());
         }
     }
 
@@ -76,9 +76,9 @@ class DesignationController extends Controller
     {
         try {
             $designation->delete();
-            return redirect()->route('human_resors')->with('success', 'Designation deleted successfully.');
+            return redirect()->route('human_resources')->with('success', 'Designation deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('human_resors')->with('error', 'Failed to delete designation: ' . $e->getMessage());
+            return redirect()->route('human_resources')->with('error', 'Failed to delete designation: ' . $e->getMessage());
         }
     }
 }

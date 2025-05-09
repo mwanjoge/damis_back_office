@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@include('modal.alert')
 @section('content')
     <div class="row">
         <div class="col-xxl-9 pt-4">

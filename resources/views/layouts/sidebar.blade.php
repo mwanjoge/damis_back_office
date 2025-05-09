@@ -52,8 +52,8 @@
                         <i class="las la-flask"></i> <span>Settings</span>
                     </a>
                 </li>
-                <li class="nav-item {{ Request::is('human_resors*')?'active':'' }}">
-                    <a class="nav-link menu-link {{ Request::is('human_resors*')?'active':'' }}" href="/human_resors">
+                <li class="nav-item {{ Request::is('human_resources*')?'active':'' }}">
+                    <a class="nav-link menu-link {{ Request::is('human_resources*')?'active':'' }}" href="/human_resources">
                         <i class="las la-flask"></i> <span>HR</span>
                     </a>
                 </li>
