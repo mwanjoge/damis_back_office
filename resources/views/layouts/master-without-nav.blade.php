@@ -37,7 +37,7 @@
         
             .card {
                 margin: auto;
-                padding: 40px;
+                padding: 20px;
                 background: rgba(255, 255, 255, 0.1);
                 border-radius: 12px;
                 backdrop-filter: blur(10px);
@@ -79,14 +79,15 @@
         }
 
         .header img {
-            height: 100px;
+            height: 70px;
+            width: 20%;
         }
 
         .header-text h1 {
             font-size: 2rem;
             margin: 0;
             font-weight: bold;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.2em;
             color: #ffffff;
         }
 
