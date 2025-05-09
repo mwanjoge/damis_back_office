@@ -215,7 +215,7 @@
                                         @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
                                             <tr>
                                                 <td>{{ $request->member->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->items->first()->service->name ?? 'N/A' }}</td>
+                                                <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
                                                 <td>{{ $request->created_at->format('Y-m-d') }}</td>
                                                 <td><span class="badge bg-primary">{{ $request->status }}</span></td>
                                             </tr>

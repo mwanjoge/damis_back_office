@@ -77,7 +77,7 @@ class CacheDashboardStatistics extends Command
         \Log::info('Top Embassies:', $topEmbassies->toArray());
 
         // Recent Applications (10 most recent)
-        $recentApplications = Request::with(['member', 'items.service', 'embassy'])
+        $recentApplications = Request::with(['member', 'requestItems.service', 'embassy'])
             ->where('status', 'Completed')
             ->latest()
             ->take(10)
