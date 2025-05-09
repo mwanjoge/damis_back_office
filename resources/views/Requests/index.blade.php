@@ -11,7 +11,8 @@
         <div class="col-md-9">
             <div class="card h-100 mb-5">
                 <div class="card-body">
-                    @livewire('request-table', ['requests' => $requests])
+                    @livewire('request-search-filter')
+                    @livewire('request-table')
                 </div>
             </div>
         </div>

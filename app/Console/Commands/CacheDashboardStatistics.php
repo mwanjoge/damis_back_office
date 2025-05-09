@@ -10,6 +10,7 @@ use App\Models\ServiceProvider;
 use App\Models\Service;
 use App\Models\Embassy;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CacheDashboardStatistics extends Command
 {
@@ -66,16 +67,35 @@ class CacheDashboardStatistics extends Command
             ->pluck('count', 'month');
         \Log::info('Monthly Requests:', $monthlyRequests->toArray());
 
-        // Top 5 Embassies (by number of requests, highest to lowest)
-        $topEmbassies = Request::select('embassy_id')
-            ->selectRaw('COUNT(*) as count')
-            ->groupBy('embassy_id')
-            ->orderByDesc('count')
+   
+        // Top 5 Embassies with earnings, requests, top service, and country coverage
+        $topEmbassies = Request::select('embassy_id',
+                DB::raw('COUNT(*) as total_requests'),
+                DB::raw('SUM(total_cost) as earnings')
+            )
             ->with(['embassy.countries'])
+            ->groupBy('embassy_id')
+            ->having('total_requests', '>', 0)
+            ->orderByDesc('total_requests')
             ->take(5)
-            ->get();
-        \Log::info('Top Embassies:', $topEmbassies->toArray());
-
+            ->get()
+            ->map(function($row) {
+                $embassy = $row->embassy;
+                $row->embassy_name = $embassy ? $embassy->name : '-';
+                $row->country_coverage = $embassy && $embassy->countries ? $embassy->countries->count() : 0;
+                // Find top service for this embassy
+                $topService = \App\Models\RequestItem::whereHas('request', function($q) use ($row) {
+                    $q->where('embassy_id', $row->embassy_id);
+                })
+                ->select('service_id', DB::raw('COUNT(*) as count'))
+                ->groupBy('service_id')
+                ->orderByDesc('count')
+                ->first();
+                $row->top_service = $topService && $topService->service ? $topService->service->name : '-';
+                return $row;
+            });
+        
+      
         // Recent Applications (10 most recent)
         $recentApplications = Request::with(['member', 'requestItems.service', 'embassy'])
             ->where('status', 'Completed')

@@ -286,33 +286,33 @@
                                 <h6 class="mb-3">Top 5 Embassies (Qualitative Data)</h6>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped mb-0 align-middle">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="text-nowrap">Embassy</th>
-                                                <th class="text-nowrap">Country Coverage</th>
-                                                <th class="text-nowrap">Requests</th>
-                                                <th class="text-nowrap">Top Service</th>
-                                                <th class="text-nowrap">Earnings</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        @if(is_iterable($countryCoverage))
-                                            @foreach(collect($countryCoverage)->sortByDesc('requests_count')->take(5) as $embassy)
-                                                <tr>
-                                                    <td>{{ $embassy->name }}</td>
-                                                    <td>{{ $embassy->countries_count }}</td>
-                                                    <td>{{ $embassy->requests_count }}</td>
-                                                    <td>N/A</td>
-                                                    <td>{{ $embassy->earnings ? number_format($embassy->earnings) : 0 }} {{ $embassy->currency ?? 'USD' }}</td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan="5" class="text-center text-danger">Country coverage data is not available.</td>
-                                            </tr>
-                                        @endif
-                                        </tbody>
-                                    </table>
+                       
+    <thead>
+        <tr>
+            <th>Embassy</th>
+            <th>Country Coverage</th>
+            <th>Requests</th>
+            <th>Top Service</th>
+            <th>Earnings</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($topEmbassies as $embassyRequest)
+            @php $embassy = $embassyRequest->embassy; @endphp
+            <tr>
+                <td>{{ $embassy->name }}</td>
+                <td>
+                    @foreach($embassy->countries as $country)
+                        {{ $country->name }}@if(!$loop->last), @endif
+                    @endforeach
+                </td>
+                <td>{{ $embassy->total_requests }}</td>
+                <td>{{ $embassy->top_service }}</td>
+                <td>${{ number_format($embassy->total_earnings, 2) }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+
                                 </div>
                             </div>
                         </div>
