@@ -10,7 +10,6 @@ use App\Http\Controllers\EmbassyController;
 
 class EmbassiesTable extends Component
 {
-    public $embassies;
     public $countries = [];
     public $editingId = null;
     public $name;
@@ -22,7 +21,6 @@ class EmbassiesTable extends Component
 
     public function mount()
     {
-        $this->embassies = Embassy::all();
         $this->loadEmbassies();
     }
 
@@ -34,7 +32,6 @@ class EmbassiesTable extends Component
     public function openForm($id = null)
     {
 
-        dd($id);
         if ($id) {
             $embassy = Embassy::findOrFail($id);
             $this->editingId = $embassy->id;
@@ -51,7 +48,8 @@ class EmbassiesTable extends Component
     public function render()
     {
         return view('livewire.embassies-table', [
-            'embassies' => $this->embassies,
+            'embassies' => Embassy::paginate(10),
+            'countries' => $this->countries,
         ]);
     }
 }

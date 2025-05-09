@@ -77,42 +77,44 @@
                         @endif
                         <input type="hidden" name="_method" id="employeeMethod">
                         <input type="hidden" name="id" id="employeeId">
-                        <div class="mb-3">
-                            <label class="form-label">First Name</label>
-                            <input type="text" name="first_name" id="employeeFirstName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Last Name</label>
-                            <input type="text" name="last_name" id="employeeLastName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" id="employeeEmail" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Department</label>
-                            <select name="depertment_id" id="employeeDepartmentId" data-choices class="form-select " required>
-                                <option value="">Select Department</option>
-                                @foreach ($departments as $department)
-                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Designation</label>
-                            <select name="designation_id" id="employeeDesignationId" data-choices class="form-select ">
-                                <option value="">Select Designation</option>
-                                @foreach ($designations as $designation)
-                                    <option value="{{ $designation->id }}">{{ $designation->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select name="is_active" id="employeeStatus" class="form-select" required>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
+                        <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="mb-3">
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="first_name" id="employeeFirstName" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="last_name" id="employeeLastName" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" id="employeeEmail" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Department</label>
+                                <select name="depertment_id" id="employeeDepartmentId" data-choices class="form-select " required>
+                                    <option value="">Select Department</option>
+                                    @foreach ($departments as $department)
+                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Designation</label>
+                                <select name="designation_id" id="employeeDesignationId" data-choices class="form-select ">
+                                    <option value="">Select Designation</option>
+                                    @foreach ($designations as $designation)
+                                        <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="is_active" id="employeeStatus" class="form-select" required>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="hstack gap-2 justify-content-center mt-4">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>

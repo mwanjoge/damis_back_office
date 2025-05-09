@@ -114,4 +114,10 @@ class EmbassyController extends Controller
     {
         //
     }
+
+    public function settings()
+    {
+        $embassies = Embassy::with('account')->get();
+        return view('settings', compact('embassies'));
+    }
 }

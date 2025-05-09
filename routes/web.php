@@ -45,9 +45,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings', function () {
         return view('settings');
     })->name('settings');
-    Route::get('humanresors', function () {
-        return view('humanresources');
-    })->name('humanresors');
+    Route::get('human_resors', function () {
+        return view('human_resources');
+    })->name('human_resors');
     Route::get('/authentication', [HomeController::class, 'authenticationIndex'])->name('authentication');
 
     Route::get('/embassies/{id}', [HomeController::class, 'showEmbassy'])->name('embassies.show');

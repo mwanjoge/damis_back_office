@@ -33,9 +33,9 @@ class DepartmentController extends Controller
     {
         try {
             Department::create($request->validated());
-            return redirect()->route('humanresors')->with('success', 'Department created successfully.');
+            return redirect()->route('human_resors')->with('success', 'Department created successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('humanresors')->with('error', 'Failed to create department: ' . $e->getMessage());
+            return redirect()->route('human_resors')->with('error', 'Failed to create department: ' . $e->getMessage());
         }
     }
 
@@ -62,9 +62,9 @@ class DepartmentController extends Controller
     {
         try {
             $department->update($request->validated());
-            return redirect()->route('humanresors')->with('success', 'Department updated successfully.');
+            return redirect()->route('human_resors')->with('success', 'Department updated successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('humanresors')->with('error', 'Failed to update department: ' . $e->getMessage());
+            return redirect()->route('human_resors')->with('error', 'Failed to update department: ' . $e->getMessage());
         }
     }
 
@@ -75,9 +75,9 @@ class DepartmentController extends Controller
     {
         try {
             $department->delete();
-            return redirect()->route('humanresors')->with('success', 'Department deleted successfully.');
+            return redirect()->route('human_resors')->with('success', 'Department deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('humanresors')->with('error', 'Failed to delete department: ' . $e->getMessage());
+            return redirect()->route('human_resors')->with('error', 'Failed to delete department: ' . $e->getMessage());
         }
     }
 }
