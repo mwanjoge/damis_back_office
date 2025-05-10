@@ -57,74 +57,12 @@
         </div>
     </div>
 
-    <!-- Mission Modal -->
-    <div wire:ignore.self class="modal fade mission-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form id="missionForm" method="post">
-                    @csrf
-                    <div class="modal-header text-center">
-                        <h4 id="missionModalTitle">Add New Mission</h4>
-                    </div>
-
-                    <div class="modal-body px-5">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        <input type="hidden" name="_method" id="missionMethod">
-                        <input type="hidden" name="id" id="missionId">
-
-                        <div class="mb-3">
-                            <label class="form-label">Mission Name</label>
-                            <input type="text" name="name" id="missionName" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Type</label>
-                            <select name="type" id="missionType" class="form-select" required>
-                                <option value="Embassy">Embassy</option>
-                                <option value="Permanent Mission">Permanent Mission</option>
-                                <option value="High Commission">High Commission</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select name="is_active" id="missionStatus" class="form-select" required>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
-
-                        <p class="mt-4">Accredited Countries</p>
-                        <select name="country_id[]" class="js-example-basic-multiple form-select" multiple required>
-                            @foreach ($countries as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-
-
-
-                        <div class="hstack gap-2 justify-content-center mt-4">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save Mission</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <script>
         function openMissionModal(data = {}) {
-            document.getElementById('missionModalTitle').innerText = data.id ? 'Edit Mission' : 'Add New Mission';
-            document.getElementById('missionMethod').value = data.id ? 'PUT' : 'POST';
+            const isEdit = !!data.id;
+            document.getElementById('missionModalTitle').innerText =isEdit ? 'Edit Mission' : 'Add New Mission';
+            document.getElementById('missionMethod').value = isEdit ? 'PUT' : 'POST';
             document.getElementById('missionId').value = data.id || '';
             document.getElementById('missionName').value = data.name || '';
             document.getElementById('missionType').value = data.type || 'Embassy';

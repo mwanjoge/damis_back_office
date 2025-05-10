@@ -65,8 +65,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'updateRole'])->name('roles.update');
     Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.update-permissions');
     Route::post('/users/assign-role', [RoleController::class, 'assignRole'])->name('users.assignRole');
-
-
+Route::get('/tables', function () {
+    return view('tables');
+})->name('tables');
     // Route::get('/embassies/{id}', [EmbassyController::class, 'show'])->name('embassies.show');
     // Route::post('/embassies/{id}/accredit-country', [EmbassyController::class, 'accreditCountry'])->name('embassies.accreditCountry');
     // Route::delete('/embassies/{embassy}/country/{country}', [EmbassyController::class, 'removeCountry'])->name('embassies.removeCountry');

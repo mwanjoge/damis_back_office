@@ -40,31 +40,31 @@
                 <div class="tab-content">
                     <!-- Accounts -->
                     <div class="tab-pane fade" id="tab-accounts" role="tabpanel" wire:ignore.self>
-                        <!-- @livewire('account-search-filter') -->
+                     
                         @livewire('accounts-table')
                     </div>
 
                     <!-- Mission -->
                     <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel" wire:ignore.self>
-                        <!-- @livewire('embassy-search-filter') -->
+                    
                         @livewire('embassies-table')
                     </div>
 
                     <!-- Countries -->
                     <div class="tab-pane fade" id="tab-countries" role="tabpanel" wire:ignore.self>
-                        <!-- @livewire('country-search-filter') -->
+                      
                         @livewire('countries-table')
                     </div>
 
                     <!-- Service Providers -->
                     <div class="tab-pane fade" id="tab-service-provider" role="tabpanel" wire:ignore.self>
-                        <!-- @livewire('service-provider-search-filter') -->
+                      
                         @livewire('service-provider-table')
                     </div>
 
                     <!-- Services -->
                     <div class="tab-pane fade" id="tab-services" role="tabpanel" wire:ignore.self>
-                        <!-- @livewire('service-search-filter') -->
+                    
                         @livewire('services-table')
                     </div>
                 </div>

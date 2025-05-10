@@ -1,12 +1,20 @@
 @extends('layouts.master')
-@section('title')
-    @lang('translation.dashboards')
-@endsection
+@section('title') @lang('translation.datatables') @endsection
 @section('css')
-    <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
+<!--datatable css-->
+<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+<!--datatable responsive css-->
+<link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
+@component('components.breadcrumb')
+@slot('li_1') Tables @endslot
+@slot('title')Datatables @endslot
+@endcomponent
+
     @php
         $months = collect(range(1,12))->map(function($m){ return DateTime::createFromFormat('!m', $m)->format('M'); });
         $embassyNames = $requestsPerEmbassy->pluck('embassy.name', 'embassy_id');
@@ -199,20 +207,22 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <div class="card shadow h-100">
-                            <div class="card-body">
-                                <h6 class="mb-3">Recent Applications</h6>
-                                <table class="table table-bordered table-striped mb-0 align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="text-nowrap">Member</th>
+                           <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Recent Applications</h5>
+            </div>
+            <div class="card-body">
+                <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="text-nowrap">Member</th>
                                             <th class="text-nowrap">Service</th>
                                             <th class="text-nowrap">Date</th>
                                             <th class="text-nowrap">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                        </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
                                             <tr>
                                                 <td>{{ $request->member->name ?? 'N/A' }}</td>
                                                 <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
@@ -220,10 +230,10 @@
                                                 <td><span class="badge bg-primary">{{ $request->status }}</span></td>
                                             </tr>
                                         @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
                     </div>
                 </div>
 
@@ -281,21 +291,22 @@
                 {{-- Qualitative Embassy Data --}}
                 <div class="row mb-4">
                     <div class="col-12">
-                        <div class="card shadow h-100">
-                            <div class="card-body">
-                                <h6 class="mb-3">Top 5 Highest Earning Embassies</h6>
-                                <div class="table-responsive">
-                                    <table id="embassy-earnings-table" class="table table-bordered table-striped mb-0 align-middle">
-                                        <thead>
-                                            <tr>
+                     <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Top 5 Highest Earning Embassies</h5>
+            </div>
+            <div class="card-body">
+                <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
                                                 <th>Embassy</th>
                                                 <th>Top Service</th>
                                                 <th>Requests</th>
                                                 <th>Earnings</th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($topEmbassies as $embassy)
+                    </thead>
+                    <tbody>
+                        @foreach($topEmbassies as $embassy)
                                                 <tr>
                                                     <td>{{ $embassy->name }}</td>
                                                     <td>{{ $embassy->top_service ?? '-' }}</td>
@@ -303,11 +314,11 @@
                                                     <td>${{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
                                                 </tr>
                                             @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+                          
                     </div>
                 </div>
 
@@ -554,6 +565,22 @@
     <!-- dashboard init -->
     <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
+
+<script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
 
 @section('script')
@@ -565,7 +592,7 @@
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
-    </script>
+    </scrip>
 @endsection
 
 @section('script')
@@ -588,7 +615,21 @@
         });
     </script>
 @endsection
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
+
+<script src="{{ URL::asset('build/js/app.js') }}"></script>
 {{-- 
     PERFORMANCE NOTE:
     The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being negligible.

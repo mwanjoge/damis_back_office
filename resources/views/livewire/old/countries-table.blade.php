@@ -1,3 +1,4 @@
+@include('modal.alert')
 <div class="tab-pane px-4" id="embassy" role="tabpanel">
     <div class="text-end pb-4">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".countries-modal" wire:click="openForm">
