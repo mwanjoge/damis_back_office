@@ -28,16 +28,19 @@
                     <div class="tab-content">
                         <!-- Mission -->
                         <div class="tab-pane fade show active" id="tab-department" role="tabpanel" wire:ignore.self>
+                       
                             @livewire('department-table')
                         </div>
 
                         <!-- Countries -->
                         <div class="tab-pane fade" id="tab-designation" role="tabpanel" wire:ignore.self>
+                           
                             @livewire('designation-table')
                         </div>
 
                         <!-- Service Providers -->
                         <div class="tab-pane fade" id="tab-employee" role="tabpanel" wire:ignore.self>
+                      
                             @livewire('employee-table')
                         </div>
                     </div>
