@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('embassies', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->enum('type', ['Embassy', 'Permanent Mission', 'High Commission' ]);
             $table->boolean('is_active')->default(true);
             $table->boolean('synced')->default(false);

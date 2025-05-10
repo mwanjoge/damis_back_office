@@ -13,6 +13,18 @@ class EmbassySeeder extends Seeder
      */
     public function run(): void
     {
+        $request = [
+            "name" => "Ministry of Foreign Affairs And East African Cooperation",
+            "country_id" => 172,
+            "type" => "Embassy",
+        ];
+
+        $embassy = Embassy::create($request);
+
+        $embassy->account()->save(\App\Models\Account::create([
+            'name' => $request['name'],
+            'has_depertment' => false,
+        ]));
 
         // Load CSV file
         $csv = Reader::createFromPath(base_path('database/seeders/data/missions.csv'), 'r');

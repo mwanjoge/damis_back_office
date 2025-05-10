@@ -14,6 +14,7 @@ use App\Http\Controllers\RoleController;
 
 Auth::routes();
 
+
 Route::middleware(['auth'])->group(function () {
     //Route::post('embassy/update/{id}', [EmbassyController::class,'update'])->name('embassy.update');
     Route::resource('embassy', EmbassyController::class)->names('embassy');
