@@ -147,7 +147,6 @@ class CacheDashboardStatistics extends Command
             'embassyEarningsOverTime' => $embassyEarningsOverTime,
             'providerStats' => $providerStats,
             'countryCoverage' => $countryCoverage,
-        ], now()->addMinutes(5));
-        \Log::info('CacheDashboardStatistics ran and cached data.');
-    }
+        ], now());
+         }
 }
