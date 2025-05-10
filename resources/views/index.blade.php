@@ -283,41 +283,36 @@
                     <div class="col-12">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6 class="mb-3">Top 5 Embassies (Qualitative Data)</h6>
+                                <h6 class="mb-3">Top 5 Highest Earning Embassies</h6>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped mb-0 align-middle">
-                       
-    <thead>
-        <tr>
-            <th>Embassy</th>
-            <th>Country Coverage</th>
-            <th>Requests</th>
-            <th>Top Service</th>
-            <th>Earnings</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($topEmbassies as $embassyRequest)
-            @php $embassy = $embassyRequest->embassy; @endphp
-            <tr>
-                <td>{{ $embassy->name }}</td>
-                <td>
-                    @foreach($embassy->countries as $country)
-                        {{ $country->name }}@if(!$loop->last), @endif
-                    @endforeach
-                </td>
-                <td>{{ $embassy->total_requests }}</td>
-                <td>{{ $embassy->top_service }}</td>
-                <td>${{ number_format($embassy->total_earnings, 2) }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-
+                                    <table id="embassy-earnings-table" class="table table-bordered table-striped mb-0 align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Embassy</th>
+                                                <th>Top Service</th>
+                                                <th>Requests</th>
+                                                <th>Earnings</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($topEmbassies as $embassy)
+                                                <tr>
+                                                    <td>{{ $embassy->name }}</td>
+                                                    <td>{{ $embassy->top_service ?? '-' }}</td>
+                                                    <td>{{ $embassy->total_requests ?? 0 }}</td>
+                                                    <td>${{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {{-- Qualitative Request Data --}}
+                {{-- Removed Top 5 Highest Earning Requests table as requested --}}
 
 
             </div>
@@ -434,6 +429,7 @@
         // Service Provider Activity (by services count)
         const providerLabels = @json($providerStats->pluck('name'));
         const providerData = @json($providerStats->pluck('services_count'));
+        const providerEarnings = @json($providerStats->pluck('earnings'));
         new Chart(document.getElementById('providerStatsChart'), {
             type: 'bar',
             data: {
@@ -443,6 +439,23 @@
                     data: providerData,
                     backgroundColor: '#f6c23e',
                 }]
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                return providerLabels[context[0].dataIndex] || '';
+                            },
+                            afterBody: function(context) {
+                                const idx = context[0].dataIndex;
+                                const earnings = providerEarnings[idx] ?? 0;
+                                return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
+                            }
+                        }
+                    },
+                    legend: { display: false }
+                }
             }
         });
 
@@ -490,6 +503,48 @@
                 }
             }
         });
+
+        // Provider Earnings Stacked Bar Chart
+        const providerStackedLabels = @json($providerStats->pluck('name'));
+        // Group earnings by currency for each provider
+        const currencySet = Array.from(new Set(@json($providerStats->pluck('currency'))));
+        const earningsByProviderAndCurrency = providerStackedLabels.map((provider, idx) => {
+            const providerObj = @json($providerStats)[idx];
+            const earnings = {};
+            currencySet.forEach(currency => {
+                earnings[currency] = providerObj.currency === currency ? providerObj.earnings : 0;
+            });
+            return earnings;
+        });
+        const datasets = currencySet.map((currency, idx) => ({
+            label: currency,
+            data: earningsByProviderAndCurrency.map(e => e[currency]),
+            backgroundColor: `hsl(${idx * 60}, 70%, 60%)`,
+        }));
+        new Chart(document.getElementById('providerEarningsStackedChart'), {
+            type: 'bar',
+            data: {
+                labels: providerStackedLabels,
+                datasets: datasets
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: $${Number(context.parsed.y).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                            }
+                        }
+                    },
+                    legend: { position: 'top' }
+                },
+                responsive: true,
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true }
+                }
+            }
+        });
     </script>
 <!-- apexcharts -->
     <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
@@ -499,6 +554,39 @@
     <!-- dashboard init -->
     <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
+@endsection
+
+@section('script')
+    @parent
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+@endsection
+
+@section('script')
+    @parent
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('table').each(function() {
+                $(this).DataTable({
+                    pageLength: 5,
+                    order: [], // No default ordering, let user sort
+                    language: {
+                        search: 'Filter:',
+                        searchPlaceholder: 'Type to filter...'
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
 
 {{-- 

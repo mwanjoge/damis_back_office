@@ -9,7 +9,7 @@
         </div>
 
         <div class="table-responsive table-card">
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+            <table id="embassies-table" class="table table-borderless table-centered align-middle table-nowrap mb-0">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
@@ -163,3 +163,21 @@
         }
     </script>
 </div>
+
+@push('scripts')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('#embassies-table').DataTable({
+                pageLength: 10,
+                order: [],
+                language: {
+                    search: 'Filter:',
+                    searchPlaceholder: 'Type to filter...'
+                }
+            });
+        });
+    </script>
+@endpush

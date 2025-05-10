@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-centered align-middle table-nowrap mb-0">
+                <table id="requests-table" class="table table-bordered table-striped table-centered align-middle table-nowrap mb-0">
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
@@ -73,3 +73,21 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('#requests-table').DataTable({
+                pageLength: 10,
+                order: [],
+                language: {
+                    search: 'Filter:',
+                    searchPlaceholder: 'Type to filter...'
+                }
+            });
+        });
+    </script>
+@endpush

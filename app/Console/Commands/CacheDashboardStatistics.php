@@ -68,32 +68,36 @@ class CacheDashboardStatistics extends Command
         \Log::info('Monthly Requests:', $monthlyRequests->toArray());
 
    
-        // Top 5 Embassies with earnings, requests, top service, and country coverage
+        // Top 5 Embassies with earnings, requests, and top service
         $topEmbassies = Request::select('embassy_id',
                 DB::raw('COUNT(*) as total_requests'),
                 DB::raw('SUM(total_cost) as earnings')
             )
-            ->with(['embassy.countries'])
+            ->with(['embassy'])
             ->groupBy('embassy_id')
-            ->having('total_requests', '>', 0)
-            ->orderByDesc('total_requests')
+            ->having('earnings', '>', 0)
+            ->orderByDesc('earnings')
             ->take(5)
             ->get()
             ->map(function($row) {
                 $embassy = $row->embassy;
-                $row->embassy_name = $embassy ? $embassy->name : '-';
-                $row->country_coverage = $embassy && $embassy->countries ? $embassy->countries->count() : 0;
-                // Find top service for this embassy
-                $topService = \App\Models\RequestItem::whereHas('request', function($q) use ($row) {
-                    $q->where('embassy_id', $row->embassy_id);
-                })
-                ->select('service_id', DB::raw('COUNT(*) as count'))
-                ->groupBy('service_id')
-                ->orderByDesc('count')
-                ->first();
-                $row->top_service = $topService && $topService->service ? $topService->service->name : '-';
-                return $row;
-            });
+                if ($embassy) {
+                    $embassy->total_requests = $row->total_requests ?? 0;
+                    $embassy->total_earnings = $row->earnings ?? 0;
+                    // Find top service for this embassy (by count in requests)
+                    $topService = \App\Models\RequestItem::whereHas('request', function($q) use ($row) {
+                        $q->where('embassy_id', $row->embassy_id);
+                    })
+                    ->select('service_id', DB::raw('COUNT(*) as count'))
+                    ->groupBy('service_id')
+                    ->orderByDesc('count')
+                    ->first();
+                    $embassy->top_service = $topService && $topService->service ? $topService->service->name : '-';
+                    return $embassy;
+                }
+                return null;
+            })->filter();
+        \Log::info('Top 5 Embassies:', $topEmbassies->toArray());
         
       
         // Recent Applications (10 most recent)
@@ -125,8 +129,19 @@ class CacheDashboardStatistics extends Command
         $activeRequestsData = [Request::where('status', 'Completed')->count()];
         // Active Services
         $activeServicesData = [Service::count()];
-        // Provider Stats
-        $providerStats = ServiceProvider::withCount('services')->get();
+        // Provider Stats with earnings and currency for stacked bar chart
+        $providerStats = ServiceProvider::withCount('services')
+            ->get()
+            ->map(function($provider) {
+                // Calculate earnings for this provider
+                $earnings = Request::whereHas('requestItems.service', function($q) use ($provider) {
+                    $q->where('service_provider_id', $provider->id);
+                })->sum('total_cost');
+                $provider->earnings = $earnings;
+                // Get provider's currency (assume from first service or default to USD)
+                $provider->currency = $provider->services->first()->currency ?? 'USD';
+                return $provider;
+            });
         // Country Coverage: always a collection of Embassy models with countries_count and countries relation
         $countryCoverage = Embassy::withCount('countries')->with('countries')->get();
 
@@ -147,6 +162,7 @@ class CacheDashboardStatistics extends Command
             'embassyEarningsOverTime' => $embassyEarningsOverTime,
             'providerStats' => $providerStats,
             'countryCoverage' => $countryCoverage,
-        ], now());
+        ], now()->addMinutes(720));
+        \Log::info('CacheDashboardStatistics ran and cached data.');
          }
 }
