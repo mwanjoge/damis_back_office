@@ -76,9 +76,9 @@ class DesignationController extends Controller
     {
         try {
             $designation->delete();
-            return redirect()->route('human_resources')->with('success', 'Designation deleted successfully.');
+            return response()->json(['message' => 'Designation deleted successfully']);
         } catch (\Exception $e) {
-            return redirect()->route('human_resources')->with('error', 'Failed to delete designation: ' . $e->getMessage());
+            return response()->json(['message' => 'Error deleting designation'], 500);
         }
     }
 }

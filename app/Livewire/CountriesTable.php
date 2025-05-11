@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Country;
 use App\Models\Embassy;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Controllers\CountryController;
@@ -13,8 +12,6 @@ use App\Http\Requests\UpdateCountryRequest;
 
 class CountriesTable extends Component
 {
-    use WithPagination;
-
     // public $countries = [];
     public $embassies = [];
 
@@ -46,10 +43,41 @@ class CountriesTable extends Component
         }
     }
 
+    public function deleteCountry($id)
+    {
+        try {
+            $country = Country::findOrFail($id);
+            $country->delete();
+            $this->dispatch('showAlert', [
+                'type' => 'success',
+                'message' => 'Country deleted successfully!'
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('showAlert', [
+                'type' => 'error',
+                'message' => 'Failed to delete country: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function deleteConfirm($id)
+    {
+        try {
+            $country = Country::findOrFail($id);
+            $country->delete();
+            
+            session()->flash('message', 'Country deleted successfully.');
+            $this->dispatch('showDeleteSuccess');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error deleting country: ' . $e->getMessage());
+            $this->dispatch('showDeleteError');
+        }
+    }
+
     public function render()
     {
         return view('livewire.countries-table', [
-            'countries' => Country::with('embassy')->paginate(10)
+            'countries' => Country::with('embassy')->get(),
         ]);
     }
 }

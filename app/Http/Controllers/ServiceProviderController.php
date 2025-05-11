@@ -94,6 +94,17 @@ class ServiceProviderController extends Controller
      */
     public function destroy(ServiceProvider $serviceProvider)
     {
-        //
+        try {
+            $serviceProvider->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Service Provider deleted successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete Service Provider: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

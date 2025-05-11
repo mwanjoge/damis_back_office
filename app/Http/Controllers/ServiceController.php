@@ -15,11 +15,10 @@ class ServiceController extends Controller
      */
     public function __construct()
     {
-        $model = 'service';
-        $this->middleware("permission:view {$model}")->only(['index', 'show']);
-        $this->middleware("permission:create {$model}")->only(['create', 'store']);
-        $this->middleware("permission:edit {$model}")->only(['edit', 'update']);
-        $this->middleware("permission:delete {$model}")->only(['destroy']);
+        $this->middleware('permission:read_service')->only(['index', 'show']);
+        $this->middleware('permission:create_service')->only(['create', 'store']);
+        $this->middleware('permission:update_service')->only(['edit', 'update']);
+        $this->middleware('permission:delete_service')->only(['destroy']);
     }
 
     public function index()
@@ -41,13 +40,13 @@ class ServiceController extends Controller
     public function store(StoreServiceRequest $request)
     {
         try {
-            $service = Service::query()->create($request->all());
+            $service = Service::query()->create($request->validated());
             event(new EmbassyCreated($service));
             session()->flash('success', 'Service created successfully!');
+            return redirect()->route('settings');
         } catch (Exception $e) {
-            session()->flash('error', 'Something went wrong!');
+            return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create service: ' . $e->getMessage()]);
         }
-        return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
     }
 
     /**
@@ -71,13 +70,12 @@ class ServiceController extends Controller
      */
     public function update(UpdateServiceRequest $request, Service $service)
     {
-        if ($service) {
-            $service->update($request->all());
-            session()->flash('success', 'Service updated successfully!');
-        } else {
-            session()->flash('error', 'Service not found!');
+        try {
+            $service->update($request->validated());
+            return redirect()->route('settings')->with('success', 'Service updated successfully!');
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to update service: ' . $e->getMessage()]);
         }
-        return redirect()->route('settings');
     }
 
     /**
@@ -85,6 +83,17 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        //
+        try {
+            $service->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Service deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete service: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -14,14 +14,14 @@ class CountryController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct()
-    {
-        $model = 'country';
-        $this->middleware("permission:view {$model}")->only(['index', 'show']);
-        $this->middleware("permission:create {$model}")->only(['create', 'store']);
-        $this->middleware("permission:edit {$model}")->only(['edit', 'update']);
-        $this->middleware("permission:delete {$model}")->only(['destroy']);
-    }
+    // public function __construct()
+    // {
+    //     $model = 'country';
+    //     $this->middleware("permission:view {$model}")->only(['index', 'show']);
+    //     $this->middleware("permission:create {$model}")->only(['create', 'store']);
+    //     $this->middleware("permission:edit {$model}")->only(['edit', 'update']);
+    //     $this->middleware("permission:delete {$model}")->only(['destroy']);
+    // }
 
     public function index()
     {
@@ -82,6 +82,11 @@ class CountryController extends Controller
      */
     public function destroy(Country $country)
     {
-        //
+        try {
+            $country->delete();
+            return redirect()->json()->with('success', 'Country deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->json()->with('error', 'Failed to delete country: ' . $e->getMessage());
+        }
     }
 }
