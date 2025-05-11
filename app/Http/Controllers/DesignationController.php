@@ -12,6 +12,16 @@ class DesignationController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $model = 'designation';
+        $this->middleware("permission:read_{$model}")->only(['index', 'show']);
+        $this->middleware("permission:create_{$model}")->only(['create', 'store']);
+        $this->middleware("permission:update_{$model}")->only(['edit', 'update']);
+        $this->middleware("permission:delete_{$model}")->only(['destroy']);
+    }
+
     public function index()
     {
         //
