@@ -46,9 +46,6 @@
             </tbody>
         </table>
     </div>
-    <div class="d-flex justify-content-center mt-4">
-        {{ $services->links('pagination::bootstrap-5') }}
-    </div>
 
     <!-- Shared Modal -->
     <div wire:ignore.self class="modal fade services-modal" tabindex="-1" role="dialog" aria-hidden="true">

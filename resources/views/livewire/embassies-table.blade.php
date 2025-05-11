@@ -55,6 +55,13 @@
                 </tbody>
             </table>
         </div>
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Embassies list pagination">
+                <ul class="pagination pagination-rounded justify-content-center">
+                    {{ $embassies->links('pagination::bootstrap-5') }}
+                </ul>
+            </nav>
+        </div>
     </div>
 
     <!-- Mission Modal -->
@@ -95,19 +102,30 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label">Mission Location</label>
+                            <select name="location_id" data-choices class="form-select " required>
+                                <option value="">Select Location</option>
+                                @foreach ($countries as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label">Status</label>
                             <select name="is_active" id="missionStatus" class="form-select" required>
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
-
-                        <p class="mt-4">Accredited Countries</p>
-                        <select name="country_id[]" class="js-example-basic-multiple form-select" multiple required>
-                            @foreach ($countries as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
+                        <div id="accreditedCountriesWrapper" class="mb-3">
+                            <p class="mt-4">Accredited Countries</p>
+                            <select name="country_id[]" class="js-example-basic-multiple form-select" multiple required>
+                                @foreach ($countries as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
 
 
@@ -135,12 +153,19 @@
 
             const countrySelect = document.querySelector('select[name="country_id[]"]');
 
-            // Reset all to unselected
+            // Show/hide Accredited Countries field
+            const accreditedCountriesWrapper = document.getElementById('accreditedCountriesWrapper');
+            if (data.id) {
+                accreditedCountriesWrapper.style.display = 'none'; // hide when editing
+            } else {
+                accreditedCountriesWrapper.style.display = 'block'; // show when adding
+            }
+
+            // Reset selection
             Array.from(countrySelect.options).forEach(option => {
                 option.selected = false;
             });
 
-            // Mark existing country IDs as selected
             if (data.countries) {
                 data.countries.forEach(id => {
                     const option = Array.from(countrySelect.options).find(opt => opt.value == id);
@@ -154,6 +179,7 @@
 
             new bootstrap.Modal(document.querySelector('.mission-modal')).show();
         }
+
 
 
         function confirmDelete(id, type) {

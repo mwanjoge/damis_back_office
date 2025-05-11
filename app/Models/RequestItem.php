@@ -24,4 +24,9 @@ class RequestItem extends Model
     public function serviceProvider() {
         return $this->belongsTo(\App\Models\ServiceProvider::class, 'service_provider_id');
     }
+    
+    public function request()
+    {
+        return $this->belongsTo(\App\Models\Request::class);
+    }
 }

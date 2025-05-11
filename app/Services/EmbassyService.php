@@ -14,6 +14,7 @@ class EmbassyService
     {
         $embassy = Embassy::query()->create([
             'name' => $request->name,
+            'country_id' => $request->country_id,
             'type' => $request->type,
         ]);
 
@@ -24,15 +25,16 @@ class EmbassyService
     {
         $account = new Account([
             'name' => $request->name,
-            'has_depertment' => $request->has_depertment??false,
+            'has_depertment' => $request->has_depertment ?? false,
         ]);
 
         return $account;
     }
 
-    public function attachCountries(Embassy|Model $embassy, Request $request){
-        if($request->country_id){
-            
+    public function attachCountries(Embassy|Model $embassy, Request $request)
+    {
+        if ($request->country_id) {
+
             //find all selected countries and update embassy id to created embassy
             Country::query()->whereIn('id', $request->country_id)->update([
                 'embassy_id' => $embassy->id,

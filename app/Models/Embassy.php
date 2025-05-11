@@ -13,6 +13,7 @@ class Embassy extends Model
         'type',
         'is_active',
         'synced',
+        'country_id',
     ];
 
     public function account()

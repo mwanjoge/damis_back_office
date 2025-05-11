@@ -1,4 +1,3 @@
-@include('modal.alert')
 <div class="tab-pane px-4" id="embassy" role="tabpanel">
     <div class="text-end pb-4">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".countries-modal" wire:click="openForm">
@@ -14,6 +13,8 @@
                     <th>Mission</th>
                     <th>Code</th>
                     <th>Phone Code</th>
+                    <th>Currency</th>
+                    <th>Currency code</th>
                     <th class="text-end" style="width: 180px;">Actions</th>
                 </tr>
             </thead>
@@ -25,6 +26,8 @@
                         <td>{{ $country->embassy?->name }}</td>
                         <td>{{ $country->code }}</td>
                         <td>{{ $country->phone_code }}</td>
+                        <td>{{ $country->currency }}</td>
+                        <th>{{ $country->currency_code }}</th>
                         <td class="text-end">
                             <!-- Edit Button -->
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
@@ -42,10 +45,7 @@
                                     <i class="bx bxs-trash"></i>
                                 </button>
                             </form>
-
-
                         </td>
-
                     </tr>
                 @endforeach
             </tbody>
@@ -57,7 +57,6 @@
                 </ul>
             </nav>
         </div>
-        
     </div>
 
     <!-- Country Modal -->
@@ -156,4 +155,3 @@
         });
     </script>
 @endpush
-

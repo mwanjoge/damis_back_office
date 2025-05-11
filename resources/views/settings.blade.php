@@ -38,34 +38,34 @@
 
             <div class="card-body px-4 bg-white">
                 <div class="tab-content">
-                      <!-- Accounts -->
-                      <div class="tab-pane fade" id="tab-accounts" role="tabpanel" wire:ignore.self>
-                    @livewire('accounts-table')
+                    <!-- Accounts -->
+                    <div class="tab-pane fade" id="tab-accounts" role="tabpanel" wire:ignore.self>
+                     
+                        @livewire('accounts-table')
                     </div>
 
                     <!-- Mission -->
                     <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel" wire:ignore.self>
+                    
                         @livewire('embassies-table')
                     </div>
 
                     <!-- Countries -->
                     <div class="tab-pane fade" id="tab-countries" role="tabpanel" wire:ignore.self>
+                      
                         @livewire('countries-table')
                     </div>
 
                     <!-- Service Providers -->
                     <div class="tab-pane fade" id="tab-service-provider" role="tabpanel" wire:ignore.self>
+                      
                         @livewire('service-provider-table')
                     </div>
 
                     <!-- Services -->
                     <div class="tab-pane fade" id="tab-services" role="tabpanel" wire:ignore.self>
+                    
                         @livewire('services-table')
-                    </div>
-
-                    <!-- Accounts -->
-                    <div class="tab-pane fade" id="tab-accounts" role="tabpanel" wire:ignore.self>
-                    @livewire('accounts-table')
                     </div>
                 </div>
             </div>

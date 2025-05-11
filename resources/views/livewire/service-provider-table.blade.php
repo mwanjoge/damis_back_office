@@ -42,9 +42,6 @@
             </tbody>
         </table>
     </div>
-    <div class="d-flex justify-content-center mt-4">
-        {{ $serviceProviders->links('pagination::bootstrap-5') }}
-    </div>
 
     <!-- Reusable Modal for Add/Edit -->
     <div class="card">

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,7 +26,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Example: Add sample data for requests and related tables
-       // \App\Models\Account::factory()->count(43)->create();
+        // \App\Models\Account::factory()->count(43)->create();
         // \App\Models\Embassy::factory()->count(43)->create()->each(function ($embassy) {
         //     $embassy->account()->save(\App\Models\Account::factory()->create());
         // });
@@ -43,7 +42,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Country::factory()->count(100)->create();
 
         // \App\Models\Request::factory()->count(100)->create();
-        
+
 
         // Seed related tables first
         $this->call([
@@ -54,6 +53,7 @@ class DatabaseSeeder extends Seeder
             //MemberSeeder::class,
             CountrySeeder::class,
             PermissionSeeder::class,
+            ServiceProviderSeeder::class,
             //RequestSeeder::class, // Requests last!
         ]);
     }
