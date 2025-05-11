@@ -1,6 +1,7 @@
 @extends('layouts.master')
-@include('modal.alert')
+
 @section('content')
+@include('modal.alert')
     <div class="row">
         <div class="col-xxl-9 pt-4">
             <h4 class="p-1 font-italic">Authentication</h4>
