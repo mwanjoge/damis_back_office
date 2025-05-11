@@ -8,9 +8,9 @@
             </button>
         </div>
 
-        <div class="card-body">
-            <table id="alternative-pagination"class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
-                <thead>
+        <div class="table-responsive table-card">
+            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
                         <th>First Name</th>
