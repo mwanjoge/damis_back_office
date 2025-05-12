@@ -56,27 +56,27 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
-    {
-        $data = \Cache::get('dashboard_data', [
-            'totalEarnings' => 0,
-            'applicationsCount' => 0,
-            'customersCount' => 0,
-            'newApplicationsCount' => 0,
-            'recentApplications' => collect(),
-            'activeServiceProvidersData' => [],
-            'activeRequestsData' => [],
-            'activeServicesData' => [],
-            'requestsPerEmbassy' => collect(),
-            'monthlyRequests' => collect(),
-            'topServices' => collect(),
-            'providerStats' => collect(),
-            'countryCoverage' => collect(),
-        ]);
-        return view('index', $data);
-    }
+    // public function index(Request $request)
+    // {
+    //     $data = \Cache::get('dashboard_data', [
+    //         'totalEarnings' => 0,
+    //         'applicationsCount' => 0,
+    //         'customersCount' => 0,
+    //         'newApplicationsCount' => 0,
+    //         'recentApplications' => collect(),
+    //         'activeServiceProvidersData' => [],
+    //         'activeRequestsData' => [],
+    //         'activeServicesData' => [],
+    //         'requestsPerEmbassy' => collect(),
+    //         'monthlyRequests' => collect(),
+    //         'topServices' => collect(),
+    //         'providerStats' => collect(),
+    //         'countryCoverage' => collect(),
+    //     ]);
+    //     return view('index', $data);
+    // }
 
-    public function root()
+    public function index()
     {
         $data = \Cache::get('dashboard_data', [
             'totalEarnings' => 0,
@@ -95,7 +95,23 @@ class HomeController extends Controller
             'providerStats' => collect(),
             'countryCoverage' => collect(),
         ]);
-        return view('index', $data);
+        $topEmbassies=$data['topEmbassies'];
+        $totalEarnings=$data['totalEarnings'];
+        $customersCount=$data['customersCount'];
+        $applicationsCount=$data['applicationsCount'];
+        $newApplicationsCount=$data['newApplicationsCount'];
+        $recentApplications=$data['recentApplications'];
+        $activeServiceProvidersData=$data['activeServiceProvidersData'];
+        $activeRequestsData=$data['activeRequestsData'];
+        $activeServicesData=$data['activeServicesData'];
+        $requestsPerEmbassy=$data['requestsPerEmbassy'];
+        $monthlyRequests=$data['monthlyRequests'];
+        $topServices=$data['topServices'];
+        $embassyEarningsOverTime=$data['embassyEarningsOverTime'];
+        $providerStats=$data['providerStats'];
+        $countryCoverage=$data['countryCoverage'];
+
+        return view('index', compact('countryCoverage','topEmbassies','totalEarnings','customersCount','applicationsCount','newApplicationsCount','recentApplications','activeServiceProvidersData','activeRequestsData','requestsPerEmbassy','monthlyRequests','topServices','embassyEarningsOverTime','providerStats','activeServicesData'));
     }
 
     public function settings()

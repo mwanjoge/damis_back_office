@@ -54,7 +54,6 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
-            ServiceProviderSeeder::class,
             //RequestSeeder::class, // Requests last!
         ]);
     }
