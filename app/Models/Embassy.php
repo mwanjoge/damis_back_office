@@ -23,7 +23,7 @@ class Embassy extends Model
 
     public function countries()
     {
-        return $this->hasMany(Country::class);
+        return $this->hasMany(Country::class, 'embassy_id');
     }
 
     public function billableItems()

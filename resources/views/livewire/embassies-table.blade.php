@@ -27,11 +27,19 @@
                             <td>{{ ucfirst($embassy->type) }}</td>
                             <td>{{ $embassy->is_active ? 'Active' : 'Inactive' }}</td>
                             <td class="text-end">
+                                @php
+                                    $embassyData = $embassy->only(['id', 'name', 'type', 'is_active']);
+                                    $embassyData['countries'] = $embassy->countries->pluck('id')->toArray();
+                                    $embassyData['location_id'] = $embassy->country_id;
+
+                                @endphp
+
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".mission-modal"
-                                    onclick="openMissionModal({{ json_encode($embassy) }})">
+                                    onclick='openMissionModal(@json($embassyData))'>
                                     <i class="bx bx-edit-alt"></i>
                                 </button>
+
 
                                 <form method="POST" action="{{ route('embassy.destroy', $embassy->id) }}"
                                     style="display:inline-block;">
@@ -103,7 +111,8 @@
 
                         <div class="mb-3">
                             <label class="form-label">Mission Location</label>
-                            <select name="location_id" data-choices class="form-select " required>
+                            <select name="location_id" data-choices class="form-select " required
+                               >
                                 <option value="">Select Location</option>
                                 @foreach ($countries as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -120,18 +129,17 @@
                         </div>
                         <div id="accreditedCountriesWrapper" class="mb-3">
                             <p class="mt-4">Accredited Countries</p>
-                            <select name="country_id[]" class="js-example-basic-multiple form-select" multiple required>
+                            <select name="country_id[]" class="js-example-basic-multiple form-select" multiple
+                                wire:model="states" required>
                                 @foreach ($countries as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-
-
                         <div class="hstack gap-2 justify-content-center mt-4">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save Mission</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </form>
@@ -151,12 +159,16 @@
             const formActionBase = "{{ url('embassy') }}";
             document.getElementById('missionForm').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
 
+            // Pre-select mission location
+            const locationSelect = document.querySelector('select[name="location_id"]');
+            locationSelect.value = data.country_id || '';
+            
             const countrySelect = document.querySelector('select[name="country_id[]"]');
 
             // Show/hide Accredited Countries field
             const accreditedCountriesWrapper = document.getElementById('accreditedCountriesWrapper');
             if (data.id) {
-                accreditedCountriesWrapper.style.display = 'none'; // hide when editing
+                accreditedCountriesWrapper.style.display = 'block'; // hide when editing
             } else {
                 accreditedCountriesWrapper.style.display = 'block'; // show when adding
             }

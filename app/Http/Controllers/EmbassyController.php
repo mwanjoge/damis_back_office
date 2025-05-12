@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Log;
 use App\Models\Embassy;
+use App\Models\Country;
 use App\Events\EmbassyCreated;
 use App\Services\EmbassyService;
 use Illuminate\Support\Facades\DB;
@@ -108,18 +109,53 @@ class EmbassyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEmbassyRequest $request, Embassy $embassy)
-    {
-        //
+ public function update(UpdateEmbassyRequest $request, $id)
+{
+    try {
+        $embassy = Embassy::findOrFail($id);
+        
+        // Corrected type assignment
+        $embassy->update([
+            'name'        => $request->name,
+            'type'        => $request->type,
+            'country_id'  => $request->location_id,
+            'is_active'   => $request->is_active ?? false,
+        ]);
+
+        // Clear old accreditations
+        Country::where('embassy_id', $embassy->id)->update(['embassy_id' => null]);
+
+        // Set new accreditations
+        if ($request->has('country_id')) {
+            Country::whereIn('id', $request->country_id)->update(['embassy_id' => $embassy->id]);
+        }
+
+        return redirect()->back()->with('success', 'Embassy updated successfully.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to update embassy: ' . $e->getMessage());
     }
+}
+
+
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Embassy $embassy)
+    public function destroy($id)
     {
-        //
+        try {
+            $embassy = Embassy::findOrFail($id);
+            $embassy->delete();
+
+            return redirect()->back()->with('success', 'Embassy deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete embassy: ' . $e->getMessage());
+        }
     }
+
+
 
     public function settings()
     {
