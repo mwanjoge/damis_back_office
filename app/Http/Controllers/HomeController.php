@@ -94,6 +94,7 @@ class HomeController extends Controller
             'embassyEarningsOverTime' => collect(),
             'providerStats' => collect(),
             'countryCoverage' => collect(),
+            'earningsByCurrency' => [], // ✅ Add this
         ]);
         $topEmbassies=$data['topEmbassies'];
         $totalEarnings=$data['totalEarnings'];
@@ -108,10 +109,10 @@ class HomeController extends Controller
         $monthlyRequests=$data['monthlyRequests'];
         $topServices=$data['topServices'];
         $embassyEarningsOverTime=$data['embassyEarningsOverTime'];
-        $providerStats=$data['providerStats'];
+        $providerStats = collect($data['providerStats']); // <--- Add collect()
         $countryCoverage=$data['countryCoverage'];
-
-        return view('index', compact('countryCoverage','topEmbassies','totalEarnings','customersCount','applicationsCount','newApplicationsCount','recentApplications','activeServiceProvidersData','activeRequestsData','requestsPerEmbassy','monthlyRequests','topServices','embassyEarningsOverTime','providerStats','activeServicesData'));
+        $earningsByCurrency=collect($data['earningsByCurrency']);
+        return view('index', compact('countryCoverage','topEmbassies','totalEarnings','earningsByCurrency','customersCount','applicationsCount','newApplicationsCount','recentApplications','activeServiceProvidersData','activeRequestsData','requestsPerEmbassy','monthlyRequests','topServices','embassyEarningsOverTime','providerStats','activeServicesData'));
     }
 
     public function settings()

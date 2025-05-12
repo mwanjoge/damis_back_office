@@ -32,7 +32,7 @@ class RequestItems extends Component
     }
 
     public function getServices($key){
-        Log::info("providerId ".$this->inputs[$key]['service_provider_id']);
+        // Log::info("providerId ".$this->inputs[$key]['service_provider_id']);
         $this->services = Service::query()->where('service_provider_id', $this->inputs[$key]['service_provider_id'])->get();
         $this->servicesInputs[] = $this->services;
     }
