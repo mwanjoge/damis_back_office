@@ -6,6 +6,7 @@ use App\Events\EmbassyCreated;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Service;
+use Illuminate\Http\Request;
 use Exception;
 
 class ServiceController extends Controller
@@ -69,32 +70,31 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateServiceRequest $request, Service $service)
+    public function update(UpdateServiceRequest $request, $serviceId)
     {
         try {
+            $service = Service::find($serviceId);
             $service->update($request->validated());
             return redirect()->route('settings')->with('success', 'Service updated successfully!');
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Failed to update service: ' . $e->getMessage()]);
         }
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $service)
+    public function destroy(Request $request, $serviceId )
     {
+
         try {
+            $service = Service::find($serviceId);
             $service->delete();
-            return response()->json([
-                'success' => true,
-                'message' => 'Service deleted successfully'
-            ]);
+            return redirect()->back()->with('success', 'Service deleted successfully!');
+        
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete service: ' . $e->getMessage()
-            ], 500);
+            return redirect()->back()->with('error', 'Failed to delete service: ' . $e->getMessage());
         }
     }
 }

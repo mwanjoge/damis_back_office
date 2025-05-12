@@ -1,5 +1,7 @@
 @extends('layouts.master')
-@section('title') @lang('translation.datatables') @endsection
+@section('title')
+    @lang('translation.datatables')
+@endsection
 @section('css')
 <!--datatable css-->
 <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
@@ -11,37 +13,41 @@
 @section('content')
 
     @php
-        $months = collect(range(1,12))->map(function($m){ return DateTime::createFromFormat('!m', $m)->format('M'); });
+        $months = collect(range(1, 12))->map(function ($m) {
+            return DateTime::createFromFormat('!m', $m)->format('M');
+        });
         $embassyNames = $requestsPerEmbassy->pluck('embassy.name', 'embassy_id');
         $earningsData = [];
         $embassyCurrencies = [];
-        foreach($countryCoverage as $embassy) {
+        foreach ($countryCoverage as $embassy) {
             $currency = optional($embassy->countries->first())->currency ?? 'USD';
             $embassyCurrencies[$embassy->id] = $currency;
         }
-        foreach($embassyNames as $embassyId => $embassyName) {
+        foreach ($embassyNames as $embassyId => $embassyName) {
             $earningsData[$embassyName] = array_fill(1, 12, 0);
-            foreach($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
-                $earningsData[$embassyName][(int)$row->month] = (float)$row->earnings;
+            foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
+                $earningsData[$embassyName][(int) $row->month] = (float) $row->earnings;
             }
         }
         // Build embassy earnings datasets with meta info for chart tooltips
         $embassyEarningsDatasets = [];
-        foreach($requestsPerEmbassy as $embassy) {
+        foreach ($requestsPerEmbassy as $embassy) {
             $embassyId = $embassy->embassy_id;
             $embassyName = $embassy->embassy->name ?? 'N/A';
             $currency = $embassy->embassy->countries->first()->currency ?? 'USD';
-            $countryCoverage = $embassy->embassy->countries_count ?? ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
+            $countryCoverage =
+                $embassy->embassy->countries_count ??
+                ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
             $data = array_fill(1, 12, 0);
-            foreach($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
-                $data[(int)$row->month] = (float)$row->earnings;
+            foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
+                $data[(int) $row->month] = (float) $row->earnings;
             }
             $embassyEarningsDatasets[] = [
                 'data' => array_values($data),
                 'fill' => false,
                 'currency' => $currency,
                 'embassy_name' => $embassyName,
-                'country_coverage' => $countryCoverage
+                'country_coverage' => $countryCoverage,
             ];
         }
     @endphp
@@ -52,7 +58,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Hello, {{ Auth::user()->name }}</h4>
+                                <h4 class="fs-16 mb-1">Hello {{ Auth::user()->name }}</h4>
                             </div>
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
@@ -97,7 +103,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ number_format($totalEarnings ?? 0) }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">View net earnings</a>
+                                        <a href="" class="text-decoration-underline text-muted small">View net
+                                            earnings</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -124,7 +131,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $applicationsCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">View all applications</a>
+                                        <a href="" class="text-decoration-underline text-muted small">View all
+                                            applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -151,7 +159,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $customersCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small" style="font-style: none;">Total customers</a>
+                                        <a href="" class="text-decoration-underline text-muted small"
+                                            style="font-style: none;">Total customers</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -178,7 +187,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $newApplicationsCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">New Applications</a>
+                                        <a href="" class="text-decoration-underline text-muted small">New
+                                            Applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -202,22 +212,24 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                           <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Recent Applications</h5>
-            </div>
-            <div class="card-body">
-                <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="text-nowrap">Member</th>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Recent Applications</h5>
+                            </div>
+                            <div class="card-body">
+                                <table id="alternative-pagination"
+                                    class="table nowrap dt-responsive align-middle table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap">Member</th>
                                             <th class="text-nowrap">Service</th>
                                             <th class="text-nowrap">Date</th>
                                             <th class="text-nowrap">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
                                             <tr>
                                                 <td>{{ $request->member->name ?? 'N/A' }}</td>
                                                 <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
@@ -225,10 +237,10 @@
                                                 <td><span class="badge bg-primary">{{ $request->status }}</span></td>
                                             </tr>
                                         @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -345,7 +357,9 @@
             },
             options: {
                 plugins: {
-                    legend: { position: 'bottom' }
+                    legend: {
+                        position: 'bottom'
+                    }
                 }
             }
         });
@@ -354,15 +368,17 @@
         const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
         const embassyData = @json($requestsPerEmbassy->pluck('count'));
         // Prepare embassy earnings and currency for tooltips
-        const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
-            // Sum earnings for this embassy
-            $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
-            return $earn ? number_format($earn, 2) : '0.00';
-        }));
+        const embassyEarnings = @json(
+            $requestsPerEmbassy->map(function ($item) use ($embassyEarningsOverTime) {
+                // Sum earnings for this embassy
+                $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
+                return $earn ? number_format($earn, 2) : '0.00';
+            }));
         // If you have a currency field, map it here; otherwise, set a default
-        const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
-            return $item->embassy->currency ?? 'USD';
-        }));
+        const embassyCurrencies = @json(
+            $requestsPerEmbassy->map(function ($item) {
+                return $item->embassy->currency ?? 'USD';
+            }));
 
         new Chart(document.getElementById('requestsPerEmbassyChart'), {
             type: 'bar',
@@ -394,11 +410,15 @@
                             }
                         }
                     },
-                    legend: { display: false }
+                    legend: {
+                        display: false
+                    }
                 },
                 scales: {
                     x: {
-                        ticks: { display: false }
+                        ticks: {
+                            display: false
+                        }
                     }
                 }
             }
@@ -408,7 +428,11 @@
         new Chart(document.getElementById('monthlyRequestsChart'), {
             type: 'line',
             data: {
-                labels: [@for($i=1;$i<=12;$i++) '{{ DateTime::createFromFormat("!m", $i)->format("M") }}', @endfor],
+                labels: [
+                    @for ($i = 1; $i <= 12; $i++)
+                        '{{ DateTime::createFromFormat('!m', $i)->format('M') }}',
+                    @endfor
+                ],
                 datasets: [{
                     label: 'Requests',
                     data: @json(array_values($monthlyRequests->toArray())),
@@ -419,8 +443,14 @@
         });
 
         // Top Requested Services
-        const topServiceLabels = @json($topServices->map(function($item) { return $item->service->name ?? 'N/A'; }));
-        const topServiceData = @json($topServices->map(function($item) { return $item->count; }));
+        const topServiceLabels = @json(
+            $topServices->map(function ($item) {
+                return $item->service->name ?? 'N/A';
+            }));
+        const topServiceData = @json(
+            $topServices->map(function ($item) {
+                return $item->count;
+            }));
         new Chart(document.getElementById('topServicesChart'), {
             type: 'pie',
             data: {
@@ -456,11 +486,14 @@
                             afterBody: function(context) {
                                 const idx = context[0].dataIndex;
                                 const earnings = providerEarnings[idx] ?? 0;
-                                return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
+                                return [
+                                    `Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
                             }
                         }
                     },
-                    legend: { display: false }
+                    legend: {
+                        display: false
+                    }
                 }
             }
         });
@@ -482,7 +515,9 @@
             },
             options: {
                 plugins: {
-                    legend: { display: false },
+                    legend: {
+                        display: false
+                    },
                     tooltip: {
                         callbacks: {
                             title: function(context) {
@@ -496,7 +531,7 @@
                                 return `Earnings: ${earnings} ${currency}`;
                             },
                             afterLabel: function(context) {
-                                const total = context.dataset.data.reduce((a,b)=>a+b,0);
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                 const currency = context.dataset.currency || 'USD';
                                 const countryCoverage = context.dataset.country_coverage || 0;
                                 return [
@@ -542,17 +577,23 @@
                             }
                         }
                     },
-                    legend: { position: 'top' }
+                    legend: {
+                        position: 'top'
+                    }
                 },
                 responsive: true,
                 scales: {
-                    x: { stacked: true },
-                    y: { stacked: true }
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true
+                    }
                 }
             }
         });
     </script>
-<!-- apexcharts -->
+    <!-- apexcharts -->
     <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
@@ -567,19 +608,23 @@
 @section('script')
     @parent
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
-        });
-    </scrip>
-@endsection
+        }); <
+        /scrip>
+        @endsection
 
-@section('script')
-    @parent
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        @section('script')
+            @parent
+                <
+                link rel = "stylesheet"
+            href = "https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" / >
+                <
+                script src = "https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" >
+    </script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -596,7 +641,8 @@
         });
     </script>
 @endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>

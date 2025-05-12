@@ -1,7 +1,9 @@
 @include('modal.alert')
+
 <div id="services" role="tabpanel">
     <div class="text-end pb-4">
-        <button type="button" class="btn btn-primary" wire:click="openForm">
+        <button type="button" class="btn btn-primary" id="new-service-btn" data-bs-toggle="modal"
+                                    data-bs-target=".services-modal">
             New Service
         </button>
     </div>
@@ -23,7 +25,8 @@
                         <td>{{ $service->name }}</td>
                         <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>
                         <td class="text-end">
-                            <button type="button" class="btn btn-warning btn-sm" wire:click="openForm({{ $service->id }})">
+                            <button type="button" class="btn btn-warning btn-sm edit-btn" data-bs-toggle="modal"
+                                    data-bs-target=".services-modal" data-id="{{ $service->id }}" data-name="{{ $service->name }}" data-provider="{{ $service->serviceProvider->id ?? '' }}">
                                 <i class="bx bx-edit-alt"></i>
                             </button>
 
@@ -38,37 +41,34 @@
     </div>
 
     <!-- Modal -->
-    <div wire:ignore.self class="modal fade services-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade services-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body text-start p-5">
-                    <h4 class="mb-3 text-center">{{ $editingId ? 'Edit' : 'New' }} Service</h4>
+                    <h4 class="mb-3 text-center" id="modal-title">New Service</h4>
 
-                    <form wire:submit.prevent="save">
+                    <form id="service-form" method="post">
+                        @csrf
                         <div class="mb-3">
                             <label class="form-label">Service Name</label>
-                            <input type="text" class="form-control" wire:model="name" placeholder="Service Name" required>
-                            @error('name') 
-                                <span class="text-danger">{{ $message }}</span> 
-                            @enderror
+                            <input type="text" class="form-control" id="service-name" placeholder="Service Name" name='name' required>
+                            <span class="text-danger" id="name-error"></span>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Service Provider</label>
-                            <select wire:model="selectedProvider" class="form-select" required>
+                            <select id="service-provider" class="form-select" name="service_provider_id" required>
                                 <option value="">-- Select --</option>
                                 @foreach ($serviceProviders as $provider)
                                     <option value="{{ $provider->id }}">{{ $provider->name }}</option>
                                 @endforeach
                             </select>
-                            @error('selectedProvider') 
-                                <span class="text-danger">{{ $message }}</span> 
-                            @enderror
+                            <span class="text-danger" id="provider-error"></span>
                         </div>
 
                         <div class="hstack gap-2 justify-content-center mt-4">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">{{ $editingId ? 'Update' : 'Save' }}</button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" id="close-modal-btn">Close</button>
+                            <button type="submit" class="btn btn-primary" >Save</button>
                         </div>
                     </form>
                 </div>
@@ -77,47 +77,84 @@
     </div>
 </div>
 
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const servicesModal = new bootstrap.Modal(document.querySelector('.services-modal'));
-        
-        // Handle modal close
-        window.addEventListener('close-modal', () => {
-            servicesModal.hide();
-        });
+  document.addEventListener('DOMContentLoaded', function() {
+    // document.getElementById('modal-title').innerText = data.id ? 'Edit Service' : 'Add New Service';
+    document.getElementById('service-form').value = data.id ? 'PUT' : 'POST';
+    const servicesModal = new bootstrap.Modal(document.querySelector('.services-modal'));
+    const form = document.getElementById('service-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const serviceNameInput = document.getElementById('service-name');
+    const serviceProviderSelect = document.getElementById('service-provider');
+    const closeModalBtn = document.getElementById('close-modal-btn');
 
-        // Handle delete confirmation
-        document.addEventListener('click', function(e) {
-            const deleteBtn = e.target.closest('.delete-btn');
-            if (deleteBtn) {
-                e.preventDefault();
-                const serviceId = deleteBtn.dataset.id;
-                
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        @this.deleteConfirm(serviceId);
-                    }
-                });
-            }
-        });
+    const formActionBase = "{{ url('service') }}";
+    document.getElementById('service-form').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
 
-        // Handle Livewire events for alerts
-        Livewire.on('showAlert', data => {
-            Swal.fire({
-                icon: data.type,
-                title: data.type === 'success' ? 'Success!' : 'Error!',
-                text: data.message,
-                showConfirmButton: data.type === 'error',
-                timer: data.type === 'success' ? 1500 : null
-            });
+    // Handle new service button
+    document.getElementById('new-service-btn').addEventListener('click', function() {
+        modalTitle.innerText = 'New Service';
+        serviceNameInput.value = '';
+        serviceProviderSelect.value = '';
+        submitBtn.innerText = 'Save';
+        servicesModal.show();
+    });
+
+    // Handle edit button click
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const serviceId = button.getAttribute('data-id');
+            const serviceName = button.getAttribute('data-name');
+            const serviceProviderId = button.getAttribute('data-provider');
+
+            modalTitle.innerText = 'Edit Service';
+            serviceNameInput.value = serviceName;
+            serviceProviderSelect.value = serviceProviderId || '';
+            submitBtn.innerText = 'Update';
+
+            // form.action = `{{ url('service') }}/${serviceId}/edit`;
+
+
+            servicesModal.show();
         });
     });
+
+    // Handle modal close
+    closeModalBtn.addEventListener('click', function() {
+        servicesModal.hide();
+    });
+
+    // Handle delete confirmation
+    document.addEventListener('click', function(e) {
+        const deleteBtn = e.target.closest('.delete-btn');
+        if (deleteBtn) {
+            e.preventDefault();
+            const serviceId = deleteBtn.dataset.id;
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `{{ route('service.destroy', ':id') }}`.replace(':id', serviceId);
+                    // Send delete request
+                    fetch(route('service.destroy', serviceId), {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
 </script>
