@@ -15,7 +15,7 @@
                 <div class="request-item-row row g-2 mb-2 align-items-end">
                     <div class="col">
                                 <label for="choices-single-default" class="form-label text-muted">Service Provider</label>
-                        <select wire:model="inputs.{{ $key }}.service_provider_id" wire:model.live wire:change="getServices({{ $key }})" class="form-control" id="choices-single-default" data-choices name="request_items[{{ $key }}][service_provider_id]" required>
+                        <select wire:model="inputs.{{ $key }}.service_provider_id" wire:model.live wire:change="getServices({{ $key }})" class="form-control" id="choices-single-default"  name="request_items[{{ $key }}][service_provider_id]" required>
                             <option value="">Select Provider</option>
                             @foreach($providers as $provider)
                                 <option value="{{ $provider->id }}">{{ $provider->name }}</option>
