@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     //Language Translation
     Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
     //Update User Details
     Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
