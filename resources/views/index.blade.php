@@ -15,8 +15,7 @@
 
     @php
         $months = collect(range(1, 12))->map(function ($m) {
-            return DateTime::createFromFormat('!m', $m)->format('M');
-        });
+            return DateTime::createFromFormat('!m', $m)->format('M'); });
         $embassyNames = $requestsPerEmbassy->pluck('embassy.name', 'embassy_id');
         $earningsData = [];
         $embassyCurrencies = [];
@@ -377,165 +376,142 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-        // Requests per Embassy
-        const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
-        const embassyData = @json($requestsPerEmbassy->pluck('count'));
-        // Prepare embassy earnings and currency for tooltips
-        const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
-            // Sum earnings for this embassy
-            $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
-            return $earn ? number_format($earn, 2) : '0.00';
-        }));
-        // If you have a currency field, map it here; otherwise, set a default
-        const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
-            return $item->embassy->currency ?? 'USD';
-        }));
+    // Requests per Embassy - Bar
+    const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
+    const embassyData = @json($requestsPerEmbassy->pluck('count'));
+    const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
+        $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
+        return $earn ? number_format($earn, 2) : '0.00';
+    }));
+    const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
+        return $item->embassy->currency ?? 'USD';
+    }));
 
-        new Chart(document.getElementById('requestsPerEmbassyChart'), {
-            type: 'bar',
-            data: {
-                labels: embassyLabels.map(() => ''), // Hide labels on axis
-                datasets: [{
-                    label: 'Requests',
-                    data: embassyData,
-                    backgroundColor: '#4e73df',
-                }]
-            },
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            title: function(context) {
-                                // Show embassy name in tooltip
-                                return embassyLabels[context[0].dataIndex] || '';
-                            },
-                            afterBody: function(context) {
-                                const idx = context[0].dataIndex;
-                                const earning = embassyEarnings[idx] ?? '0.00';
-                                const currency = embassyCurrencies[idx] ?? 'USD';
-                                const requests = embassyData[idx] ?? 0;
-                                return [
-                                    `Requests: ${requests}`,
-                                    `Earnings: ${earning} ${currency}`
-                                ];
-                            }
+    new Chart(document.getElementById('requestsPerEmbassyChart'), {
+        type: 'bar',
+        data: {
+            labels: embassyLabels.map(() => ''),
+            datasets: [{
+                label: 'Requests',
+                data: embassyData,
+                backgroundColor: '#4e73df',
+            }]
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: context => embassyLabels[context[0].dataIndex] || '',
+                        afterBody: context => {
+                            const idx = context[0].dataIndex;
+                            return [
+                                `Requests: ${embassyData[idx] ?? 0}`,
+                                `Earnings: ${embassyEarnings[idx] ?? '0.00'} ${embassyCurrencies[idx] ?? 'USD'}`
+                            ];
                         }
-                    },
-                    legend: { display: false }
+                    }
                 },
-                scales: {
-                    x: {
-                        ticks: { display: false }
-                    }
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { display: false }
                 }
             }
-        });
+        }
+    });
 
-        // Monthly Requests
-        new Chart(document.getElementById('monthlyRequestsChart'), {
-            type: 'line',
-            data: {
-                labels: [@for($i=1;$i<=12;$i++) '{{ DateTime::createFromFormat("!m", $i)->format("M") }}', @endfor],
-                datasets: [{
-                    label: 'Requests',
-                    data: @json(array_values($monthlyRequests->toArray())),
-                    borderColor: '#1cc88a',
-                    fill: false,
-                }]
-            }
-        });
+    // Monthly Requests - Line
+    new Chart(document.getElementById('monthlyRequestsChart'), {
+        type: 'line',
+        data: {
+            labels: [@for($i=1;$i<=12;$i++) '{{ DateTime::createFromFormat("!m", $i)->format("M") }}', @endfor],
+            datasets: [{
+                label: 'Requests',
+                data: @json(array_values($monthlyRequests->toArray())),
+                borderColor: '#1cc88a',
+                fill: false,
+            }]
+        }
+    });
 
-        // Top Requested Services
-        const topServiceLabels = @json($topServices->map(function($item) { return $item->service->name ?? 'N/A'; }));
-        const topServiceData = @json($topServices->map(function($item) { return $item->count; }));
-        new Chart(document.getElementById('topServicesChart'), {
-            type: 'pie',
-            data: {
-                labels: topServiceLabels,
-                datasets: [{
-                    data: topServiceData,
-                    backgroundColor: ['#36b9cc', '#f6c23e', '#e74a3b', '#1cc88a', '#4e73df'],
-                }]
-            }
-        });
+    // Top Services - Pie
+    const topServiceLabels = @json($topServices->map(fn($item) => $item->service->name ?? 'N/A'));
+    const topServiceData = @json($topServices->map(fn($item) => $item->count));
+    new Chart(document.getElementById('topServicesChart'), {
+        type: 'pie',
+        data: {
+            labels: topServiceLabels,
+            datasets: [{
+                data: topServiceData,
+                backgroundColor: ['#36b9cc', '#f6c23e', '#e74a3b', '#1cc88a', '#4e73df'],
+            }]
+        }
+    });
 
-        // Service Provider Activity (by services count)
-        const providerLabels = @json($providerStats->pluck('name'));
-        const providerData = @json($providerStats->pluck('services_count'));
-        const providerEarnings = @json($providerStats->pluck('earnings'));
-        new Chart(document.getElementById('providerStatsChart'), {
-            type: 'bar',
-            data: {
-                labels: providerLabels,
-                datasets: [{
-                    label: 'Services Provided',
-                    data: providerData,
-                    backgroundColor: '#f6c23e',
-                }]
-            },
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            title: function(context) {
-                                return providerLabels[context[0].dataIndex] || '';
-                            },
-                            afterBody: function(context) {
-                                const idx = context[0].dataIndex;
-                                const earnings = providerEarnings[idx] ?? 0;
-                                return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
-                            }
+    // Provider Activity - Bar with Tooltip
+    const providerLabels = @json($providerStats->pluck('name'));
+    const providerData = @json($providerStats->pluck('services_count'));
+    const providerEarnings = @json($providerStats->pluck('earnings'));
+    new Chart(document.getElementById('providerStatsChart'), {
+        type: 'bar',
+        data: {
+            labels: providerLabels,
+            datasets: [{
+                label: 'Services Provided',
+                data: providerData,
+                backgroundColor: '#f6c23e',
+            }]
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: ctx => providerLabels[ctx[0].dataIndex],
+                        afterBody: ctx => {
+                            const earnings = providerEarnings[ctx[0].dataIndex] ?? 0;
+                            return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
                         }
-                    },
-                    legend: { display: false }
-                }
+                    }
+                },
+                legend: { display: false }
             }
-        });
+        }
+    });
 
-        // Embassy Earnings Over Time
-        const embassyEarningsLabels = @json($months);
-        const embassyEarningsDatasets = @json($embassyEarningsDatasets);
-        new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
-            type: 'line',
-            data: {
-                labels: embassyEarningsLabels,
-                datasets: embassyEarningsDatasets.map((ds, idx) => ({
-                    ...ds,
-                    borderColor: `hsl(${idx * 60}, 70%, 50%)`,
-                    backgroundColor: `hsl(${idx * 60}, 70%, 80%)`,
-                    label: ds.embassy_name,
-                    country_coverage: ds.country_coverage
-                }))
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            title: function(context) {
-                                const embassyName = context[0].dataset.label;
-                                const month = context[0].label;
-                                return `${embassyName} - ${month}`;
-                            },
-                            label: function(context) {
-                                const currency = context.dataset.currency || 'USD';
-                                const earnings = context.parsed.y;
-                                return `Earnings: ${earnings} ${currency}`;
-                            },
-                            afterLabel: function(context) {
-                                const total = context.dataset.data.reduce((a,b)=>a+b,0);
-                                const currency = context.dataset.currency || 'USD';
-                                const countryCoverage = context.dataset.country_coverage || 0;
-                                return [
-                                    `Total: ${total} ${currency}`,
-                                    `Country Coverage: ${countryCoverage}`
-                                ];
-                            }
+    // Embassy Earnings Over Time - Line
+    const embassyEarningsLabels = @json($months);
+    const embassyEarningsDatasets = @json($embassyEarningsDatasets);
+    new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
+        type: 'line',
+        data: {
+            labels: embassyEarningsLabels,
+            datasets: embassyEarningsDatasets.map((ds, idx) => ({
+                ...ds,
+                borderColor: `hsl(${idx * 60}, 70%, 50%)`,
+                backgroundColor: `hsl(${idx * 60}, 70%, 80%)`,
+                label: ds.embassy_name,
+                country_coverage: ds.country_coverage
+            }))
+        },
+        options: {
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: ctx => `${ctx[0].dataset.label} - ${ctx[0].label}`,
+                        label: ctx => `Earnings: ${ctx.parsed.y} ${ctx.dataset.currency || 'USD'}`,
+                        afterLabel: ctx => {
+                            const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+                            const currency = ctx.dataset.currency || 'USD';
+                            const coverage = ctx.dataset.country_coverage || 0;
+                            return [`Total: ${total} ${currency}`, `Country Coverage: ${coverage}`];
                         }
                     }
                 }
             }
-        });
+        }
+    });
 
     // Provider Earnings - Stacked Chart
     const rawProviderStats = @json($providerStats);
@@ -556,89 +532,96 @@ document.addEventListener('DOMContentLoaded', function () {
         const currencies = filterCurrency === 'all' ? allCurrencies : [filterCurrency];
         return currencies.map(currency => ({
             label: currency,
-            data: earningsByProviderAndCurrency.map(e => e[currency]),
-            backgroundColor: `hsl(${idx * 60}, 70%, 60%)`,
+            data: sortedStats.map(p => p.earnings[currency] ?? 0),
+            stack: 'earnings',
+            backgroundColor: colorMap[currency],
         }));
-        new Chart(document.getElementById('providerEarningsStackedChart'), {
-            type: 'bar',
-            data: {
-                labels: providerStackedLabels,
-                datasets: datasets
-            },
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.dataset.label}: $${Number(context.parsed.y).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                            }
-                        }
-                    },
-                    legend: { position: 'top' }
+    }
+
+    function getRandomColor() {
+        const h = Math.floor(Math.random() * 360);
+        return `hsl(${h}, 70%, 60%)`;
+    }
+
+    const ctx = document.getElementById('providerEarningsChart').getContext('2d');
+    let chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: providerNames,
+            datasets: buildDatasets()
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Earnings per Provider by Currency'
                 },
-                responsive: true,
-                scales: {
-                    x: { stacked: true },
-                    y: { stacked: true }
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: ctx => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}`
+                    }
+                }
+            },
+            scales: {
+                x: { stacked: true },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Earnings'
+                    }
                 }
             }
-        });
-    </script>
-<!-- apexcharts -->
-    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
-    <!-- dashboard init -->
-    <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    
+        }
+    });
 
+    // Currency Filter Dropdown
+    const currencyFilter = document.getElementById('currencyFilter');
+    if (currencyFilter) {
+        allCurrencies.forEach(currency => {
+            const opt = document.createElement('option');
+            opt.value = currency;
+            opt.textContent = currency;
+            currencyFilter.appendChild(opt);
+        });
+
+        currencyFilter.addEventListener('change', function () {
+            const selected = this.value;
+            chart.data.datasets = buildDatasets(selected);
+            chart.update();
+        });
+    }
+
+});
+</script>
 @endsection
 
-@section('script')
-    @parent
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-    </scrip>
-@endsection
-
-@section('script')
-    @parent
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('table').each(function() {
-                $(this).DataTable({
-                    pageLength: 5,
-                    order: [], // No default ordering, let user sort
-                    language: {
-                        search: 'Filter:',
-                        searchPlaceholder: 'Type to filter...'
-                    }
+    @section('script')
+            @parent
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+                $(document).ready(function() {
+                    $('table').each(function() {
+                        $(this).DataTable({
+                            pageLength: 5,
+                            order: [], // No default ordering, let user sort
+                            language: {
+                                search: 'Filter:',
+                                searchPlaceholder: 'Type to filter...'
+                            }
+                        });
+                    });
                 });
-            });
-        });
-    </script>
-@endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        </script>
+    @endsection
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
 
