@@ -35,28 +35,15 @@
                                 <i class="bx bx-edit-alt"></i>
                             </button>
 
-
                             <!-- Delete Button -->
-                            <form method="POST" action="{{ route('country.destroy', $country->id) }}"
-                                style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bx bxs-trash"></i>
-                                </button>
-                            </form>
+                            <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $country->id }}">
+                                <i class="bx bxs-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center mt-4">
-            <nav aria-label="Countries list pagination">
-                <ul class="pagination pagination-rounded justify-content-center">
-                    {{ $countries->links('pagination::bootstrap-5') }}
-                </ul>
-            </nav>
-        </div>
     </div>
 
     <!-- Country Modal -->
@@ -143,6 +130,50 @@
                     itemSelectText: '',
                 });
             });
+        });
+
+        document.addEventListener('click', function(e) {
+            const deleteBtn = e.target.closest('.delete-btn');
+            if (deleteBtn) {
+                e.preventDefault();
+                const countryId = deleteBtn.dataset.id;
+                
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        @this.deleteConfirm(countryId);
+                    }
+                });
+            }
+        });
+
+        Livewire.on('showDeleteSuccess', () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Country has been deleted.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        });
+
+        Livewire.on('showDeleteError', () => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to delete country.',
+            });
+        });
+
+        window.addEventListener('close-modal', () => {
+            $('.countries-modal').modal('hide');
         });
     </script>
 

@@ -3,14 +3,14 @@
         <table class="table table-striped align-middle">
             <thead>
                 <tr>
-                    <th>Embassy</th>
+                    <th>#</th>
                     <th>Account Name</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($embassies as $embassy)
                     <tr>
-                        <td>{{ $embassy->name }}</td>
+                          <td>{{ $loop->iteration }}</td>
                         <td>{{ $embassy->account->name ?? 'N/A' }}</td>
                     </tr>
                 @endforeach
