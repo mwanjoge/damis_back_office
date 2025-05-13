@@ -27,9 +27,9 @@ class RequestController extends Controller
             'Completed' => $requests->where('status', 'Completed')->count(),
             'Cancelled' => $requests->where('status', 'Cancelled')->count(),
         ];
-        $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
+        // $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
        
-        return view('requests.index', compact('requests', 'breadcrumbs','summary'));
+        return view('requests.index', compact('requests', 'summary'));
     }
 
     /**
@@ -42,8 +42,8 @@ class RequestController extends Controller
         $embassies = \App\Models\Embassy::query()->select('id', 'name')->get();
         $countries = \App\Models\Country::query()->select('id', 'name')->whereNotNull('embassy_id')->get();
         $members = \App\Models\Member::query()->select('id', 'name')->get();
-        $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
-        return view('requests.create', compact('services', 'serviceProviders', 'embassies', 'breadcrumbs','countries', 'members'));
+        // $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
+        return view('requests.create', compact('services', 'serviceProviders', 'embassies', 'countries', 'members'));
     }
 
     /**
@@ -88,8 +88,8 @@ class RequestController extends Controller
         $request->load('requestItems.serviceProvider', 'requestItems.service');
 
         $request->load('embassy', 'member');
-        $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
-        return view('Requests.show', compact('breadcrumbs','request'));
+        // $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
+        return view('Requests.show', compact('request'));
     }
 
     /**

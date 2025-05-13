@@ -32,8 +32,7 @@
                     <br>
                     <br>
                     <br>
-                     @include('layouts.breadcrumb', ['breadcrumbs' => $breadcrumbs])
-
+                  
                     @yield('content')
                     </div>
                 <!-- container-fluid -->

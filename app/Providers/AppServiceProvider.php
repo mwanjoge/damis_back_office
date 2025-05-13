@@ -33,24 +33,23 @@ class AppServiceProvider extends ServiceProvider
             ])->baseUrl(config('api.public_api_base_url'));
         });
 
-         View::composer('*', function ($view) {
-        $routeName = Route::currentRouteName(); // Get the current route name
+    //      View::composer('*', function ($view) {
+    //     $routeName = Route::currentRouteName(); // Get the current route name
 
-        // Default breadcrumbs
-        $breadcrumbs = [
-            ['name' => 'Home', 'url' => route('home')],
-            ['name' => 'Requests', 'url' => route('requests.index')],
-        ];
+    //     // Default breadcrumbs
+    //     $breadcrumbs = [
+    //         ['name' => 'Home', 'url' => route('home')],
+    //        ];
 
-        // Add specific breadcrumbs for create and edit views
-        if ($routeName === 'requests.create') {
-            $breadcrumbs[] = ['name' => 'Create Request', 'url' => route('requests.create')];
-        } elseif ($routeName === 'requests.edit') {
-            $breadcrumbs[] = ['name' => 'Edit Request', 'url' => url()->current()];
-        }
+    //     // Add specific breadcrumbs for create and edit views
+    //     if ($routeName === 'requests.create') {
+    //         $breadcrumbs[] = ['name' => 'Create Request', 'url' => route('requests.create')];
+    //     } elseif ($routeName === 'requests.edit') {
+    //         $breadcrumbs[] = ['name' => 'Edit Request', 'url' => url()->current()];
+    //     }
 
-        $view->with('breadcrumbs', $breadcrumbs);
-    });
+    //     $view->with('breadcrumbs', $breadcrumbs);
+    // });
     }
 
 }

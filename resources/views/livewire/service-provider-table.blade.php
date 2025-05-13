@@ -12,7 +12,6 @@
                 <tr>
                     <th>#</th>
                     <th>Service Provider</th>
-                    <th>Services</th>
                     <th class="text-end" style="width: 180px;">Actions</th>
                 </tr>
             </thead>
@@ -21,11 +20,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $provider['name'] }}</td>
-                        <td>
-                            @foreach ($provider['services'] as $service)
-                                <span class="badge bg-primary">{{ $service['name'] }}</span>
-                            @endforeach
-                        </td>
+                       
                         <td class="text-end">
                             <button class="btn btn-warning btn-sm" wire:click="openForm('{{ $provider['id'] }}')">
                                 <i class="bx bx-edit-alt"></i>
