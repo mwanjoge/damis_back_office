@@ -64,7 +64,7 @@
                     <div class="col">
                         <label class="form-label form-label-sm">Attachment</label>
                         <div class="input-group input-group-sm">
-                            <input type="file" wire:model="inputs.{{ $key }}.attachment" name="requested_items[{{ $key }}][attachment]" class="form-control form-control-sm" placeholder="Attachment">
+                            <input type="file" wire:model="inputs.{{ $key }}.attachment" name="request_items[{{ $key }}][attachment]" class="form-control form-control-sm" placeholder="Attachment">
                         </div>
                         @error("inputs.$key.attachment")
                             <span class="text-danger">{{ $message }}</span>

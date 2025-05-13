@@ -49,7 +49,7 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-        //return $request->all();
+        // dd($request->all());
 
         //try {
             $data = $request->validated();

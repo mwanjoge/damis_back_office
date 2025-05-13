@@ -32,7 +32,7 @@ class StoreRequestRequest extends FormRequest
              'request_items.*.price' => 'required|numeric|min:0',
              'request_items.*.certificate_holder_name' => 'required|string|max:255',
              'request_items.*.certificate_index_number' => 'nullable|string|max:255',
-             'request_items.*.attachment' => 'nullable|file',
+             'request_items.*.attachment' => 'required',
         ];
     }
 }
