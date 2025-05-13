@@ -12,7 +12,6 @@
                 <tr>
                     <th>#</th>
                     <th>Service Provider</th>
-                    
                     <th class="text-end" style="width: 180px;">Actions</th>
                 </tr>
             </thead>

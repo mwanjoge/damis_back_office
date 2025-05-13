@@ -30,7 +30,14 @@ class RequestService{
     }
 
     public function addRequestedItems(Model|Request $request, array $requestedItems){
+        // $requestedItems=$request->all()['requestedItems'] ?? [];
         foreach ($requestedItems as $index => $item) {
+            // if ($requestedItems->hasFile("requestedItems.$index.attachment")) { 
+            //     $file = $request ->file("requestedItems.$index.attachment");
+            //     $path= $file -> store('attachment','public');
+            // } else{
+            //     $path = null;
+            // }
             //dd($item);
             \App\Models\RequestItem::create([
                 'account_id' => $this->getAccountId(),
@@ -40,7 +47,7 @@ class RequestService{
                 'certificate_holder_name' => $item['certificate_holder_name'],
                 'certificate_index_number' => $item['certificate_index_number'] ?? null,
                 'price' => $item['price'] ,
-                'attachment' => $item['attachment'] ?? null,
+                'attachment' =>$item['attachment'],
             ]);
         }
     }

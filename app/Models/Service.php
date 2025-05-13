@@ -34,4 +34,9 @@ class Service extends Model
     {
         return $this->morphMany(BillableItem::class, 'billable');
     }
+     public function embassy()
+    {
+        return $this->belongsTo(Embassy::class);
+    }
+
 }

@@ -1,47 +1,48 @@
 @extends('layouts.master')
-@section('title') @lang('translation.datatables') @endsection
+@section('title')
+    @lang('Dashboard')
+@endsection
 @section('css')
-<!--datatable css-->
-<link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-<!--datatable responsive css-->
-<link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
+     <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
 
     @php
-        $months = collect(range(1,12))->map(function($m){ return DateTime::createFromFormat('!m', $m)->format('M'); });
+        $months = collect(range(1, 12))->map(function ($m) {
+            return DateTime::createFromFormat('!m', $m)->format('M'); });
         $embassyNames = $requestsPerEmbassy->pluck('embassy.name', 'embassy_id');
         $earningsData = [];
         $embassyCurrencies = [];
-        foreach($countryCoverage as $embassy) {
+        foreach ($countryCoverage as $embassy) {
             $currency = optional($embassy->countries->first())->currency ?? 'USD';
             $embassyCurrencies[$embassy->id] = $currency;
         }
-        foreach($embassyNames as $embassyId => $embassyName) {
+        foreach ($embassyNames as $embassyId => $embassyName) {
             $earningsData[$embassyName] = array_fill(1, 12, 0);
-            foreach($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
-                $earningsData[$embassyName][(int)$row->month] = (float)$row->earnings;
+            foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
+                $earningsData[$embassyName][(int) $row->month] = (float) $row->earnings;
             }
         }
         // Build embassy earnings datasets with meta info for chart tooltips
         $embassyEarningsDatasets = [];
-        foreach($requestsPerEmbassy as $embassy) {
+        foreach ($requestsPerEmbassy as $embassy) {
             $embassyId = $embassy->embassy_id;
             $embassyName = $embassy->embassy->name ?? 'N/A';
             $currency = $embassy->embassy->countries->first()->currency ?? 'USD';
-            $countryCoverage = $embassy->embassy->countries_count ?? ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
+            $countryCoverage =
+                $embassy->embassy->countries_count ??
+                ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
             $data = array_fill(1, 12, 0);
-            foreach($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
-                $data[(int)$row->month] = (float)$row->earnings;
+            foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
+                $data[(int) $row->month] = (float) $row->earnings;
             }
             $embassyEarningsDatasets[] = [
                 'data' => array_values($data),
                 'fill' => false,
                 'currency' => $currency,
                 'embassy_name' => $embassyName,
-                'country_coverage' => $countryCoverage
+                'country_coverage' => $countryCoverage,
             ];
         }
     @endphp
@@ -52,7 +53,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Hello, {{ Auth::user()->name }}</h4>
+                                <h4 class="fs-16 mb-1">Hello {{ Auth::user()->name }}</h4>
                             </div>
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
@@ -97,7 +98,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ number_format($totalEarnings ?? 0) }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">View net earnings</a>
+                                        <a href="" class="text-decoration-underline text-muted small">View net
+                                            earnings</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -124,7 +126,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $applicationsCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">View all applications</a>
+                                        <a href="" class="text-decoration-underline text-muted small">View all
+                                            applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -151,7 +154,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $customersCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small" style="font-style: none;">Total customers</a>
+                                        <a href="" class="text-decoration-underline text-muted small"
+                                            style="font-style: none;">Total customers</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -178,7 +182,8 @@
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
                                             {{ $newApplicationsCount }}
                                         </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">New Applications</a>
+                                        <a href="" class="text-decoration-underline text-muted small">New
+                                            Applications</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-primary-subtle rounded fs-3">
@@ -196,28 +201,30 @@
                     <div class="col-lg-4 mb-3 mb-lg-0">
                         <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
                             <div class="card-body w-100">
-                                <h6 class="text-center mb-3">Yearly Distribution</h6>
-                                <canvas id="dashboard-donut-chart" height="260"></canvas>
+                                <h6 class="text-center mb-3"></h6>
+                                <canvas id="earningsByCurrencyChart" height="260"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-8">
-                           <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Recent Applications</h5>
-            </div>
-            <div class="card-body">
-                <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th class="text-nowrap">Member</th>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Recent Applications</h5>
+                            </div>
+                            <div class="card-body">
+                                <table id="alternative-pagination"
+                                    class="table nowrap dt-responsive align-middle table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap">Member</th>
                                             <th class="text-nowrap">Service</th>
                                             <th class="text-nowrap">Date</th>
                                             <th class="text-nowrap">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
                                             <tr>
                                                 <td>{{ $request->member->name ?? 'N/A' }}</td>
                                                 <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
@@ -225,10 +232,10 @@
                                                 <td><span class="badge bg-primary">{{ $request->status }}</span></td>
                                             </tr>
                                         @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -265,7 +272,7 @@
                         <div class="card shadow h-100">
                             <div class="card-body">
                                 <h6 class="mb-3">Provider Activity</h6>
-                                <canvas id="providerStatsChart" height="200"></canvas>
+                                <canvas id="providerEarningsChart" height="200"></canvas>
                             </div>
                         </div>
                     </div>
@@ -286,34 +293,36 @@
                 {{-- Qualitative Embassy Data --}}
                 <div class="row mb-4">
                     <div class="col-12">
-                     <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Top 5 Highest Earning Embassies</h5>
-            </div>
-            <div class="card-body">
-                <table id="alternative-pagination" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                                                <th>Embassy</th>
-                                                <th>Top Service</th>
-                                                <th>Requests</th>
-                                                <th>Earnings</th>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Top 5 Highest Earning Embassies</h5>
+                            </div>
+                            <div class="card-body">
+                                <table id="alternative-pagination"
+                                    class="table nowrap dt-responsive align-middle table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Embassy</th>
+                                            <th>Top Service</th>
+                                            <th>Requests</th>
+                                            <th>Earnings</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($topEmbassies as $embassy)
+                                            <tr>
+                                                <td>{{ $embassy->name }}</td>
+                                                <td>{{ $embassy->top_service ?? '-' }}</td>
+                                                <td>{{ $embassy->total_requests ?? 0 }}</td>
+                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
                                             </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($topEmbassies as $embassy)
-                                                <tr>
-                                                    <td>{{ $embassy->name }}</td>
-                                                    <td>{{ $embassy->top_service ?? '-' }}</td>
-                                                    <td>{{ $embassy->total_requests ?? 0 }}</td>
-                                                    <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
-                                                </tr>
-                                            @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-                          
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -324,234 +333,267 @@
             </div>
         </div>
     </div>
+   
 @endsection
 
-
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Donut chart for yearly totals (Service Providers, Requests, Services)
-        var providersTotal = {{ array_sum($activeServiceProvidersData) }};
-        var requestsTotal = {{ array_sum($activeRequestsData) }};
-        var servicesTotal = {{ array_sum($activeServicesData) }};
-        new Chart(document.getElementById('dashboard-donut-chart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Service Providers', 'Requests', 'Services'],
-                datasets: [{
-                    data: [providersTotal, requestsTotal, servicesTotal],
-                    backgroundColor: ['#405189', '#0ab39c', '#f7b84b'],
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { position: 'bottom' }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Earnings by Currency - Donut
+    const earningsByCurrency = @json($earningsByCurrency);
+    const donutLabels = Object.keys(earningsByCurrency);
+    const donutData = Object.values(earningsByCurrency);
+    const donutColors = donutLabels.map(() => {
+        const h = Math.floor(Math.random() * 360);
+        return `hsl(${h}, 70%, 60%)`;
+    });
+
+    new Chart(document.getElementById('earningsByCurrencyChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: donutLabels,
+            datasets: [{
+                label: 'Earnings by Currency',
+                data: donutData,
+                backgroundColor: donutColors
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Earnings by Currency'
                 }
             }
-        });
+        }
+    });
 
-        // Requests per Embassy
-        const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
-        const embassyData = @json($requestsPerEmbassy->pluck('count'));
-        // Prepare embassy earnings and currency for tooltips
-        const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
-            // Sum earnings for this embassy
-            $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
-            return $earn ? number_format($earn, 2) : '0.00';
-        }));
-        // If you have a currency field, map it here; otherwise, set a default
-        const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
-            return $item->embassy->currency ?? 'USD';
-        }));
+    // Requests per Embassy - Bar
+    const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
+    const embassyData = @json($requestsPerEmbassy->pluck('count'));
+    const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
+        $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
+        return $earn ? number_format($earn, 2) : '0.00';
+    }));
+    const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
+        return $item->embassy->currency ?? 'USD';
+    }));
 
-        new Chart(document.getElementById('requestsPerEmbassyChart'), {
-            type: 'bar',
-            data: {
-                labels: embassyLabels.map(() => ''), // Hide labels on axis
-                datasets: [{
-                    label: 'Requests',
-                    data: embassyData,
-                    backgroundColor: '#4e73df',
-                }]
-            },
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            title: function(context) {
-                                // Show embassy name in tooltip
-                                return embassyLabels[context[0].dataIndex] || '';
-                            },
-                            afterBody: function(context) {
-                                const idx = context[0].dataIndex;
-                                const earning = embassyEarnings[idx] ?? '0.00';
-                                const currency = embassyCurrencies[idx] ?? 'USD';
-                                const requests = embassyData[idx] ?? 0;
-                                return [
-                                    `Requests: ${requests}`,
-                                    `Earnings: ${earning} ${currency}`
-                                ];
-                            }
+    new Chart(document.getElementById('requestsPerEmbassyChart'), {
+        type: 'bar',
+        data: {
+            labels: embassyLabels.map(() => ''),
+            datasets: [{
+                label: 'Requests',
+                data: embassyData,
+                backgroundColor: '#4e73df',
+            }]
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: context => embassyLabels[context[0].dataIndex] || '',
+                        afterBody: context => {
+                            const idx = context[0].dataIndex;
+                            return [
+                                `Requests: ${embassyData[idx] ?? 0}`,
+                                `Earnings: ${embassyEarnings[idx] ?? '0.00'} ${embassyCurrencies[idx] ?? 'USD'}`
+                            ];
                         }
-                    },
-                    legend: { display: false }
+                    }
                 },
-                scales: {
-                    x: {
-                        ticks: { display: false }
-                    }
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { display: false }
                 }
             }
-        });
+        }
+    });
 
-        // Monthly Requests
-        new Chart(document.getElementById('monthlyRequestsChart'), {
-            type: 'line',
-            data: {
-                labels: [@for($i=1;$i<=12;$i++) '{{ DateTime::createFromFormat("!m", $i)->format("M") }}', @endfor],
-                datasets: [{
-                    label: 'Requests',
-                    data: @json(array_values($monthlyRequests->toArray())),
-                    borderColor: '#1cc88a',
-                    fill: false,
-                }]
-            }
-        });
+    // Monthly Requests - Line
+    new Chart(document.getElementById('monthlyRequestsChart'), {
+        type: 'line',
+        data: {
+            labels: [@for($i=1;$i<=12;$i++) '{{ DateTime::createFromFormat("!m", $i)->format("M") }}', @endfor],
+            datasets: [{
+                label: 'Requests',
+                data: @json(array_values($monthlyRequests->toArray())),
+                borderColor: '#1cc88a',
+                fill: false,
+            }]
+        }
+    });
 
-        // Top Requested Services
-        const topServiceLabels = @json($topServices->map(function($item) { return $item->service->name ?? 'N/A'; }));
-        const topServiceData = @json($topServices->map(function($item) { return $item->count; }));
-        new Chart(document.getElementById('topServicesChart'), {
-            type: 'pie',
-            data: {
-                labels: topServiceLabels,
-                datasets: [{
-                    data: topServiceData,
-                    backgroundColor: ['#36b9cc', '#f6c23e', '#e74a3b', '#1cc88a', '#4e73df'],
-                }]
-            }
-        });
+    // Top Services - Pie
+    const topServiceLabels = @json($topServices->map(fn($item) => $item->service->name ?? 'N/A'));
+    const topServiceData = @json($topServices->map(fn($item) => $item->count));
+    new Chart(document.getElementById('topServicesChart'), {
+        type: 'pie',
+        data: {
+            labels: topServiceLabels,
+            datasets: [{
+                data: topServiceData,
+                backgroundColor: ['#36b9cc', '#f6c23e', '#e74a3b', '#1cc88a', '#4e73df'],
+            }]
+        }
+    });
 
-        // Service Provider Activity (by services count)
-        const providerLabels = @json($providerStats->pluck('name'));
-        const providerData = @json($providerStats->pluck('services_count'));
-        const providerEarnings = @json($providerStats->pluck('earnings'));
-        new Chart(document.getElementById('providerStatsChart'), {
-            type: 'bar',
-            data: {
-                labels: providerLabels,
-                datasets: [{
-                    label: 'Services Provided',
-                    data: providerData,
-                    backgroundColor: '#f6c23e',
-                }]
-            },
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            title: function(context) {
-                                return providerLabels[context[0].dataIndex] || '';
-                            },
-                            afterBody: function(context) {
-                                const idx = context[0].dataIndex;
-                                const earnings = providerEarnings[idx] ?? 0;
-                                return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
-                            }
+    // Provider Activity - Bar with Tooltip
+    const providerLabels = @json($providerStats->pluck('name'));
+    const providerData = @json($providerStats->pluck('services_count'));
+    const providerEarnings = @json($providerStats->pluck('earnings'));
+    new Chart(document.getElementById('providerStatsChart'), {
+        type: 'bar',
+        data: {
+            labels: providerLabels,
+            datasets: [{
+                label: 'Services Provided',
+                data: providerData,
+                backgroundColor: '#f6c23e',
+            }]
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: ctx => providerLabels[ctx[0].dataIndex],
+                        afterBody: ctx => {
+                            const earnings = providerEarnings[ctx[0].dataIndex] ?? 0;
+                            return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
                         }
-                    },
-                    legend: { display: false }
-                }
+                    }
+                },
+                legend: { display: false }
             }
-        });
+        }
+    });
 
-        // Embassy Earnings Over Time
-        const embassyEarningsLabels = @json($months);
-        const embassyEarningsDatasets = @json($embassyEarningsDatasets);
-        new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
-            type: 'line',
-            data: {
-                labels: embassyEarningsLabels,
-                datasets: embassyEarningsDatasets.map((ds, idx) => ({
-                    ...ds,
-                    borderColor: `hsl(${idx * 60}, 70%, 50%)`,
-                    backgroundColor: `hsl(${idx * 60}, 70%, 80%)`,
-                    label: ds.embassy_name,
-                    country_coverage: ds.country_coverage
-                }))
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            title: function(context) {
-                                const embassyName = context[0].dataset.label;
-                                const month = context[0].label;
-                                return `${embassyName} - ${month}`;
-                            },
-                            label: function(context) {
-                                const currency = context.dataset.currency || 'USD';
-                                const earnings = context.parsed.y;
-                                return `Earnings: ${earnings} ${currency}`;
-                            },
-                            afterLabel: function(context) {
-                                const total = context.dataset.data.reduce((a,b)=>a+b,0);
-                                const currency = context.dataset.currency || 'USD';
-                                const countryCoverage = context.dataset.country_coverage || 0;
-                                return [
-                                    `Total: ${total} ${currency}`,
-                                    `Country Coverage: ${countryCoverage}`
-                                ];
-                            }
+    // Embassy Earnings Over Time - Line
+    const embassyEarningsLabels = @json($months);
+    const embassyEarningsDatasets = @json($embassyEarningsDatasets);
+    new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
+        type: 'line',
+        data: {
+            labels: embassyEarningsLabels,
+            datasets: embassyEarningsDatasets.map((ds, idx) => ({
+                ...ds,
+                borderColor: `hsl(${idx * 60}, 70%, 50%)`,
+                backgroundColor: `hsl(${idx * 60}, 70%, 80%)`,
+                label: ds.embassy_name,
+                country_coverage: ds.country_coverage
+            }))
+        },
+        options: {
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: ctx => `${ctx[0].dataset.label} - ${ctx[0].label}`,
+                        label: ctx => `Earnings: ${ctx.parsed.y} ${ctx.dataset.currency || 'USD'}`,
+                        afterLabel: ctx => {
+                            const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+                            const currency = ctx.dataset.currency || 'USD';
+                            const coverage = ctx.dataset.country_coverage || 0;
+                            return [`Total: ${total} ${currency}`, `Country Coverage: ${coverage}`];
                         }
                     }
                 }
             }
-        });
+        }
+    });
 
-        // Provider Earnings Stacked Bar Chart
-        const providerStackedLabels = @json($providerStats->pluck('name'));
-        // Group earnings by currency for each provider
-        const currencySet = Array.from(new Set(@json($providerStats->pluck('currency'))));
-        const earningsByProviderAndCurrency = providerStackedLabels.map((provider, idx) => {
-            const providerObj = @json($providerStats)[idx];
-            const earnings = {};
-            currencySet.forEach(currency => {
-                earnings[currency] = providerObj.currency === currency ? providerObj.earnings : 0;
-            });
-            return earnings;
-        });
-        const datasets = currencySet.map((currency, idx) => ({
+    // Provider Earnings - Stacked Chart
+    const rawProviderStats = @json($providerStats);
+    const sortedStats = rawProviderStats.slice().sort((a, b) => {
+        const sum = obj => Object.values(obj.earnings).reduce((a, b) => a + b, 0);
+        return sum(b) - sum(a);
+    });
+
+    const providerNames = sortedStats.map(p => p.provider);
+    const allCurrencies = Array.from(new Set(sortedStats.flatMap(p => Object.keys(p.earnings))));
+
+    const colorMap = {};
+    allCurrencies.forEach(currency => {
+        colorMap[currency] = getRandomColor();
+    });
+
+    function buildDatasets(filterCurrency = 'all') {
+        const currencies = filterCurrency === 'all' ? allCurrencies : [filterCurrency];
+        return currencies.map(currency => ({
             label: currency,
-            data: earningsByProviderAndCurrency.map(e => e[currency]),
-            backgroundColor: `hsl(${idx * 60}, 70%, 60%)`,
+            data: sortedStats.map(p => p.earnings[currency] ?? 0),
+            stack: 'earnings',
+            backgroundColor: colorMap[currency],
         }));
-        new Chart(document.getElementById('providerEarningsStackedChart'), {
-            type: 'bar',
-            data: {
-                labels: providerStackedLabels,
-                datasets: datasets
-            },
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.dataset.label}: $${Number(context.parsed.y).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-                            }
-                        }
-                    },
-                    legend: { position: 'top' }
+    }
+
+    function getRandomColor() {
+        const h = Math.floor(Math.random() * 360);
+        return `hsl(${h}, 70%, 60%)`;
+    }
+
+    const ctx = document.getElementById('providerEarningsChart').getContext('2d');
+    let chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: providerNames,
+            datasets: buildDatasets()
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Earnings per Provider by Currency'
                 },
-                responsive: true,
-                scales: {
-                    x: { stacked: true },
-                    y: { stacked: true }
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: ctx => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}`
+                    }
+                }
+            },
+            scales: {
+                x: { stacked: true },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Earnings'
+                    }
                 }
             }
+        }
+    });
+
+    // Currency Filter Dropdown
+    const currencyFilter = document.getElementById('currencyFilter');
+    if (currencyFilter) {
+        allCurrencies.forEach(currency => {
+            const opt = document.createElement('option');
+            opt.value = currency;
+            opt.textContent = currency;
+            currencyFilter.appendChild(opt);
         });
-    </script>
+
+        currencyFilter.addEventListener('change', function () {
+            const selected = this.value;
+            chart.data.datasets = buildDatasets(selected);
+            chart.update();
+        });
+    }
+
+});
+</script>
+
 <!-- apexcharts -->
     <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
@@ -560,65 +602,17 @@
     <!-- dashboard init -->
     <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    
-
 @endsection
-
-@section('script')
-    @parent
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-    </scrip>
-@endsection
-
-@section('script')
-    @parent
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('table').each(function() {
-                $(this).DataTable({
-                    pageLength: 5,
-                    order: [], // No default ordering, let user sort
-                    language: {
-                        search: 'Filter:',
-                        searchPlaceholder: 'Type to filter...'
-                    }
-                });
-            });
-        });
-    </script>
-@endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-
-<script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
-
-<script src="{{ URL::asset('build/js/app.js') }}"></script>
-{{-- 
-    PERFORMANCE NOTE:
-    The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being negligible.
-    This means your dashboard's performance bottleneck is in the backend logic (queries, data aggregation, service providers, etc.), not in the Blade view rendering.
-    To improve dashboard speed:
-    - Move heavy data aggregation to scheduled jobs or queue workers (pre-calculate and cache).
-    - Use Cache::remember() for dashboard data, updating it periodically (every 5-10 minutes).
-    - Optimize Eloquent queries and eager load relationships.
-    - Only pass minimal, required data to the view.
-    - See: https://laravel.com/docs/10.x/scheduling and https://laravel.com/docs/10.x/cache
+{{--
+PERFORMANCE NOTE:
+The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being
+negligible.
+This means your dashboard's performance bottleneck is in the backend logic (queries, data aggregation, service
+providers, etc.), not in the Blade view rendering.
+To improve dashboard speed:
+- Move heavy data aggregation to scheduled jobs or queue workers (pre-calculate and cache).
+- Use Cache::remember() for dashboard data, updating it periodically (every 5-10 minutes).
+- Optimize Eloquent queries and eager load relationships.
+- Only pass minimal, required data to the view.
+- See: https://laravel.com/docs/10.x/scheduling and https://laravel.com/docs/10.x/cache
 --}}

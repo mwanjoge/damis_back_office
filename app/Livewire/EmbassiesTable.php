@@ -17,6 +17,13 @@ class EmbassiesTable extends Component
     public $is_active = 1;
     public $states = [];
 
+    public $currency_code;
+
+    public $currency;
+
+    public $country_id; 
+
+
     protected $listeners = ['refreshEmbassies' => '$refresh'];
 
     public function mount()
@@ -38,7 +45,8 @@ class EmbassiesTable extends Component
             $this->name = $embassy->name;
             $this->type = $embassy->type;
             $this->is_active = $embassy->is_active;
-            $this->states = $embassy->countries->pluck('id')->toArray(); // Prepopulate countries for editing
+            $this->country_id = $embassy->countries->pluck('id')->toArray(); 
+            $this->states = $embassy->countries->pluck('id')->toArray(); 
         } else {
             $this->reset(['editingId', 'name', 'type', 'is_active', 'states']);
         }

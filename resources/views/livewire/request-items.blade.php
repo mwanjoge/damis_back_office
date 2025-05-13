@@ -14,8 +14,8 @@
             @foreach($inputs as $key => $input)
                 <div class="request-item-row row g-2 mb-2 align-items-end">
                     <div class="col">
-                        <label class="form-label form-label-sm">Service Provider</label>
-                        <select wire:model="inputs.{{ $key }}.service_provider_id" wire:model.live wire:change="getServices({{ $key }})" class="form-select form-select-sm" name="request_items[{{ $key }}][service_provider_id]" required>
+                                <label for="choices-single-default" class="form-label text-muted">Service Provider</label>
+                        <select wire:model="inputs.{{ $key }}.service_provider_id" wire:model.live wire:change="getServices({{ $key }})" class="form-control" id="choices-single-default"  name="request_items[{{ $key }}][service_provider_id]" required>
                             <option value="">Select Provider</option>
                             @foreach($providers as $provider)
                                 <option value="{{ $provider->id }}">{{ $provider->name }}</option>
@@ -64,7 +64,7 @@
                     <div class="col">
                         <label class="form-label form-label-sm">Attachment</label>
                         <div class="input-group input-group-sm">
-                            <input type="file" wire:model="inputs.{{ $key }}.attachment" name="requested_items[{{ $key }}][attachment]" class="form-control form-control-sm" placeholder="Attachment">
+                            <input type="file" wire:model="inputs.{{ $key }}.attachment" name="request_items[{{ $key }}][attachment]" class="form-control form-control-sm" placeholder="Attachment">
                         </div>
                         @error("inputs.$key.attachment")
                             <span class="text-danger">{{ $message }}</span>

@@ -5,7 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -31,5 +32,24 @@ class AppServiceProvider extends ServiceProvider
                 'Connection' => 'keep-alive'
             ])->baseUrl(config('api.public_api_base_url'));
         });
+
+    //      View::composer('*', function ($view) {
+    //     $routeName = Route::currentRouteName(); // Get the current route name
+
+    //     // Default breadcrumbs
+    //     $breadcrumbs = [
+    //         ['name' => 'Home', 'url' => route('home')],
+    //        ];
+
+    //     // Add specific breadcrumbs for create and edit views
+    //     if ($routeName === 'requests.create') {
+    //         $breadcrumbs[] = ['name' => 'Create Request', 'url' => route('requests.create')];
+    //     } elseif ($routeName === 'requests.edit') {
+    //         $breadcrumbs[] = ['name' => 'Edit Request', 'url' => url()->current()];
+    //     }
+
+    //     $view->with('breadcrumbs', $breadcrumbs);
+    // });
     }
+
 }
