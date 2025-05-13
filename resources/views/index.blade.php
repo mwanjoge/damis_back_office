@@ -1,15 +1,10 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.dashboard')
+    @lang('Dashboard')
 @endsection
 @section('css')
-    <!-- datatable css
-    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-    datatable responsive css
-    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" /> -->
+     <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
 
@@ -598,34 +593,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+
+<!-- apexcharts -->
+    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
+    <!-- dashboard init -->
+    <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/app.js') }}"></script>
 @endsection
-
-    @section('script')
-            @parent
-            <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
-            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-        <script>
-                $(document).ready(function() {
-                    $('table').each(function() {
-                        $(this).DataTable({
-                            pageLength: 5,
-                            order: [], // No default ordering, let user sort
-                            language: {
-                                search: 'Filter:',
-                                searchPlaceholder: 'Type to filter...'
-                            }
-                        });
-                    });
-                });
-        </script>
-    @endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-<script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
-
-<script src="{{ URL::asset('build/js/app.js') }}"></script>
 {{--
 PERFORMANCE NOTE:
 The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being

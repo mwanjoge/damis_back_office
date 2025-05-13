@@ -19,7 +19,7 @@
 
 <body>
     <!-- Begin page -->
-    <div id="layout-wrapper">
+    <div id="layout-wrapper mb-5">
         @include('layouts.topbar')
         @include('layouts.sidebar')
 
@@ -28,20 +28,16 @@
         <!-- ============================================================== -->
         <div class="main-content">
             <div class="page-content">
-                <div class="container-fluid">
-                    <br>
-                    <br>
-                    <br>
-                  
+                <div class="container-fluid pb-5 mt-1">
                     @yield('content')
-                    </div>
+                </div>
                 <!-- container-fluid -->
             </div>
             <!-- End Page-content -->
-            @include('layouts.footer')
         </div>
         <!-- end main content-->
     </div>
+   
     <!-- END layout-wrapper -->
 
     {{-- @include('layouts.customizer') --}}
