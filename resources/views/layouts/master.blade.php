@@ -22,14 +22,20 @@
     <div id="layout-wrapper">
         @include('layouts.topbar')
         @include('layouts.sidebar')
+
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
+                    <br>
+                    <br>
+                    <br>
+                     @include('layouts.breadcrumb', ['breadcrumbs' => $breadcrumbs])
+
                     @yield('content')
-                </div>
+                    </div>
                 <!-- container-fluid -->
             </div>
             <!-- End Page-content -->

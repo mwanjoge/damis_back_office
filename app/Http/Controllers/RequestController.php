@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
 use App\Services\RequestService;
 use Illuminate\Http\Request;
+use Illuminate\support\Facades\Storage;
 
 class RequestController extends Controller
 {
@@ -26,8 +27,9 @@ class RequestController extends Controller
             'Completed' => $requests->where('status', 'Completed')->count(),
             'Cancelled' => $requests->where('status', 'Cancelled')->count(),
         ];
-
-        return view('requests.index', compact('requests', 'summary'));
+        $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
+       
+        return view('requests.index', compact('requests', 'breadcrumbs','summary'));
     }
 
     /**
@@ -40,8 +42,8 @@ class RequestController extends Controller
         $embassies = \App\Models\Embassy::query()->select('id', 'name')->get();
         $countries = \App\Models\Country::query()->select('id', 'name')->whereNotNull('embassy_id')->get();
         $members = \App\Models\Member::query()->select('id', 'name')->get();
-
-        return view('requests.create', compact('services', 'serviceProviders', 'embassies', 'countries', 'members'));
+        $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
+        return view('requests.create', compact('services', 'serviceProviders', 'embassies', 'breadcrumbs','countries', 'members'));
     }
 
     /**
@@ -51,7 +53,7 @@ class RequestController extends Controller
     {
         // dd($request->all());
 
-        //try {
+        try {
             $data = $request->validated();
 
             //return $data['request_items'][0]['price'];
@@ -73,9 +75,9 @@ class RequestController extends Controller
 
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
-        // } catch (\Exception $e) {
-        //     return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
-        // }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -86,7 +88,8 @@ class RequestController extends Controller
         $request->load('requestItems.serviceProvider', 'requestItems.service');
 
         $request->load('embassy', 'member');
-        return view('Requests.show', compact('request'));
+        $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
+        return view('Requests.show', compact('breadcrumbs','request'));
     }
 
     /**
