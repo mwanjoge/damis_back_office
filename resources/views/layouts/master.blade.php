@@ -28,7 +28,8 @@
         <!-- ============================================================== -->
         <div class="main-content">
             <div class="page-content">
-                <div class="container-fluid pb-5 mt-1">
+                <div class="container-fluid pb-5 pt-5">
+
                     @yield('content')
                 </div>
                 <!-- container-fluid -->
