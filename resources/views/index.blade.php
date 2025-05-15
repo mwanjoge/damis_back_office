@@ -416,19 +416,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Monthly Requests - Line
-    new Chart(document.getElementById('monthlyRequestsChart'), {
-        type: 'line',
-        data: {
-            labels: [@for($i=1;$i<=12;$i++) '{{ DateTime::createFromFormat("!m", $i)->format("M") }}', @endfor],
-            datasets: [{
-                label: 'Requests',
-                data: @json(array_values($monthlyRequests->toArray())),
-                borderColor: '#1cc88a',
-                fill: false,
-            }]
-        }
-    });
+   // Monthly Requests - Line
+new Chart(document.getElementById('monthlyRequestsChart'), {
+    type: 'line',
+    data: {
+        labels: [
+            @for ($i = 1; $i <= 12; $i++)
+                '{{ DateTime::createFromFormat("!m", $i)->format("M") }}',
+            @endfor
+        ],
+        datasets: [{
+            label: 'Requests',
+            data: [
+                @foreach ($monthlyRequests as $month => $data)
+                    {{ $data['request_count'] }},
+                @endforeach
+            ],
+            borderColor: '#1cc88a',
+            fill: false,
+        }]
+    },
+});
+
 
     // Top Services - Pie
     const topServiceLabels = @json($topServices->map(fn($item) => $item->service->name ?? 'N/A'));

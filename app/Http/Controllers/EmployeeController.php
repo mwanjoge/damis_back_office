@@ -8,6 +8,8 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Mail\PasswordSetupMail;
+use Illuminate\Support\Facades\Mail;
 
 class EmployeeController extends Controller
 {
@@ -38,33 +40,35 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEmployeeRequest $request)
-    {
-        try {
-            $data = $request->validated();
-            // Get account_id from the selected designation
-            $designation = \App\Models\Designation::find($data['designation_id']);
-            if (!$designation) {
-                return redirect()->route('human_resources')->with('error', 'Invalid designation selected.');
-            }
-            $data['account_id'] = $designation->account_id;
-            // Create the employee
-            $employee = Employee::create($data);
 
-            // Create related user
-            User::create([
-                'name' => $employee->first_name . ' ' . $employee->last_name,
-                'email' => $employee->email,
-                'password' => Hash::make('User@12345'),
-                'userable_id' => $employee->id,
-                'userable_type' => Employee::class,
-            ]);
 
-            return redirect()->route('human_resources')->with('success', 'Employee created successfully.');
-        } catch (\Exception $e) {
-            return redirect()->route('human_resources')->with('error', 'Failed to create employee: ' . $e->getMessage());
+public function store(StoreEmployeeRequest $request)
+{
+    try {
+        $data = $request->validated();
+
+        $designation = \App\Models\Designation::find($data['designation_id']);
+        if (!$designation) {
+            return redirect()->route('human_resources')->with('error', 'Invalid designation selected.');
         }
+
+        $data['account_id'] = $designation->account_id;
+
+        $employee = Employee::create($data);
+
+        $user = User::create([
+            'name' => $employee->first_name . ' ' . $employee->last_name,
+            'email' => $employee->email,
+            'password' => Hash::make('User@12345'),
+            'userable_id' => $employee->id,
+            'userable_type' => Employee::class,
+        ]);
+
+        return redirect()->route('human_resources')->with('success', 'Employee created successfully.');
+    } catch (\Exception $e) {
+        return redirect()->route('human_resources')->with('error', 'Failed to create employee: ' . $e->getMessage());
     }
+}
 
     /**
      * Display the specified resource.

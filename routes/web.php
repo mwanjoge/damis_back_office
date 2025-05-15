@@ -11,6 +11,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceProviderController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Auth\PasswordController;
+
 
 Auth::routes();
 
@@ -56,6 +58,9 @@ Route::middleware(['auth'])->group(function () {
     // routes/web.php
     // Remove duplicate /roles route
 
+    Route::get('/password/change', [PasswordController::class, 'showChangeForm'])->name('password.change');
+    Route::post('/password/update', [PasswordController::class, 'update'])->name('password.update');
+
     Route::get('/roles', [RoleController::class, 'rolesIndex'])->name('roles.index');
     Route::get('/roles/{id}', [RoleController::class, 'show'])->name('roles.show');
     Route::get('/authentication', [RoleController::class, 'authenticationIndex'])->name('authentication');
@@ -63,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'updateRole'])->name('roles.update');
     Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.update-permissions');
     Route::post('/users/assign-role', [RoleController::class, 'assignRole'])->name('users.assignRole');
-// Route::get('/tables', function () {
+    // Route::get('/tables', function () {
 //     return view('tables');
 // })->name('tables');
     // Route::get('/embassies/{id}', [EmbassyController::class, 'show'])->name('embassies.show');

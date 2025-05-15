@@ -27,13 +27,16 @@ class CacheDashboardStatistics extends Command
         $customersCount = Member::count();
         $newApplicationsCount = Request::whereDate('created_at', '>=', Carbon::now()->subDay())->count();
 
-        $topServices = \App\Models\RequestItem::select('service_id')
-            ->selectRaw('COUNT(*) as count')
-            ->groupBy('service_id')
-            ->orderByDesc('count')
-            ->with('service')
-            ->take(5)
-            ->get();
+       $topServices = \App\Models\RequestItem::select('service_id')
+    ->join('requests', 'request_items.request_id', '=', 'requests.id')
+
+    ->selectRaw('SUM(request_items.price) as total_earnings')
+    ->groupBy('service_id')
+    ->orderByDesc('total_earnings')
+    ->with('service')
+    ->take(5)
+    ->get();
+
 
         $requestsPerEmbassy = Request::select('embassy_id')
             ->selectRaw('COUNT(*) as count')
@@ -41,11 +44,23 @@ class CacheDashboardStatistics extends Command
             ->with(['embassy.countries'])
             ->get();
 
-        $monthlyRequests = Request::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('count', 'month');
+  
+
+// Get monthly request count and total earnings
+$monthlyRequests = Request::selectRaw('
+        MONTH(created_at) as month,
+        COUNT(*) as request_count,
+        SUM(total_cost) as total_earnings
+    ')
+    ->whereYear('created_at', Carbon::now()->year)
+    ->where('status', 'Completed') // Optional: only completed requests
+    ->groupBy(DB::raw('MONTH(created_at)'))
+    ->orderBy('month')
+    ->get()
+    ->keyBy('month');
+
+            \Log::info('Top monthly: ', $monthlyRequests->toArray());
+
 
         $topEmbassies = Request::select(
             'embassy_id',
@@ -113,7 +128,8 @@ class CacheDashboardStatistics extends Command
                 foreach ($service->requestItems as $requestItem) {
                     $request = $requestItem->request;
 
-                    if (!$request) continue;
+                    if (!$request)
+                        continue;
 
                     $currency = optional($request->country)->currency ?? 'USD';
                     $earningsPerCurrency[$currency] = ($earningsPerCurrency[$currency] ?? 0) + $request->total_cost;
