@@ -21,7 +21,7 @@ class EmployeeController extends Controller
     {
         $this->middleware('permission:read_employee')->only(['index', 'show']);
         $this->middleware('permission:create_employee')->only(['create', 'store']);
-        $this->middleware('permission:update_employee')->only(['edit', 'update']);
+        $this->middleware('permission:update_employee')->only(['edit', 'update', 'resetPassword']);
         $this->middleware('permission:delete_employee')->only(['destroy']);
     }
 
@@ -62,6 +62,7 @@ public function store(StoreEmployeeRequest $request)
             'password' => Hash::make('User@12345'),
             'userable_id' => $employee->id,
             'userable_type' => Employee::class,
+            'is_default_password' => true,
         ]);
 
         return redirect()->route('human_resources')->with('success', 'Employee created successfully.');
@@ -118,6 +119,30 @@ public function store(StoreEmployeeRequest $request)
             return redirect()->route('human_resources')->with('success', 'Employee deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->route('human_resources')->with('error', 'Failed to delete employee: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Reset the user's password to the default value.
+     */
+    public function resetPassword(Employee $employee)
+    {
+        try {
+            $user = User::where('userable_id', $employee->id)
+                        ->where('userable_type', Employee::class)
+                        ->first();
+
+            if (!$user) {
+                return redirect()->route('human_resources')->with('error', 'User account not found for this employee.');
+            }
+
+            $user->password = Hash::make('User@12345');
+            $user->is_default_password = true;
+            $user->save();
+
+            return redirect()->route('human_resources')->with('success', 'Password has been reset to default successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('human_resources')->with('error', 'Failed to reset password: ' . $e->getMessage());
         }
     }
 }

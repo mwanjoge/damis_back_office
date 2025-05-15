@@ -51,6 +51,13 @@
                                 <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info btn-sm">
                                     <i class="bx bxs-show"></i>
                                 </a>
+                                <form method="POST" action="{{ route('employee.reset-password', $employee->id) }}"
+                                    style="display:inline-block;" onsubmit="return confirm('Are you sure you want to reset the password to default?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-secondary btn-sm" title="Reset Password">
+                                        <i class="bx bx-reset"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @empty

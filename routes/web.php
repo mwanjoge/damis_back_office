@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('department', App\Http\Controllers\DepartmentController::class)->names('department');
     Route::resource('designation', App\Http\Controllers\DesignationController::class)->names('designation');
     Route::resource('employee', App\Http\Controllers\EmployeeController::class)->names('employee');
+    Route::post('employee/{employee}/reset-password', [App\Http\Controllers\EmployeeController::class, 'resetPassword'])->name('employee.reset-password');
     Route::get('settings', function () {
         return view('settings');
     })->name('settings');

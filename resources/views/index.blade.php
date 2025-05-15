@@ -318,7 +318,7 @@
                                                 <td>{{ $embassy->name }}</td>
                                                 <td>{{ $embassy->top_service ?? '-' }}</td>
                                                 <td>{{ $embassy->total_requests ?? 0 }}</td>
-                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
+                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }} {{ optional($embassy->countries->first())->currency ?? 'USD' }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

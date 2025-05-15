@@ -19,7 +19,7 @@
 
 <body>
     <!-- Begin page -->
-    <div id="layout-wrapper mb-5">
+    <div id="layout-wrapper" class="mb-5">
         @include('layouts.topbar')
         @include('layouts.sidebar')
 
@@ -38,7 +38,7 @@
         </div>
         <!-- end main content-->
     </div>
-   
+
     <!-- END layout-wrapper -->
 
     {{-- @include('layouts.customizer') --}}

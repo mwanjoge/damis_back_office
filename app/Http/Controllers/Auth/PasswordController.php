@@ -16,7 +16,7 @@ class PasswordController extends Controller
      */
     public function showChangeForm()
     {
-        return view('auth.password_change');
+        return view('auth.passwords.password_change');
     }
 
     /**
@@ -33,7 +33,7 @@ class PasswordController extends Controller
 
         $user = Auth::user();
         $user->password = Hash::make($request->password);
-        $user->is_default_password = false; // Mark password as changed
+        $user->is_default_password = false;
         $user->save();
 
         return redirect()->route('home')->with('success', 'Password updated successfully.');
