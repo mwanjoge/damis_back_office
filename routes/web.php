@@ -68,6 +68,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'updateRole'])->name('roles.update');
     Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.update-permissions');
     Route::post('/users/assign-role', [RoleController::class, 'assignRole'])->name('users.assignRole');
+    Route::get('/billable-price', [RequestController::class, 'getPrice']);
+
+
     // Route::get('/tables', function () {
 //     return view('tables');
 // })->name('tables');

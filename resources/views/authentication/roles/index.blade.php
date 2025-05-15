@@ -1,8 +1,9 @@
 {{-- @extends('layouts.master') --}}
 @include('authentication.roles.role_modal')
-@include('modal.alert')
+
 {{-- @section('content') --}}
 <div class="container">
+    @include('modal.alert')
     <div class="d-flex justify-content-end align-items-center">
         {{-- <h4 class="fw-bold">Roles</h4> --}}
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roleModal"
