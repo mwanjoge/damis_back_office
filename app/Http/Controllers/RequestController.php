@@ -63,17 +63,11 @@ class RequestController extends Controller
             if (!$accountId) {
                 return redirect()->back()->withInput()->withErrors(['embassy_id' => 'Account not found for the specified embassy.']);
             }
-            Log::info($accountId);
             $this->requestService->setAccountId($country->id);
-            Log::info("1");
             $request = $this->requestService->createRequest($data);
-             Log::info("2");
             $invoice = $this->requestService->createInvoice($request);
-            Log::info("3");
             $this->requestService->addRequestedItems($request, $data['request_items']);
-            Log::info("4");
             $this->requestService->addInvoiceItems($invoice, $request->requestItems);
-             Log::info("5");
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
         } catch (\Exception $e) {
