@@ -1,5 +1,5 @@
 <div>
-    <div class="table-responsive">
+    <div class="table-responsive" wire:ignore>
         <table class="table table-striped align-middle">
             <thead>
                 <tr>
@@ -10,14 +10,11 @@
             <tbody>
                 @foreach ($embassies as $embassy)
                     <tr>
-                          <td>{{ $loop->iteration }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $embassy->account->name ?? 'N/A' }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-    </div>
-    <div class="d-flex justify-content-center mt-4">
-        {{ $embassies->links('pagination::bootstrap-5') }}
     </div>
 </div>

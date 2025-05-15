@@ -21,7 +21,7 @@ class EmbassiesTable extends Component
 
     public $currency;
 
-    public $country_id; 
+    public $country_id;
 
 
     protected $listeners = ['refreshEmbassies' => '$refresh'];
@@ -45,8 +45,8 @@ class EmbassiesTable extends Component
             $this->name = $embassy->name;
             $this->type = $embassy->type;
             $this->is_active = $embassy->is_active;
-            $this->country_id = $embassy->countries->pluck('id')->toArray(); 
-            $this->states = $embassy->countries->pluck('id')->toArray(); 
+            $this->country_id = $embassy->countries->pluck('id')->toArray();
+            $this->states = $embassy->countries->pluck('id')->toArray();
         } else {
             $this->reset(['editingId', 'name', 'type', 'is_active', 'states']);
         }
@@ -56,7 +56,7 @@ class EmbassiesTable extends Component
     public function render()
     {
         return view('livewire.embassies-table', [
-            'embassies' => Embassy::where('id', '>', 1)->paginate(10),
+            'embassies' => Embassy::where('id', '>', 1)->get(),
             'countries' => $this->countries,
         ]);
     }

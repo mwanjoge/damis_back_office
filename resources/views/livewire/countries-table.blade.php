@@ -4,7 +4,7 @@
             New Country
         </button>
     </div>
-    <div class="table-responsive table-card">
+    <div class="table-responsive table-card" wire:ignore>
         <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
             <thead class="text-muted table-light pt-3">
                 <tr>
@@ -137,7 +137,7 @@
             if (deleteBtn) {
                 e.preventDefault();
                 const countryId = deleteBtn.dataset.id;
-                
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
