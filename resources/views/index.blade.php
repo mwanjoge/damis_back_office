@@ -3,7 +3,7 @@
     @lang('Dashboard')
 @endsection
 @section('css')
-     <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
@@ -11,9 +11,12 @@
     @php
         $months = collect(range(1, 12))->map(function ($m) {
             return DateTime::createFromFormat('!m', $m)->format('M'); });
-        $embassyNames = $requestsPerEmbassy->pluck('embassy.name', 'embassy_id');
+        $embassyNames = $requestsPerEmbassy ?? collect([]);
+        $embassyNames = $embassyNames->pluck('embassy.name', 'embassy_id');
         $earningsData = [];
         $embassyCurrencies = [];
+        $countryCoverage = $requestsPerEmbassy->pluck('embassy') ?? collect([]);
+        $embassyEarningsOverTime = $embassyEarningsOverTime ?? collect([]);
         foreach ($countryCoverage as $embassy) {
             $currency = optional($embassy->countries->first())->currency ?? 'USD';
             $embassyCurrencies[$embassy->id] = $currency;
@@ -30,7 +33,7 @@
             $embassyId = $embassy->embassy_id;
             $embassyName = $embassy->embassy->name ?? 'N/A';
             $currency = $embassy->embassy->countries->first()->currency ?? 'USD';
-            $countryCoverage =
+            $countryCount =
                 $embassy->embassy->countries_count ??
                 ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
             $data = array_fill(1, 12, 0);
@@ -155,7 +158,7 @@
                                             {{ $customersCount }}
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small"
-                                            style="font-style: none;">Total customers</a>
+                                            style="font-style: normal;">Total customers</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -263,7 +266,7 @@
                     <div class="col-lg-6">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6 class="mb-3">Top Services</h6>
+                                <h6 class="mb-3">Top Services by Earnings</h6>
                                 <canvas id="topServicesChart" height="200"></canvas>
                             </div>
                         </div>
@@ -333,7 +336,7 @@
             </div>
         </div>
     </div>
-   
+
 @endsection
 
 @section('script')
@@ -349,6 +352,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const h = Math.floor(Math.random() * 360);
         return `hsl(${h}, 70%, 60%)`;
     });
+
+    // Check if chart instance already exists and destroy it
+    let earningsByCurrencyChartInstance = Chart.getChart('earningsByCurrencyChart');
+    if (earningsByCurrencyChartInstance) {
+        earningsByCurrencyChartInstance.destroy();
+    }
 
     new Chart(document.getElementById('earningsByCurrencyChart').getContext('2d'), {
         type: 'doughnut',
@@ -381,6 +390,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
         return $item->embassy->currency ?? 'USD';
     }));
+
+    // Check if chart instance already exists and destroy it
+    let requestsPerEmbassyChartInstance = Chart.getChart('requestsPerEmbassyChart');
+    if (requestsPerEmbassyChartInstance) {
+        requestsPerEmbassyChartInstance.destroy();
+    }
 
     new Chart(document.getElementById('requestsPerEmbassyChart'), {
         type: 'bar',
@@ -417,6 +432,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
    // Monthly Requests - Line
+// Check if chart instance already exists and destroy it
+let monthlyRequestsChartInstance = Chart.getChart('monthlyRequestsChart');
+if (monthlyRequestsChartInstance) {
+    monthlyRequestsChartInstance.destroy();
+}
+
 new Chart(document.getElementById('monthlyRequestsChart'), {
     type: 'line',
     data: {
@@ -438,8 +459,7 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
     },
 });
 
-
-    // Top Services - Pie
+// Top Services - Pie
     const topServiceLabels = @json($topServices->map(fn($item) => $item->service->name ?? 'N/A'));
     const topServiceData = @json($topServices->map(fn($item) => $item->count));
     new Chart(document.getElementById('topServicesChart'), {
@@ -453,39 +473,20 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
         }
     });
 
-    // Provider Activity - Bar with Tooltip
-    const providerLabels = @json($providerStats->pluck('name'));
-    const providerData = @json($providerStats->pluck('services_count'));
-    const providerEarnings = @json($providerStats->pluck('earnings'));
-    new Chart(document.getElementById('providerStatsChart'), {
-        type: 'bar',
-        data: {
-            labels: providerLabels,
-            datasets: [{
-                label: 'Services Provided',
-                data: providerData,
-                backgroundColor: '#f6c23e',
-            }]
-        },
-        options: {
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: ctx => providerLabels[ctx[0].dataIndex],
-                        afterBody: ctx => {
-                            const earnings = providerEarnings[ctx[0].dataIndex] ?? 0;
-                            return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
-                        }
-                    }
-                },
-                legend: { display: false }
-            }
-        }
-    });
+    // Top Services by Request Count chart removed as requested
+
+    // Provider Activity - Stacked Chart (see below)
 
     // Embassy Earnings Over Time - Line
     const embassyEarningsLabels = @json($months);
     const embassyEarningsDatasets = @json($embassyEarningsDatasets);
+
+    // Check if chart instance already exists and destroy it
+    let embassyEarningsOverTimeChartInstance = Chart.getChart('embassyEarningsOverTimeChart');
+    if (embassyEarningsOverTimeChartInstance) {
+        embassyEarningsOverTimeChartInstance.destroy();
+    }
+
     new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
         type: 'line',
         data: {
@@ -548,6 +549,13 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
     }
 
     const ctx = document.getElementById('providerEarningsChart').getContext('2d');
+
+    // Check if chart instance already exists and destroy it
+    let providerEarningsChartInstance = Chart.getChart('providerEarningsChart');
+    if (providerEarningsChartInstance) {
+        providerEarningsChartInstance.destroy();
+    }
+
     let chart = new Chart(ctx, {
         type: 'bar',
         data: {

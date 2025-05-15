@@ -17,6 +17,14 @@ class CacheDashboardStatistics extends Command
     protected $signature = 'app:cache-dashboard-statistics';
     protected $description = 'Cache dashboard data for statistics display';
 
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+
+
     public function handle()
     {
         $totalEarnings = Request::where('status', 'Completed')
@@ -27,15 +35,6 @@ class CacheDashboardStatistics extends Command
         $customersCount = Member::count();
         $newApplicationsCount = Request::whereDate('created_at', '>=', Carbon::now()->subDay())->count();
 
-       $topServices = \App\Models\RequestItem::select('service_id')
-    ->join('requests', 'request_items.request_id', '=', 'requests.id')
-
-    ->selectRaw('SUM(request_items.price) as total_earnings')
-    ->groupBy('service_id')
-    ->orderByDesc('total_earnings')
-    ->with('service')
-    ->take(5)
-    ->get();
 
 
         $requestsPerEmbassy = Request::select('embassy_id')
@@ -44,20 +43,38 @@ class CacheDashboardStatistics extends Command
             ->with(['embassy.countries'])
             ->get();
 
-  
 
-// Get monthly request count and total earnings
-$monthlyRequests = Request::selectRaw('
+
+// Get monthly request count and total earnings for all months
+$monthlyRequests = collect();
+for ($month = 1; $month <= 12; $month++) {
+    $monthlyRequests[$month] = [
+        'month' => $month,
+        'request_count' => 0,
+        'total_earnings' => 0
+    ];
+}
+
+// Get actual data for months with requests
+$monthlyData = Request::selectRaw('
         MONTH(created_at) as month,
         COUNT(*) as request_count,
         SUM(total_cost) as total_earnings
     ')
     ->whereYear('created_at', Carbon::now()->year)
-    ->where('status', 'Completed') // Optional: only completed requests
+    ->where('status', 'Completed') // Only completed requests
     ->groupBy(DB::raw('MONTH(created_at)'))
     ->orderBy('month')
-    ->get()
-    ->keyBy('month');
+    ->get();
+
+// Merge actual data into the collection
+foreach ($monthlyData as $data) {
+    $monthlyRequests[$data->month] = [
+        'month' => $data->month,
+        'request_count' => $data->request_count,
+        'total_earnings' => $data->total_earnings
+    ];
+}
 
             \Log::info('Top monthly: ', $monthlyRequests->toArray());
 
@@ -149,6 +166,20 @@ $monthlyRequests = Request::selectRaw('
 
         $countryCoverage = Embassy::withCount('countries')->with('countries')->get();
 
+        // Calculate top services by earnings
+        $topServices = \App\Models\Service::select(
+            'services.id',
+            'services.name',
+            DB::raw('SUM(requests.total_cost) as total_earnings')
+        )
+        ->join('request_items', 'services.id', '=', 'request_items.service_id')
+        ->join('requests', 'request_items.request_id', '=', 'requests.id')
+        ->where('requests.status', 'pending')
+        ->groupBy('services.id', 'services.name')
+        ->orderByDesc('total_earnings')
+        ->take(5)
+        ->get();
+        \Log::info($topServices);
         Cache::put('dashboard_data', [
             'totalEarnings' => $totalEarnings,
             'applicationsCount' => $applicationsCount,
@@ -164,7 +195,7 @@ $monthlyRequests = Request::selectRaw('
             'topEmbassies' => $topEmbassies,
             'embassyEarningsOverTime' => $embassyEarningsOverTime,
             'providerStats' => $providerEarningsMatrix,
-            'earningsByCurrency' => $earningsByCurrency, // ✅ Added here
+            'earningsByCurrency' => $earningsByCurrency,
             'countryCoverage' => $countryCoverage,
         ], now()->addMinutes(720));
 
