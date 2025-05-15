@@ -7,6 +7,7 @@ use App\Models\GeneralLineItem;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Invoice;
 use App\Models\Request;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Database\Eloquent\Model;
 
 class RequestService
@@ -31,30 +32,30 @@ class RequestService
     }
 
 
-    public function addRequestedItems(Model|Request $request, array $requestedItems)
-    {
-        // $requestedItems=$request->all()['requestedItems'] ?? [];
-        foreach ($requestedItems as $index => $item) {
-            // if ($requestedItems->hasFile("requestedItems.$index.attachment")) { 
-            //     $file = $request ->file("requestedItems.$index.attachment");
-            //     $path= $file -> store('attachment','public');
-            // } else{
-            //     $path = null;
-            // }
-            //dd($item);
-            //  $path = $request->file($item['attachment'])->store('documents', 'public');
-            \App\Models\RequestItem::create([
-                'account_id' => $this->getAccountId(),
-                'request_id' => $request->id,
-                'service_id' => $item['service_id'],
-                'service_provider_id' => $item['service_provider_id'],
-                'certificate_holder_name' => $item['certificate_holder_name'],
-                'certificate_index_number' => $item['certificate_index_number'] ?? null,
-                'price' => $request->price,
-                'attachment' => $item['attachment'],
-            ]);
+   public function addRequestedItems(Model|HttpRequest $request, array $requestedItems)
+{
+    foreach ($requestedItems as $item) {
+        $filePath = null;
+
+        if (!empty($item['attachment']) && $item['attachment'] instanceof \Illuminate\Http\UploadedFile) {
+            if ($item['attachment']->isValid()) {
+                $filePath = $item['attachment']->store('documents', 'public');
+            }
         }
+
+        \App\Models\RequestItem::create([
+            'account_id' => $this->getAccountId(),
+            'request_id' => $request->id,
+            'service_id' => $item['service_id'],
+            'service_provider_id' => $item['service_provider_id'],
+            'certificate_holder_name' => $item['certificate_holder_name'],
+            'certificate_index_number' => $item['certificate_index_number'] ?? null,
+            'price' => $request->price,
+            'attachment' => $filePath,
+        ]);
     }
+}
+
 
     public function addInvoiceItems(Model|Invoice $invoice, $requestedItems)
     {
