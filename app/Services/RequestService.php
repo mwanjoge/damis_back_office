@@ -42,7 +42,7 @@ class RequestService
             //     $path = null;
             // }
             //dd($item);
-             $path = $request->file($item['attachment'])->store('documents', 'public');
+            //  $path = $request->file($item['attachment'])->store('documents', 'public');
             \App\Models\RequestItem::create([
                 'account_id' => $this->getAccountId(),
                 'request_id' => $request->id,
@@ -51,7 +51,7 @@ class RequestService
                 'certificate_holder_name' => $item['certificate_holder_name'],
                 'certificate_index_number' => $item['certificate_index_number'] ?? null,
                 'price' => $request->price,
-                'attachment' => $path,
+                'attachment' => $item['attachment'],
             ]);
         }
     }
