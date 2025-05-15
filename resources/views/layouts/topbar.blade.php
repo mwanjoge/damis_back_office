@@ -6,40 +6,40 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="index" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="22">
+                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="45">
+                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="45">
                         </span>
                     </a>
 
                     <a href="index" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="22">
+                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="17">
+                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="17">
                         </span>
                     </a>
                 </div>
 
                 <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
                     <span class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                 
                     </span>
                 </button>
 
                 <!-- App Search-->
                 <form class="app-search d-none d-md-block">
-                    {{-- <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="">
-                        <span class="mdi mdi-magnify search-widget-icon"></span>
-                        <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" id="search-close-options"></span>
-                    </div> --}}
+                  
                 </form>
             </div>
+
+<div class="d-flex flex-column justify-content-center align-items-center w-100 text-white">
+    <h1 class="mb-0" style="font-size: 1.5rem; font-weight: 600; letter-spacing: 3px;">D A M I S</h1>
+    <h4 class="mb-0" style="font-size: 0.9rem; font-weight: 400;">Ministry of Foreign Affairs and East African Cooperation</h4>
+</div>
+
 
             <div class="d-flex align-items-center">
 
