@@ -71,10 +71,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/assign-role', [RoleController::class, 'assignRole'])->name('users.assignRole');
     Route::get('/billable-price', [RequestController::class, 'getPrice']);
 
+    Route::post('/request/approve/{id}', [RequestController::class, 'approveRequest'])->name('requests.approve');
+    Route::post('/request/reject/{id}', [RequestController::class, 'rejectRequest'])->name('requests.reject');
+
 
     // Route::get('/tables', function () {
-//     return view('tables');
-// })->name('tables');
+    //     return view('tables');
+    // })->name('tables');
     // Route::get('/embassies/{id}', [EmbassyController::class, 'show'])->name('embassies.show');
     // Route::post('/embassies/{id}/accredit-country', [EmbassyController::class, 'accreditCountry'])->name('embassies.accreditCountry');
     // Route::delete('/embassies/{embassy}/country/{country}', [EmbassyController::class, 'removeCountry'])->name('embassies.removeCountry');

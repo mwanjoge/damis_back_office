@@ -68,7 +68,7 @@ class RequestController extends Controller
             $this->requestService->setAccountId($country->id);
             $request = $this->requestService->createRequest($data);
             $invoice = $this->requestService->createInvoice($request);
-            $this->requestService->addRequestedItems($request, $data['request_items']);
+            $this->requestService->addRequestedItems($request, $data['request_items'], $data['price']);
             $this->requestService->addInvoiceItems($invoice, $request->requestItems);
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
@@ -109,6 +109,24 @@ class RequestController extends Controller
         $request->load('embassy', 'member');
         // $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
         return view('Requests.show', compact('request'));
+    }
+
+    public function approveRequest($id, Request $request)
+    {
+        $request = Request::findOrFail($id);
+        $request->is_approved = true;
+        $request->save();
+
+        return redirect()->back()->with('success', 'Request approved successfully.');
+    }
+
+    public function rejectRequest($id, Request $request)
+    {
+        $request = Request::findOrFail($id);
+        $request->is_approved = false;
+        $request->save();
+
+        return redirect()->back()->with('error', 'Request rejected.');
     }
 
     /**
