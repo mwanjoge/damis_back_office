@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Mail\InvoiceMail;
@@ -6,18 +7,23 @@ use App\Models\GeneralLineItem;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Invoice;
 use App\Models\Request;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Database\Eloquent\Model;
 use App\Mail\RequestNotificationMail;
 
-class RequestService{
+class RequestService
+{
 
     public $accountId;
 
     public function createRequest(array $data)
     {
-        
+        //  dd($data);
         $country = $this->getCountry($data['country_id']);
-
+        $totalCost = 0;
+        foreach ($data['request_items'] as $item) {
+            $totalCost += $data['price'];
+        }
         return Request::create([
             'account_id' => $this->getAccountId(),
             'embassy_id' => $country->embassy_id,
@@ -25,13 +31,29 @@ class RequestService{
             'country_id' => $data['country_id'],
             'type' => $data['type'],
             'tracking_number' => \Illuminate\Support\Str::ulid(),
-            'total_cost' =>  collect($data['request_items'] ?? [])->sum('price'),
+            'total_cost' => $totalCost,
         ]);
-
     }
 
+<<<<<<< HEAD
     public function addRequestedItems(Model|Request $request, array $requestedItems){
         foreach ($requestedItems as $index => $item) {
+=======
+
+    public function addRequestedItems(Model|HttpRequest $request, array $requestedItems, $price)
+    {
+
+        // dd($price);
+        foreach ($requestedItems as $item) {
+            $filePath = null;
+
+            if (!empty($item['attachment']) && $item['attachment'] instanceof \Illuminate\Http\UploadedFile) {
+                if ($item['attachment']->isValid()) {
+                    $filePath = $item['attachment']->store('documents', 'public');
+                }
+            }
+
+>>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
             \App\Models\RequestItem::create([
                 'account_id' => $this->getAccountId(),
                 'request_id' => $request->id,
@@ -39,13 +61,20 @@ class RequestService{
                 'service_provider_id' => $item['service_provider_id'],
                 'certificate_holder_name' => $item['certificate_holder_name'],
                 'certificate_index_number' => $item['certificate_index_number'] ?? null,
-                'price' => $item['price'] ,
-                'attachment' =>$item['attachment'],
+                'price' => $price,
+                'attachment' => $filePath,
             ]);
         }
     }
 
+<<<<<<< HEAD
     public function addInvoiceItems(Model|Invoice $invoice, $requestedItems){
+=======
+
+    public function addInvoiceItems(Model|Invoice $invoice, $requestedItems)
+    {
+        //dd($requestedItems);
+>>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
         foreach ($requestedItems as $item) {
             $invoice->generalLineItems()->create([
                 'account_id' => $this->getAccountId(),
@@ -53,7 +82,7 @@ class RequestService{
                 'service_provider_id' => $item->service_provider_id,
                 'request_item_id' => $item->id,
                 'price' => $item->price,
-                'currency' => $invoice->currency?? 'TZS',
+                'currency' => $invoice->currency ?? 'TZS',
             ]);
         }
     }
@@ -66,14 +95,18 @@ class RequestService{
         $invoice->payable_amount = $request->total_cost;
         $invoice->paid_amount = $request->total_cost;
         $invoice->balance = $request->total_cost;
-        $invoice->status = $request->status?? 'pending';
+        $invoice->status = $request->status ?? 'pending';
         $invoice->invoice_date = now();
         $invoice->ref_no = \Illuminate\Support\Str::random(8);
         $invoice->member_id = $request->member_id;
 
         return $request->invoice()->save($invoice);
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
     public function notifyMember($invoice, $request)
     {
         $this->sendInvoiceNotification($invoice);
@@ -118,5 +151,4 @@ class RequestService{
     {
         return $this->accountId;
     }
-
 }

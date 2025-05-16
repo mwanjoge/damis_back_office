@@ -15,6 +15,7 @@ class RequestItem extends Model
         'certificate_holder_name',
         'certificate_index_number',
         'attachment',
+        'price'
     ];
 
     public function service() {

@@ -1,7 +1,16 @@
 @extends('layouts.tabler.app')
 
 @section('content')
-<div class="row mt-4 mb-5">
+    @php
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Settings', 'url' => route('settings')]
+        ];
+    @endphp
+
+    @include('layouts.breadcrumb')
+
+    <div class="row mt-4 mb-5">
     <div class="col-12 col-xl-12 col-xxl-10">
         <h4 class="p-1 font-italic">Settings</h4>
         <div class="card shadow-sm">
@@ -11,7 +20,7 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#tab-accounts" role="tab">
                             <i class="fas fa-user-shield"></i> Accounts
                         </a>
-                    </li>  
+                    </li>
                 <li class="nav-item">
                         <a class="nav-link active" data-bs-toggle="tab" href="#tab-embassy" role="tab">
                             <i class="far fa-user"></i> Mission
@@ -32,7 +41,7 @@
                             <i class="far fa-user"></i> Services
                         </a>
                     </li>
-                   
+
                 </ul>
             </div>
 
@@ -40,31 +49,31 @@
                 <div class="tab-content">
                     <!-- Accounts -->
                     <div class="tab-pane fade" id="tab-accounts" role="tabpanel" wire:ignore.self>
-                     
+
                         @livewire('accounts-table')
                     </div>
 
                     <!-- Mission -->
                     <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel" wire:ignore.self>
-                    
+
                         @livewire('embassies-table')
                     </div>
 
                     <!-- Countries -->
                     <div class="tab-pane fade" id="tab-countries" role="tabpanel" wire:ignore.self>
-                      
+
                         @livewire('countries-table')
                     </div>
 
                     <!-- Service Providers -->
                     <div class="tab-pane fade" id="tab-service-provider" role="tabpanel" wire:ignore.self>
-                      
+
                         @livewire('service-provider-table')
                     </div>
 
                     <!-- Services -->
                     <div class="tab-pane fade" id="tab-services" role="tabpanel" wire:ignore.self>
-                    
+
                         @livewire('services-table')
                     </div>
                 </div>

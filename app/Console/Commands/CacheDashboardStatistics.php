@@ -17,6 +17,14 @@ class CacheDashboardStatistics extends Command
     protected $signature = 'app:cache-dashboard-statistics';
     protected $description = 'Cache dashboard data for statistics display';
 
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+
+
     public function handle()
     {
         $totalEarnings = Request::where('status', 'Completed')
@@ -27,13 +35,7 @@ class CacheDashboardStatistics extends Command
         $customersCount = Member::count();
         $newApplicationsCount = Request::whereDate('created_at', '>=', Carbon::now()->subDay())->count();
 
-        $topServices = \App\Models\RequestItem::select('service_id')
-            ->selectRaw('COUNT(*) as count')
-            ->groupBy('service_id')
-            ->orderByDesc('count')
-            ->with('service')
-            ->take(5)
-            ->get();
+
 
         $requestsPerEmbassy = Request::select('embassy_id')
             ->selectRaw('COUNT(*) as count')
@@ -41,11 +43,41 @@ class CacheDashboardStatistics extends Command
             ->with(['embassy.countries'])
             ->get();
 
-        $monthlyRequests = Request::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('count', 'month');
+
+
+// Get monthly request count and total earnings for all months
+$monthlyRequests = collect();
+for ($month = 1; $month <= 12; $month++) {
+    $monthlyRequests[$month] = [
+        'month' => $month,
+        'request_count' => 0,
+        'total_earnings' => 0
+    ];
+}
+
+// Get actual data for months with requests
+$monthlyData = Request::selectRaw('
+        MONTH(created_at) as month,
+        COUNT(*) as request_count,
+        SUM(total_cost) as total_earnings
+    ')
+    ->whereYear('created_at', Carbon::now()->year)
+    ->where('status', 'Completed') // Only completed requests
+    ->groupBy(DB::raw('MONTH(created_at)'))
+    ->orderBy('month')
+    ->get();
+
+// Merge actual data into the collection
+foreach ($monthlyData as $data) {
+    $monthlyRequests[$data->month] = [
+        'month' => $data->month,
+        'request_count' => $data->request_count,
+        'total_earnings' => $data->total_earnings
+    ];
+}
+
+            \Log::info('Top monthly: ', $monthlyRequests->toArray());
+
 
         $topEmbassies = Request::select(
             'embassy_id',
@@ -113,7 +145,8 @@ class CacheDashboardStatistics extends Command
                 foreach ($service->requestItems as $requestItem) {
                     $request = $requestItem->request;
 
-                    if (!$request) continue;
+                    if (!$request)
+                        continue;
 
                     $currency = optional($request->country)->currency ?? 'USD';
                     $earningsPerCurrency[$currency] = ($earningsPerCurrency[$currency] ?? 0) + $request->total_cost;
@@ -133,6 +166,20 @@ class CacheDashboardStatistics extends Command
 
         $countryCoverage = Embassy::withCount('countries')->with('countries')->get();
 
+        // Calculate top services by earnings
+        $topServices = \App\Models\Service::select(
+            'services.id',
+            'services.name',
+            DB::raw('SUM(requests.total_cost) as total_earnings')
+        )
+        ->join('request_items', 'services.id', '=', 'request_items.service_id')
+        ->join('requests', 'request_items.request_id', '=', 'requests.id')
+        ->where('requests.status', 'pending')
+        ->groupBy('services.id', 'services.name')
+        ->orderByDesc('total_earnings')
+        ->take(5)
+        ->get();
+        \Log::info($topServices);
         Cache::put('dashboard_data', [
             'totalEarnings' => $totalEarnings,
             'applicationsCount' => $applicationsCount,
@@ -148,7 +195,7 @@ class CacheDashboardStatistics extends Command
             'topEmbassies' => $topEmbassies,
             'embassyEarningsOverTime' => $embassyEarningsOverTime,
             'providerStats' => $providerEarningsMatrix,
-            'earningsByCurrency' => $earningsByCurrency, // ✅ Added here
+            'earningsByCurrency' => $earningsByCurrency,
             'countryCoverage' => $countryCoverage,
         ], now()->addMinutes(720));
 

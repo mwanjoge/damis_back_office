@@ -7,13 +7,12 @@ use App\Models\Request;
 
 class RequestTable extends Component
 {
-    public $requests;
     public $status = 'Pending';
+    public $requests = [];
 
-    public function mount($requests = null)
+    public function mount()
     {
-        $this->status = 'Pending';
-        $this->requests = $requests ?? Request::all();
+        $this->requests = Request::where('status','Pending')->get();
     }
 
     public function setStatus($status)
@@ -23,7 +22,7 @@ class RequestTable extends Component
 
     public function getFilteredRequestsProperty()
     {
-        return $this->requests->where('status', $this->status);
+        $this->requests = Request::where('status', $this->status)->get();
     }
 
     public function render()

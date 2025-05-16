@@ -11,11 +11,19 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceProviderController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Auth\PasswordController;
+
 
 Auth::routes();
 
 
 Route::middleware(['auth'])->group(function () {
+    // Password change routes - accessible even with default password
+    Route::get('/password/change', [PasswordController::class, 'showChangeForm'])->name('password.change');
+    Route::post('/password/update', [PasswordController::class, 'update'])->name('password.update');
+
+    // All other routes - require password to be changed
+    Route::middleware([\App\Http\Middleware\CheckDefaultPassword::class])->group(function () {
     //Route::post('embassy/update/{id}', [EmbassyController::class,'update'])->name('embassy.update');
     Route::resource('embassy', EmbassyController::class)->names('embassy');
     //Language Translation
@@ -44,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('department', App\Http\Controllers\DepartmentController::class)->names('department');
     Route::resource('designation', App\Http\Controllers\DesignationController::class)->names('designation');
     Route::resource('employee', App\Http\Controllers\EmployeeController::class)->names('employee');
+    Route::post('employee/{employee}/reset-password', [App\Http\Controllers\EmployeeController::class, 'resetPassword'])->name('employee.reset-password');
     Route::get('settings', function () {
         return view('settings');
     })->name('settings');
@@ -63,10 +72,17 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'updateRole'])->name('roles.update');
     Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.update-permissions');
     Route::post('/users/assign-role', [RoleController::class, 'assignRole'])->name('users.assignRole');
-// Route::get('/tables', function () {
-//     return view('tables');
-// })->name('tables');
+    Route::get('/billable-price', [RequestController::class, 'getPrice']);
+
+    Route::post('/request/approve/{id}', [RequestController::class, 'approveRequest'])->name('requests.approve');
+    Route::post('/request/reject/{id}', [RequestController::class, 'rejectRequest'])->name('requests.reject');
+
+
+    // Route::get('/tables', function () {
+    //     return view('tables');
+    // })->name('tables');
     // Route::get('/embassies/{id}', [EmbassyController::class, 'show'])->name('embassies.show');
     // Route::post('/embassies/{id}/accredit-country', [EmbassyController::class, 'accreditCountry'])->name('embassies.accreditCountry');
     // Route::delete('/embassies/{embassy}/country/{country}', [EmbassyController::class, 'removeCountry'])->name('embassies.removeCountry');
+    });
 });

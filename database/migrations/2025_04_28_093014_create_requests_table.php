@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('account_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('embassy_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('embassy_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['Diaspora', 'Domestic']);

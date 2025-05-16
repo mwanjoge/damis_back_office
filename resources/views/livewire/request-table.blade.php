@@ -3,7 +3,7 @@
     <ul class="nav nav-pills mb-4" role="tablist">
         @foreach(['Pending', 'In Progress', 'Completed', 'Cancelled'] as $tabStatus)
             <li class="nav-item" role="presentation">
-                <button class="nav-link @if($status === $tabStatus) active @endif" wire:click="setStatus('{{ $tabStatus }}')" type="button" role="tab">
+                <button class="nav-link {{$status === $tabStatus ? 'active' : ''}}" wire:click="setStatus('{{ $tabStatus }}')" type="button" role="tab">
                     {{ $tabStatus }}
                 </button>
             </li>
@@ -11,15 +11,15 @@
     </ul>
     <div class="card">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-centered align-middle table-nowrap mb-0">
-                    <thead class="table-light">
+                 <div class="table-responsive table-card">
+            <table id="scroll-horizontal" class="table dt-responsive nowrap mb-0" style="width: 100%;">
+                <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
-                            <th>Mission</th>
-                            <th>Country</th>
+                            <th style="width: 200px;">Mission</th>
+                            <th style="width: 150px;">Country</th>
                             <th class="text-end">Price</th>
-                            <th class="text-start">Currency</th>                            
+                            <th class="text-start">Currency</th>
                             <th>Status</th>
                             <th>Approved</th>
                             <th>Paid</th>
@@ -27,15 +27,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($this->filteredRequests as $request)
+                    @forelse($requests as $request)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $request->embassy->name }}</td>
-                            <td>{{ $request->country->name }}</td>
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $request->embassy->name }}">{{ $request->embassy->name }}</td>
+                            <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $request->country->name }}">{{ $request->country->name }}</td>
                             <td class="text-end">{{ number_format($request->total_cost, 2) }}</td>
                             <td class="text-start">{{ $request->country->currency_code }}</td>
                             <td>
-                                <span class="badge 
+                                <span class="badge
                                     @if($request->status === 'Completed') bg-success
                                     @elseif($request->status === 'Pending') bg-warning text-dark
                                     @elseif($request->status === 'Cancelled') bg-danger

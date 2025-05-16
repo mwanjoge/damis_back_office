@@ -1,6 +1,15 @@
 @extends('layouts.tabler.app')
 @section('content')
-@include('modal.alert')
+    @php
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'authentication', 'url' => route('authentication')]
+        ];
+    @endphp
+
+    @include('layouts.breadcrumb')
+
+    @include('modal.alert')
     <div class="row">
         <div class="col-xxl-9 pt-4">
             <h4 class="p-1 font-italic">Authentication</h4>

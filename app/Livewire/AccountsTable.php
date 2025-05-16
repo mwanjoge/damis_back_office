@@ -10,7 +10,7 @@ class AccountsTable extends Component
     public function render()
     {
         return view('livewire.accounts-table', [
-            'embassies' => Embassy::where('id', '>', 1)->with('account')->paginate(10)
+            'embassies' => Embassy::where('id', '>', 1)->with('account')->get()
         ]);
     }
 }

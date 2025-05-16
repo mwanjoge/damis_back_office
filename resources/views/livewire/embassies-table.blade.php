@@ -8,7 +8,7 @@
             </button>
         </div>
 
-        <div class="table-responsive table-card">
+        <div class="table-responsive table-card" wire:ignore>
             <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
                 <thead class="text-muted table-light">
                     <tr>
@@ -62,13 +62,6 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
-        <div class="d-flex justify-content-center mt-4">
-            <nav aria-label="Embassies list pagination">
-                <ul class="pagination pagination-rounded justify-content-center">
-                    {{ $embassies->links('pagination::bootstrap-5') }}
-                </ul>
-            </nav>
         </div>
     </div>
 
@@ -162,7 +155,7 @@
             // Pre-select mission location
             const locationSelect = document.querySelector('select[name="location_id"]');
             locationSelect.value = data.country_id || '';
-            
+
             const countrySelect = document.querySelector('select[name="country_id[]"]');
 
             // Show/hide Accredited Countries field
