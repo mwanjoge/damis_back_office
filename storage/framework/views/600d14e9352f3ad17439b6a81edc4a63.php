@@ -3,7 +3,7 @@
     <ul class="nav nav-pills mb-4" role="tablist">
         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['Pending', 'In Progress', 'Completed', 'Cancelled']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tabStatus): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <li class="nav-item" role="presentation">
-                <button class="nav-link <?php if($status === $tabStatus): ?> active <?php endif; ?>" wire:click="setStatus('<?php echo e($tabStatus); ?>')" type="button" role="tab">
+                <button class="nav-link <?php echo e($status === $tabStatus ? 'active' : ''); ?>" wire:click="setStatus('<?php echo e($tabStatus); ?>')" type="button" role="tab">
                     <?php echo e($tabStatus); ?>
 
                 </button>
@@ -12,15 +12,15 @@
     </ul>
     <div class="card">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-centered align-middle table-nowrap mb-0">
-                    <thead class="table-light">
+                 <div class="table-responsive table-card">
+            <table id="scroll-horizontal" class="table dt-responsive nowrap mb-0" style="width: 100%;">
+                <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
-                            <th>Mission</th>
-                            <th>Country</th>
+                            <th style="width: 200px;">Mission</th>
+                            <th style="width: 150px;">Country</th>
                             <th class="text-end">Price</th>
-                            <th class="text-start">Currency</th>                            
+                            <th class="text-start">Currency</th>
                             <th>Status</th>
                             <th>Approved</th>
                             <th>Paid</th>
@@ -28,15 +28,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $this->filteredRequests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr>
                             <td><?php echo e($loop->iteration); ?></td>
-                            <td><?php echo e($request->embassy->name); ?></td>
-                            <td><?php echo e($request->country->name); ?></td>
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo e($request->embassy->name); ?>"><?php echo e($request->embassy->name); ?></td>
+                            <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo e($request->country->name); ?>"><?php echo e($request->country->name); ?></td>
                             <td class="text-end"><?php echo e(number_format($request->total_cost, 2)); ?></td>
                             <td class="text-start"><?php echo e($request->country->currency_code); ?></td>
                             <td>
-                                <span class="badge 
+                                <span class="badge
                                     <?php if($request->status === 'Completed'): ?> bg-success
                                     <?php elseif($request->status === 'Pending'): ?> bg-warning text-dark
                                     <?php elseif($request->status === 'Cancelled'): ?> bg-danger

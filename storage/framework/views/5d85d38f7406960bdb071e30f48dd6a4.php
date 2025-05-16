@@ -8,8 +8,8 @@
             </button>
         </div>
 
-        <div class="table-responsive table-card">
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+        <div class="table-responsive">
+            <table class="table table-nowrap mb-0">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
@@ -51,6 +51,13 @@
                                 <a href="<?php echo e(route('employee.show', $employee->id)); ?>" class="btn btn-info btn-sm">
                                     <i class="bx bxs-show"></i>
                                 </a>
+                                <form method="POST" action="<?php echo e(route('employee.reset-password', $employee->id)); ?>"
+                                    style="display:inline-block;" onsubmit="return confirm('Are you sure you want to reset the password to default?');">
+                                    <?php echo csrf_field(); ?>
+                                    <button type="submit" class="btn btn-secondary btn-sm" title="Reset Password">
+                                        <i class="bx bx-reset"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -146,4 +153,5 @@
             new bootstrap.Modal(document.querySelector('.employee-modal')).show();
         }
     </script>
-</div><?php /**PATH /Users/administrator/Herd/damis_back_office/resources/views/livewire/employee-table.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH /Users/administrator/Herd/damis_back_office/resources/views/livewire/employee-table.blade.php ENDPATH**/ ?>
