@@ -20,7 +20,7 @@ class RequestItems extends Component
 
     public function addInput()
     {
-        $this->inputs[] = [['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
+        $this->inputs[] = ['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => ''];
     }
 
 

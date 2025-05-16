@@ -1,4 +1,4 @@
-<header id=" bg-white" style="position: fixed; width: 100%; z-index: 2;" class="container-fluid">
+<header id="topbar" style="position: fixed; width: 100%; z-index: 2;" class="container-fluid bg-white">
     <div class="layout-width bg-white">
         <div class="navbar-header">
             <div class="d-flex">
@@ -6,19 +6,19 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="index" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="22">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="45">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="45">
                         </span>
                     </a>
 
                     <a href="index" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="22">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="17">
+                            <img src="{{ URL::asset('build/images/logo.png') }}" alt="" height="17">
                         </span>
                     </a>
                 </div>
@@ -202,7 +202,7 @@
                         <span class="d-flex align-items-center">
                             @auth
                                 <img class="rounded-circle header-profile-user"
-                                    src="{{ URL::asset('build/images/users/user-avatar.jpeg') }} " alt="Header Avatar">
+                                    src="{{ URL::asset('build/images/users/user-avatar.jpeg') }}" alt="Header Avatar">
                                 <span class="text-start ms-xl-2">
                                     <span
                                         class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
@@ -221,7 +221,7 @@
                                 class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Settings</span></a>
 
-                        <a class="dropdown-item " href="javascript:void();"
+                        <a class="dropdown-item " href="javascript:void(0);"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
                                 class="bx bx-power-off font-size-16 align-middle me-1"></i> <span
                                 key="t-logout">@lang('translation.logout')</span></a>

@@ -174,7 +174,7 @@ foreach ($monthlyData as $data) {
         )
         ->join('request_items', 'services.id', '=', 'request_items.service_id')
         ->join('requests', 'request_items.request_id', '=', 'requests.id')
-        ->where('requests.status', 'pending')
+        ->where('requests.status', 'Completed')
         ->groupBy('services.id', 'services.name')
         ->orderByDesc('total_earnings')
         ->take(5)

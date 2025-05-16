@@ -9,6 +9,22 @@
             </li>
         @endforeach
     </ul>
+
+    <!-- Search Box -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text"><i class="ri-search-line"></i></span>
+                <input type="text" class="form-control" placeholder="Search by embassy, country, tracking number, or type..." wire:model.debounce.300ms="search">
+                @if(!empty($search))
+                    <button class="btn btn-outline-secondary" type="button" wire:click="$set('search', '')">
+                        <i class="ri-close-line"></i>
+                    </button>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
                  <div class="table-responsive table-card">

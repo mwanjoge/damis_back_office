@@ -35,13 +35,13 @@ class LoginController extends Controller
      * @param  mixed  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function authenticated(Request $request, $user)
-    {
-        // Check if the user is using the default password
-        if ($user->is_default_password) {
-            return redirect()->route('password.change');
-        }
+    // protected function authenticated(Request $request, $user)
+    // {
+    //     // Check if the user is using the default password
+    //     if ($user->is_default_password) {
+    //         return redirect()->route('password.change');
+    //     }
 
-        return redirect()->intended($this->redirectPath());
-    }
+    //     return redirect()->intended($this->redirectPath());
+    // }
 }

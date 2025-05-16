@@ -315,8 +315,8 @@
                                     <thead>
                                         <tr>
                                             <th>Embassy</th>
+                                            <th>Country Covered</th>
                                             <th>Top Service</th>
-                                            <th>Requests</th>
                                             <th>Earnings</th>
                                         </tr>
                                     </thead>
@@ -324,9 +324,9 @@
                                         @foreach($topEmbassies as $embassy)
                                             <tr>
                                                 <td>{{ $embassy->name }}</td>
-                                                <td>{{ $embassy->top_service ?? '-' }}</td>
-                                                <td>{{ $embassy->total_requests ?? 0 }}</td>
-                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }} {{ optional($embassy->countries->first())->currency ?? 'USD' }}</td>
+                                                <td>{{ $embassy->countries ?? '-' }}</td>
+                                                <td>{{ $embassy->top_service ?? 0 }}</td>
+                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -468,8 +468,8 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
 });
 
 // Top Services - Pie
-    const topServiceLabels = @json($topServices->map(fn($item) => $item->service->name ?? 'N/A'));
-    const topServiceData = @json($topServices->map(fn($item) => $item->count));
+    const topServiceLabels = @json($topServices->map(fn($item) => $item->name ?? 'N/A'));
+    const topServiceData = @json($topServices->map(fn($item) => $item->total_earnings));
     new Chart(document.getElementById('topServicesChart'), {
         type: 'pie',
         data: {

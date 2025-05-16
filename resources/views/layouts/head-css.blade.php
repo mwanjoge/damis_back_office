@@ -31,4 +31,5 @@
 <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 <!-- Custom DataTables Css -->
 <!-- <link href="{{ asset('build/css/datatables-custom.css') }}" rel="stylesheet" type="text/css" /> -->
+<!-- Custom DataTables Search Alignment -->
 {{-- @yield('css') --}}
