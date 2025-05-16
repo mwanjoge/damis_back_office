@@ -1,5 +1,14 @@
 @extends('layouts.master')
 @section('content')
+    @php
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Human resource', 'url' => route('human_resources')]
+        ];
+    @endphp
+
+    @include('layouts.breadcrumb')
+
     <div class="row mt-4 mb-5">
         <div class="col-12 col-xl-12 col-xxl-10">
             <h4 class="p-1 font-italic">Settings</h4>
@@ -28,19 +37,19 @@
                     <div class="tab-content">
                         <!-- Mission -->
                         <div class="tab-pane fade show active" id="tab-department" role="tabpanel" wire:ignore.self>
-                       
+
                             @livewire('department-table')
                         </div>
 
                         <!-- Countries -->
                         <div class="tab-pane fade" id="tab-designation" role="tabpanel" wire:ignore.self>
-                           
+
                             @livewire('designation-table')
                         </div>
 
                         <!-- Service Providers -->
                         <div class="tab-pane fade" id="tab-employee" role="tabpanel" wire:ignore.self>
-                      
+
                             @livewire('employee-table')
                         </div>
                     </div>

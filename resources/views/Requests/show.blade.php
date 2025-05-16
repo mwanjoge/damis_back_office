@@ -1,6 +1,15 @@
 @extends('layouts.master')
 @section('title', 'Show Request')
 @section('content')
+    @php
+    $breadcrumbs = [
+        ['name' => 'Home', 'url' => route('home')],
+        ['name' => 'Requests', 'url' => route('requests.index')],
+        ['name' => 'Request Details', 'url' => url()->current()]
+    ];
+    @endphp
+
+    @include('layouts.breadcrumb')
 
     <div class="row g-4 mt-3">
         <!-- Left column: Request Details -->

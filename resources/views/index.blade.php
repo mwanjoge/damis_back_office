@@ -9,6 +9,14 @@
 @section('content')
 
     @php
+    $breadcrumbs = [
+        ['name' => 'Dashboard', 'url' => route('home')]
+    ];
+    @endphp
+
+    @include('layouts.breadcrumb')
+
+    @php
         $months = collect(range(1, 12))->map(function ($m) {
             return DateTime::createFromFormat('!m', $m)->format('M'); });
         $embassyNames = $requestsPerEmbassy ?? collect([]);

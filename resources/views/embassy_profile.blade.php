@@ -2,6 +2,7 @@
 
 @section('content')
 @include("modal.alert")
+
     <div class="profile-foreground position-relative mx-n4 mt-n4">
         <div class="profile-wid-bg">
             <img src="{{ URL::asset('build/images/profile-bg.jpg') }}" alt="" class="profile-wid-img" />
@@ -85,7 +86,7 @@
                                 </li>
                             @endforeach
                         </ul>
-                    @endif 
+                    @endif
                 </div>
             </div>
         </div>
