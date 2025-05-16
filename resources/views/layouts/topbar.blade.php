@@ -1,4 +1,4 @@
-<header id="page-topbar" style="position: fixed; width: 100%; z-index: 2;">
+<header id=" bg-white" style="position: fixed; width: 100%; z-index: 2;" class="container-fluid">
     <div class="layout-width bg-white">
         <div class="navbar-header">
             <div class="d-flex">

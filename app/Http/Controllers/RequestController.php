@@ -17,7 +17,9 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $requests = \App\Models\Request::all();
+        $requests = \App\Models\Request::query()->get()
+            ->sortByDesc('created_at');
+
 
         // Calculate summary counts
         $summary = [

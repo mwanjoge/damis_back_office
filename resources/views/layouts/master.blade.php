@@ -19,8 +19,8 @@
 
 <body>
     <!-- Begin page -->
-    <div id="layout-wrapper" class="mb-5">
-        @include('layouts.topbar')
+    <div id="layout-wrapper" class="">
+        {{-- @include('layouts.topbar') --}}
         @include('layouts.sidebar')
 
         <!-- ============================================================== -->
