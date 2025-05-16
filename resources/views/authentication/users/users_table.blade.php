@@ -8,7 +8,7 @@
     </div> --}}
    
         
-        <table class="table table-hover mb-0">
+        <table class="table table-hover datatable mb-0">
                 <thead class="bg-light text-dark">
                     <tr>
                         <th>#</th>
