@@ -19,29 +19,6 @@
                         </div>
                     </header>
 
-                    @php
-                    $breadcrumbs = [
-                        ['name' => 'Home', 'url' => route('home')],
-                        ['name' => 'Change Password', 'url' => url()->current()]
-                    ];
-                    @endphp
-
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb bg-transparent p-2 rounded mb-3">
-                            @foreach ($breadcrumbs as $breadcrumb)
-                                @if (!$loop->last)
-                                    <li class="breadcrumb-item">
-                                        <a href="{{ $breadcrumb['url'] }}" class="text-white">{{ $breadcrumb['name'] }}</a>
-                                    </li>
-                                @else
-                                    <li class="breadcrumb-item active text-white fw-semibold" aria-current="page">
-                                        {{ $breadcrumb['name'] }}
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ol>
-                    </nav>
-
                     <div class="card">
                         <div class="card-body">
                             <div class="text-center">
