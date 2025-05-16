@@ -17,10 +17,9 @@ class RequestItems extends Component
     public $test;
 
     public function addInput()
-{
-    $this->inputs[] =[ ['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
-}
-
+    {
+        $this->inputs[] =[ ['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
+    }
 
     public function removeInput($index)
     {
@@ -32,16 +31,12 @@ class RequestItems extends Component
     }
 
     public function getServices($key){
-        // Log::info("providerId ".$this->inputs[$key]['service_provider_id']);
         $this->services = Service::query()->where('service_provider_id', $this->inputs[$key]['service_provider_id'])->get();
         $this->servicesInputs[] = $this->services;
     }
 
-
     public function render()
     {
-        Log::info('working');
-        //Log::debug("inputs on render ".json_encode($this->inputs));
         return view(
             'livewire.request-items',
             [
@@ -49,6 +44,5 @@ class RequestItems extends Component
                 'services' => $this->services
             ]
         );
-
     }
 }

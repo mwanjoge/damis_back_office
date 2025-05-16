@@ -15,3 +15,11 @@ Route::resource('embassy', EmbassyController::class)->names('embassy');
 Route::resource('country', CountryController::class)->names('country');
 Route::resource('service_provider', ServiceProviderController::class)->names('service_provider');
 Route::post('acknowledge', [AcknowledgeController::class, 'acknowledge']);
+
+Route::post('testJamii', function () {
+    return response()->json([
+        'status' => 'success',
+        'code' => 200,
+        'message' => 'Hello from Jamii API',
+    ]);
+});

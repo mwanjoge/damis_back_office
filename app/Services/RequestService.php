@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Invoice;
 use App\Models\Request;
 use Illuminate\Database\Eloquent\Model;
+use App\Mail\RequestNotificationMail;
 
 class RequestService{
 
@@ -30,15 +31,7 @@ class RequestService{
     }
 
     public function addRequestedItems(Model|Request $request, array $requestedItems){
-        // $requestedItems=$request->all()['requestedItems'] ?? [];
         foreach ($requestedItems as $index => $item) {
-            // if ($requestedItems->hasFile("requestedItems.$index.attachment")) { 
-            //     $file = $request ->file("requestedItems.$index.attachment");
-            //     $path= $file -> store('attachment','public');
-            // } else{
-            //     $path = null;
-            // }
-            //dd($item);
             \App\Models\RequestItem::create([
                 'account_id' => $this->getAccountId(),
                 'request_id' => $request->id,
@@ -53,7 +46,6 @@ class RequestService{
     }
 
     public function addInvoiceItems(Model|Invoice $invoice, $requestedItems){
-        //dd($requestedItems);
         foreach ($requestedItems as $item) {
             $invoice->generalLineItems()->create([
                 'account_id' => $this->getAccountId(),
@@ -81,10 +73,23 @@ class RequestService{
 
         return $request->invoice()->save($invoice);
     }
-    public function sendInvoice($invoice)
+
+    public function notifyMember($invoice, $request)
+    {
+        $this->sendInvoiceNotification($invoice);
+        $this->sendRequestNotification($request);
+    }
+
+    public function sendInvoiceNotification($invoice)
     {
         // Logic to send invoice to the user
-        Mail::to($invoice->account->email)->send(new InvoiceMail($invoice));
+        Mail::to($invoice->member->email)->send(new InvoiceMail($invoice));
+    }
+
+    public function sendRequestNotification($request)
+    {
+        // Logic to send request notification
+        Mail::to($request->member->email)->send(new RequestNotificationMail($request));
     }
 
     public function getInvoice($id)

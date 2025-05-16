@@ -1,5 +1,4 @@
-@extends('layouts.master')
-
+@extends('layouts.tabler.app')
 @section('content')
 @include('modal.alert')
     <div class="row">

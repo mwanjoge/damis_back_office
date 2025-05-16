@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
 use App\Services\RequestService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\support\Facades\Storage;
 
 class RequestController extends Controller
@@ -51,15 +52,9 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-        // dd($request->all());
-
         try {
             $data = $request->validated();
-
-            //return $data['request_items'][0]['price'];
-
             $country = $this->requestService->getCountry( $data['country_id']);
-
 
             $accountId = \App\Models\Account::query()->where('embassy_id', $country->embassy_id)->first()->id;
             if (!$accountId) {
@@ -72,7 +67,7 @@ class RequestController extends Controller
             $invoice = $this->requestService->createInvoice($request);
             $this->requestService->addRequestedItems($request, $data['request_items']);
             $this->requestService->addInvoiceItems($invoice, $request->requestItems);
-
+            $this->requestService->notifyMember($invoice, $request);
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
         } catch (\Exception $e) {
@@ -88,7 +83,6 @@ class RequestController extends Controller
         $request->load('requestItems.serviceProvider', 'requestItems.service');
 
         $request->load('embassy', 'member');
-        // $breadcrumbs[] = ['name' => 'Custom Page', 'url' => url()->current()];
         return view('Requests.show', compact('request'));
     }
 
