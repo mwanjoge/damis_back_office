@@ -3,7 +3,7 @@
     <ul class="nav nav-pills mb-4" role="tablist">
         @foreach(['Pending', 'In Progress', 'Completed', 'Cancelled'] as $tabStatus)
             <li class="nav-item" role="presentation">
-                <button class="nav-link @if($status === $tabStatus) active @endif" wire:click="setStatus('{{ $tabStatus }}')" type="button" role="tab">
+                <button class="nav-link {{$status === $tabStatus ? 'active' : ''}}" wire:click="setStatus('{{ $tabStatus }}')" type="button" role="tab">
                     {{ $tabStatus }}
                 </button>
             </li>
@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-body">
                  <div class="table-responsive table-card">
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+            <table id="scroll-horizontal" class="table dt-responsive nowrap mb-0" style="width: 100%;">
                 <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
@@ -27,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($this->filteredRequests as $request)
+                    @forelse($requests as $request)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $request->embassy->name }}">{{ $request->embassy->name }}</td>

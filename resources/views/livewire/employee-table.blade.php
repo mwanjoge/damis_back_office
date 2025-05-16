@@ -8,8 +8,8 @@
             </button>
         </div>
 
-        <div class="table-responsive table-card">
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+        <div class="table-responsive">
+            <table class="table table-nowrap mb-0">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
