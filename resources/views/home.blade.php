@@ -2,6 +2,14 @@
 
 @section('content')
 <div class="container">
+    @php
+    $breadcrumbs = [
+        ['name' => 'Home', 'url' => route('home')]
+    ];
+    @endphp
+
+    @include('layouts.breadcrumb')
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

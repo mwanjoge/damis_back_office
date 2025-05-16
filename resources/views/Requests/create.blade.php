@@ -1,6 +1,15 @@
 @extends('layouts.master')
 @section('title', 'Create Request')
 @section('content')
+    @php
+    $breadcrumbs = [
+        ['name' => 'Home', 'url' => route('home')],
+        ['name' => 'Requests', 'url' => route('requests.index')],
+        ['name' => 'Create Request', 'url' => route('requests.create')]
+    ];
+    @endphp
+
+    @include('layouts.breadcrumb')
 
     <form action="{{ route('requests.store') }}" method="POST" enctype="multipart/form-data">
         @csrf

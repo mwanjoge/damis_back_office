@@ -18,6 +18,12 @@ Auth::routes();
 
 
 Route::middleware(['auth'])->group(function () {
+    // Password change routes - accessible even with default password
+    Route::get('/password/change', [PasswordController::class, 'showChangeForm'])->name('password.change');
+    Route::post('/password/update', [PasswordController::class, 'update'])->name('password.update');
+
+    // All other routes - require password to be changed
+    Route::middleware([\App\Http\Middleware\CheckDefaultPassword::class])->group(function () {
     //Route::post('embassy/update/{id}', [EmbassyController::class,'update'])->name('embassy.update');
     Route::resource('embassy', EmbassyController::class)->names('embassy');
     //Language Translation
@@ -59,9 +65,6 @@ Route::middleware(['auth'])->group(function () {
     // routes/web.php
     // Remove duplicate /roles route
 
-    Route::get('/password/change', [PasswordController::class, 'showChangeForm'])->name('password.change');
-    Route::post('/password/update', [PasswordController::class, 'update'])->name('password.update');
-
     Route::get('/roles', [RoleController::class, 'rolesIndex'])->name('roles.index');
     Route::get('/roles/{id}', [RoleController::class, 'show'])->name('roles.show');
     Route::get('/authentication', [RoleController::class, 'authenticationIndex'])->name('authentication');
@@ -81,4 +84,5 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/embassies/{id}', [EmbassyController::class, 'show'])->name('embassies.show');
     // Route::post('/embassies/{id}/accredit-country', [EmbassyController::class, 'accreditCountry'])->name('embassies.accreditCountry');
     // Route::delete('/embassies/{embassy}/country/{country}', [EmbassyController::class, 'removeCountry'])->name('embassies.removeCountry');
+    });
 });
