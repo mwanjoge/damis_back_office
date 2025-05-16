@@ -7,7 +7,7 @@
     ];
     ?>
 
-    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Requests</h2>
