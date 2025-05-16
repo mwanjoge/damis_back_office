@@ -111,9 +111,7 @@
     <!-- Member Modal -->
     <div>
         @livewire('add-member-modal')
-
     </div>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
