@@ -29,8 +29,7 @@
                     </ul>
                 </div>
 
-                <div class="card-body px-4" style="background-color: white">
-                    <div class="tab-content">
+                <div class="tab-content px-0">
                         <!-- Users -->
                         <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel">
                             @include('authentication.users.users_table')
@@ -41,7 +40,6 @@
                             @include('authentication.roles.index')
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>

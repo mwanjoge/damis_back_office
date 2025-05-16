@@ -1,5 +1,14 @@
 <?php $__env->startSection('content'); ?>
-<?php echo $__env->make('modal.alert', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'authentication', 'url' => route('authentication')]
+        ];
+    ?>
+
+    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+    <?php echo $__env->make('modal.alert', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <div class="row">
         <div class="col-xxl-9 pt-4">
             <h4 class="p-1 font-italic">Authentication</h4>
@@ -19,8 +28,7 @@
                     </ul>
                 </div>
 
-                <div class="card-body px-4" style="background-color: white">
-                    <div class="tab-content">
+                <div class="tab-content px-0">
                         <!-- Users -->
                         <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel">
                             <?php echo $__env->make('authentication.users.users_table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
@@ -31,7 +39,6 @@
                             <?php echo $__env->make('authentication.roles.index', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -53,4 +60,5 @@
         });
     </script>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/administrator/Herd/damis_back_office/resources/views/authentication/authentication_home.blade.php ENDPATH**/ ?>

@@ -1,14 +1,14 @@
 {{-- @section('content') --}}
 @include('modal.alert')
-<div class="container">
+
     {{-- <div class="d-flex justify-content-end align-items-center">
 
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal"
             onclick="openUserModal('create')">+ Add User</button>
     </div> --}}
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-hover">
+   
+        
+        <table class="table table-hover mb-0">
                 <thead class="bg-light text-dark">
                     <tr>
                         <th>#</th>
@@ -51,10 +51,9 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
-    </div>
 
-</div>
+
+
 
 @include('authentication.users.users_modal', ['roles' => $roles])
 

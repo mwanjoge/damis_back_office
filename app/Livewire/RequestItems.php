@@ -20,14 +20,9 @@ class RequestItems extends Component
 
     public function addInput()
     {
-<<<<<<< HEAD
-        $this->inputs[] =[ ['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
-    }
-=======
         $this->inputs[] = [['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
     }
 
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
 
     public function removeInput($index)
     {
@@ -38,12 +33,8 @@ class RequestItems extends Component
         $this->inputs = array_values($this->inputs);
     }
 
-<<<<<<< HEAD
-    public function getServices($key){
-=======
     public function getServices($key)
     {
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
         $this->services = Service::query()->where('service_provider_id', $this->inputs[$key]['service_provider_id'])->get();
         $this->servicesInputs[] = $this->services;
     }

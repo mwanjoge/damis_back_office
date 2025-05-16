@@ -1,10 +1,10 @@
 
 <?php echo $__env->make('modal.alert', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-<div class="container">
+
     
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-hover">
+   
+        
+        <table class="table table-hover mb-0">
                 <thead class="bg-light text-dark">
                     <tr>
                         <th>#</th>
@@ -44,10 +44,9 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
-        </div>
-    </div>
 
-</div>
+
+
 
 <?php echo $__env->make('authentication.users.users_modal', ['roles' => $roles], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
