@@ -1,15 +1,14 @@
-@extends('layouts.tabler.app')
-@section('content')
-    @php
+<?php $__env->startSection('content'); ?>
+    <?php
         $breadcrumbs = [
             ['name' => 'Home', 'url' => route('home')],
             ['name' => 'authentication', 'url' => route('authentication')]
         ];
-    @endphp
+    ?>
 
-    {{-- @include('layouts.breadcrumb') --}}
+    
 
-    @include('modal.alert')
+    <?php echo $__env->make('modal.alert', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <div class="row">
         <div class="col-xxl-9 pt-4">
             <h4 class="p-1 font-italic">Authentication</h4>
@@ -32,19 +31,19 @@
                 <div class="tab-content px-0">
                         <!-- Users -->
                         <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel">
-                            @include('authentication.users.users_table')
+                            <?php echo $__env->make('authentication.users.users_table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         </div>
 
                         <!-- Roles -->
                         <div class="tab-pane fade" id="tab-countries" role="tabpanel">
-                            @include('authentication.roles.index')
+                            <?php echo $__env->make('authentication.roles.index', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         </div>
                     </div>
             </div>
         </div>
     </div>
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
     <script>
         $(function() {
             // for bootstrap 3 use 'shown.bs.tab', for bootstrap 2 use 'shown' in the next line
@@ -60,4 +59,6 @@
             }
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\PROJECTS\damis_back_office\resources\views/authentication/authentication_home.blade.php ENDPATH**/ ?>

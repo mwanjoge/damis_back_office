@@ -1,22 +1,21 @@
-@extends('layouts.tabler.app')
-@section('title')
-    @lang('Dashboard')
-@endsection
-@section('css')
-    <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
-@endsection
-@section('content')
+<?php $__env->startSection('title'); ?>
+    <?php echo app('translator')->get('Dashboard'); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
+    <link href="<?php echo e(URL::asset('build/libs/jsvectormap/jsvectormap.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('build/libs/swiper/swiper-bundle.min.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 
-    @php
+    <?php
     $breadcrumbs = [
         ['name' => 'Dashboard', 'url' => route('home')]
     ];
-    @endphp
+    ?>
 
-    {{-- @include('layouts.breadcrumb') --}}
+    
 
-    @php
+    <?php
         $months = collect(range(1, 12))->map(function ($m) {
             return DateTime::createFromFormat('!m', $m)->format('M'); });
         $embassyNames = $requestsPerEmbassy ?? collect([]);
@@ -56,7 +55,7 @@
                 'country_coverage' => $countryCoverage,
             ];
         }
-    @endphp
+    ?>
     <div class="row">
         <div class="col">
             <div class="h-100">
@@ -64,7 +63,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Hello {{ Auth::user()->name }}</h4>
+                                <h4 class="fs-16 mb-1">Hello <?php echo e(Auth::user()->name); ?></h4>
                             </div>
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
@@ -107,7 +106,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ number_format($totalEarnings ?? 0) }}
+                                            <?php echo e(number_format($totalEarnings ?? 0)); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small">View net
                                             earnings</a>
@@ -135,7 +135,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $applicationsCount }}
+                                            <?php echo e($applicationsCount); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small">View all
                                             applications</a>
@@ -163,7 +164,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $customersCount }}
+                                            <?php echo e($customersCount); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small"
                                             style="font-style: normal;">Total customers</a>
@@ -191,7 +193,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $newApplicationsCount }}
+                                            <?php echo e($newApplicationsCount); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small">New
                                             Applications</a>
@@ -207,7 +210,7 @@
                     </div><!-- end col -->
                 </div> <!-- end row-->
 
-                {{-- Donut and Recent Applications --}}
+                
                 <div class="row g-4 mb-4">
                     <div class="col-lg-4 mb-3 mb-lg-0">
                         <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
@@ -235,14 +238,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                                        <?php $__currentLoopData = $recentApplications->where('status', 'Completed')->take(10); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <td>{{ $request->member->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->created_at->format('Y-m-d') }}</td>
-                                                <td><span class="badge bg-primary">{{ $request->status }}</span></td>
+                                                <td><?php echo e($request->member->name ?? 'N/A'); ?></td>
+                                                <td><?php echo e($request->requestItems->first()->service->name ?? 'N/A'); ?></td>
+                                                <td><?php echo e($request->created_at->format('Y-m-d')); ?></td>
+                                                <td><span class="badge bg-primary"><?php echo e($request->status); ?></span></td>
                                             </tr>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -250,7 +253,7 @@
                     </div>
                 </div>
 
-                {{-- Charts Section --}}
+                
                 <div class="row g-4 mb-4">
                     <div class="col-lg-6">
                         <div class="card shadow h-100">
@@ -289,7 +292,7 @@
                     </div>
                 </div>
 
-                {{-- Embassy Earnings Over Time --}}
+                
                 <div class="row g-4 mb-4">
                     <div class="col-md-12">
                         <div class="card shadow h-100">
@@ -301,7 +304,7 @@
                     </div>
                 </div>
 
-                {{-- Qualitative Embassy Data --}}
+                
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="card">
@@ -321,14 +324,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($topEmbassies as $embassy)
+                                        <?php $__currentLoopData = $topEmbassies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $embassy): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <td>{{ $embassy->name }}</td>
-                                                <td>{{ $embassy->top_service ?? '-' }}</td>
-                                                <td>{{ $embassy->total_requests ?? 0 }}</td>
-                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }} {{ optional($embassy->countries->first())->currency ?? 'USD' }}</td>
+                                                <td><?php echo e($embassy->name); ?></td>
+                                                <td><?php echo e($embassy->top_service ?? '-'); ?></td>
+                                                <td><?php echo e($embassy->total_requests ?? 0); ?></td>
+                                                <td><?php echo e(number_format($embassy->total_earnings ?? 0, 2)); ?> <?php echo e(optional($embassy->countries->first())->currency ?? 'USD'); ?></td>
                                             </tr>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -337,23 +340,23 @@
                     </div>
                 </div>
 
-                {{-- Qualitative Request Data --}}
-                {{-- Removed Top 5 Highest Earning Requests table as requested --}}
+                
+                
 
 
             </div>
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
     // Earnings by Currency - Donut
-    const earningsByCurrency = @json($earningsByCurrency);
+    const earningsByCurrency = <?php echo json_encode($earningsByCurrency, 15, 512) ?>;
     const donutLabels = Object.keys(earningsByCurrency);
     const donutData = Object.values(earningsByCurrency);
     const donutColors = donutLabels.map(() => {
@@ -389,15 +392,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Requests per Embassy - Bar
-    const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
-    const embassyData = @json($requestsPerEmbassy->pluck('count'));
-    const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
+    const embassyLabels = <?php echo json_encode($requestsPerEmbassy->pluck('embassy.name'), 15, 512) ?>;
+    const embassyData = <?php echo json_encode($requestsPerEmbassy->pluck('count'), 15, 512) ?>;
+    const embassyEarnings = <?php echo json_encode($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
         $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
         return $earn ? number_format($earn, 2) : '0.00';
-    }));
-    const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
+    })) ?>;
+    const embassyCurrencies = <?php echo json_encode($requestsPerEmbassy->map(function($item) {
         return $item->embassy->currency ?? 'USD';
-    }));
+    }), 15, 512) ?>;
 
     // Check if chart instance already exists and destroy it
     let requestsPerEmbassyChartInstance = Chart.getChart('requestsPerEmbassyChart');
@@ -450,16 +453,16 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
     type: 'line',
     data: {
         labels: [
-            @for ($i = 1; $i <= 12; $i++)
-                '{{ DateTime::createFromFormat("!m", $i)->format("M") }}',
-            @endfor
+            <?php for($i = 1; $i <= 12; $i++): ?>
+                '<?php echo e(DateTime::createFromFormat("!m", $i)->format("M")); ?>',
+            <?php endfor; ?>
         ],
         datasets: [{
             label: 'Requests',
             data: [
-                @foreach ($monthlyRequests as $month => $data)
-                    {{ $data['request_count'] }},
-                @endforeach
+                <?php $__currentLoopData = $monthlyRequests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $month => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php echo e($data['request_count']); ?>,
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             ],
             borderColor: '#1cc88a',
             fill: false,
@@ -468,8 +471,8 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
 });
 
 // Top Services - Pie
-    const topServiceLabels = @json($topServices->map(fn($item) => $item->service->name ?? 'N/A'));
-    const topServiceData = @json($topServices->map(fn($item) => $item->count));
+    const topServiceLabels = <?php echo json_encode($topServices->map(fn($item) => $item->service->name ?? 'N/A'), 15, 512) ?>;
+    const topServiceData = <?php echo json_encode($topServices->map(fn($item) => $item->count), 15, 512) ?>;
     new Chart(document.getElementById('topServicesChart'), {
         type: 'pie',
         data: {
@@ -486,8 +489,8 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
     // Provider Activity - Stacked Chart (see below)
 
     // Embassy Earnings Over Time - Line
-    const embassyEarningsLabels = @json($months);
-    const embassyEarningsDatasets = @json($embassyEarningsDatasets);
+    const embassyEarningsLabels = <?php echo json_encode($months, 15, 512) ?>;
+    const embassyEarningsDatasets = <?php echo json_encode($embassyEarningsDatasets, 15, 512) ?>;
 
     // Check if chart instance already exists and destroy it
     let embassyEarningsOverTimeChartInstance = Chart.getChart('embassyEarningsOverTimeChart');
@@ -527,7 +530,7 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
     });
 
     // Provider Earnings - Stacked Chart
-    const rawProviderStats = @json($providerStats);
+    const rawProviderStats = <?php echo json_encode($providerStats, 15, 512) ?>;
     const sortedStats = rawProviderStats.slice().sort((a, b) => {
         const sum = obj => Object.values(obj.earnings).reduce((a, b) => a + b, 0);
         return sum(b) - sum(a);
@@ -620,24 +623,14 @@ new Chart(document.getElementById('monthlyRequestsChart'), {
 </script>
 
 <!-- apexcharts -->
-    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/apexcharts/apexcharts.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/jsvectormap/jsvectormap.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/jsvectormap/maps/world-merc.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/swiper/swiper-bundle.min.js')); ?>"></script>
     <!-- dashboard init -->
-    <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-@endsection
-{{--
-PERFORMANCE NOTE:
-The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being
-negligible.
-This means your dashboard's performance bottleneck is in the backend logic (queries, data aggregation, service
-providers, etc.), not in the Blade view rendering.
-To improve dashboard speed:
-- Move heavy data aggregation to scheduled jobs or queue workers (pre-calculate and cache).
-- Use Cache::remember() for dashboard data, updating it periodically (every 5-10 minutes).
-- Optimize Eloquent queries and eager load relationships.
-- Only pass minimal, required data to the view.
-- See: https://laravel.com/docs/10.x/scheduling and https://laravel.com/docs/10.x/cache
---}}
+    <script src="<?php echo e(URL::asset('build/js/pages/dashboard-ecommerce.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\PROJECTS\damis_back_office\resources\views/index.blade.php ENDPATH**/ ?>

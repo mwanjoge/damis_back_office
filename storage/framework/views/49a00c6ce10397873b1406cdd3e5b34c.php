@@ -1,13 +1,12 @@
-@extends('layouts.tabler.app')
-@section('content')
-    @php
+<?php $__env->startSection('content'); ?>
+    <?php
         $breadcrumbs = [
             ['name' => 'Home', 'url' => route('home')],
             ['name' => 'Human resource', 'url' => route('human_resources')]
         ];
-    @endphp
+    ?>
 
-    {{-- @include('layouts.breadcrumb') --}}
+    
 
     <div class="row mt-4 mb-5">
         <div class="col-12 col-xl-12 col-xxl-10">
@@ -38,27 +37,72 @@
                         <!-- Mission -->
                         <div class="tab-pane fade show active" id="tab-department" role="tabpanel" wire:ignore.self>
 
-                            @livewire('department-table')
+                            <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('department-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-4202921214-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                         </div>
 
                         <!-- Countries -->
                         <div class="tab-pane fade" id="tab-designation" role="tabpanel" wire:ignore.self>
 
-                            @livewire('designation-table')
+                            <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('designation-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-4202921214-1', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                         </div>
 
                         <!-- Service Providers -->
                         <div class="tab-pane fade" id="tab-employee" role="tabpanel" wire:ignore.self>
 
-                            @livewire('employee-table')
+                            <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('employee-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-4202921214-2', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
     <script>
         $(function() {
             // Save the last opened tab on click
@@ -73,7 +117,7 @@
                 $('a[data-bs-toggle="tab"][href="' + lastTab + '"]').tab('show');
 
                 // Automatically open corresponding modal if there are errors
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     $(document).ready(function() {
                         $('.modal.show').each(function() {
                             const instance = bootstrap.Modal.getInstance(this);
@@ -99,8 +143,10 @@
                             console.warn('Modal not found for selector:', modalSelector);
                         }
                     });
-                @endif
+                <?php endif; ?>
             }
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\PROJECTS\damis_back_office\resources\views/human_resources.blade.php ENDPATH**/ ?>
