@@ -2,17 +2,28 @@
     <?php echo app('translator')->get('Dashboard'); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('css'); ?>
-     <link href="<?php echo e(URL::asset('build/libs/jsvectormap/jsvectormap.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('build/libs/jsvectormap/jsvectormap.min.css')); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo e(URL::asset('build/libs/swiper/swiper-bundle.min.css')); ?>" rel="stylesheet" type="text/css" />
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 
     <?php
+    $breadcrumbs = [
+        ['name' => 'Dashboard', 'url' => route('home')]
+    ];
+    ?>
+
+    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+    <?php
         $months = collect(range(1, 12))->map(function ($m) {
             return DateTime::createFromFormat('!m', $m)->format('M'); });
-        $embassyNames = $requestsPerEmbassy->pluck('embassy.name', 'embassy_id');
+        $embassyNames = $requestsPerEmbassy ?? collect([]);
+        $embassyNames = $embassyNames->pluck('embassy.name', 'embassy_id');
         $earningsData = [];
         $embassyCurrencies = [];
+        $countryCoverage = $requestsPerEmbassy->pluck('embassy') ?? collect([]);
+        $embassyEarningsOverTime = $embassyEarningsOverTime ?? collect([]);
         foreach ($countryCoverage as $embassy) {
             $currency = optional($embassy->countries->first())->currency ?? 'USD';
             $embassyCurrencies[$embassy->id] = $currency;
@@ -29,7 +40,7 @@
             $embassyId = $embassy->embassy_id;
             $embassyName = $embassy->embassy->name ?? 'N/A';
             $currency = $embassy->embassy->countries->first()->currency ?? 'USD';
-            $countryCoverage =
+            $countryCount =
                 $embassy->embassy->countries_count ??
                 ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
             $data = array_fill(1, 12, 0);
@@ -157,7 +168,7 @@
 
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small"
-                                            style="font-style: none;">Total customers</a>
+                                            style="font-style: normal;">Total customers</a>
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -266,7 +277,7 @@
                     <div class="col-lg-6">
                         <div class="card shadow h-100">
                             <div class="card-body">
-                                <h6 class="mb-3">Top Services</h6>
+                                <h6 class="mb-3">Top Services by Earnings</h6>
                                 <canvas id="topServicesChart" height="200"></canvas>
                             </div>
                         </div>
@@ -318,7 +329,7 @@
                                                 <td><?php echo e($embassy->name); ?></td>
                                                 <td><?php echo e($embassy->top_service ?? '-'); ?></td>
                                                 <td><?php echo e($embassy->total_requests ?? 0); ?></td>
-                                                <td><?php echo e(number_format($embassy->total_earnings ?? 0, 2)); ?></td>
+                                                <td><?php echo e(number_format($embassy->total_earnings ?? 0, 2)); ?> <?php echo e(optional($embassy->countries->first())->currency ?? 'USD'); ?></td>
                                             </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
@@ -336,7 +347,7 @@
             </div>
         </div>
     </div>
-   
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script'); ?>
@@ -352,6 +363,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const h = Math.floor(Math.random() * 360);
         return `hsl(${h}, 70%, 60%)`;
     });
+
+    // Check if chart instance already exists and destroy it
+    let earningsByCurrencyChartInstance = Chart.getChart('earningsByCurrencyChart');
+    if (earningsByCurrencyChartInstance) {
+        earningsByCurrencyChartInstance.destroy();
+    }
 
     new Chart(document.getElementById('earningsByCurrencyChart').getContext('2d'), {
         type: 'doughnut',
@@ -384,6 +401,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const embassyCurrencies = <?php echo json_encode($requestsPerEmbassy->map(function($item) {
         return $item->embassy->currency ?? 'USD';
     }), 15, 512) ?>;
+
+    // Check if chart instance already exists and destroy it
+    let requestsPerEmbassyChartInstance = Chart.getChart('requestsPerEmbassyChart');
+    if (requestsPerEmbassyChartInstance) {
+        requestsPerEmbassyChartInstance.destroy();
+    }
 
     new Chart(document.getElementById('requestsPerEmbassyChart'), {
         type: 'bar',
@@ -419,21 +442,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Monthly Requests - Line
-    new Chart(document.getElementById('monthlyRequestsChart'), {
-        type: 'line',
-        data: {
-            labels: [<?php for($i=1;$i<=12;$i++): ?> '<?php echo e(DateTime::createFromFormat("!m", $i)->format("M")); ?>', <?php endfor; ?>],
-            datasets: [{
-                label: 'Requests',
-                data: <?php echo json_encode(array_values($monthlyRequests->toArray()), 15, 512) ?>,
-                borderColor: '#1cc88a',
-                fill: false,
-            }]
-        }
-    });
+   // Monthly Requests - Line
+// Check if chart instance already exists and destroy it
+let monthlyRequestsChartInstance = Chart.getChart('monthlyRequestsChart');
+if (monthlyRequestsChartInstance) {
+    monthlyRequestsChartInstance.destroy();
+}
 
-    // Top Services - Pie
+new Chart(document.getElementById('monthlyRequestsChart'), {
+    type: 'line',
+    data: {
+        labels: [
+            <?php for($i = 1; $i <= 12; $i++): ?>
+                '<?php echo e(DateTime::createFromFormat("!m", $i)->format("M")); ?>',
+            <?php endfor; ?>
+        ],
+        datasets: [{
+            label: 'Requests',
+            data: [
+                <?php $__currentLoopData = $monthlyRequests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $month => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php echo e($data['request_count']); ?>,
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            ],
+            borderColor: '#1cc88a',
+            fill: false,
+        }]
+    },
+});
+
+// Top Services - Pie
     const topServiceLabels = <?php echo json_encode($topServices->map(fn($item) => $item->service->name ?? 'N/A'), 15, 512) ?>;
     const topServiceData = <?php echo json_encode($topServices->map(fn($item) => $item->count), 15, 512) ?>;
     new Chart(document.getElementById('topServicesChart'), {
@@ -447,39 +484,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Provider Activity - Bar with Tooltip
-    const providerLabels = <?php echo json_encode($providerStats->pluck('name'), 15, 512) ?>;
-    const providerData = <?php echo json_encode($providerStats->pluck('services_count'), 15, 512) ?>;
-    const providerEarnings = <?php echo json_encode($providerStats->pluck('earnings'), 15, 512) ?>;
-    new Chart(document.getElementById('providerStatsChart'), {
-        type: 'bar',
-        data: {
-            labels: providerLabels,
-            datasets: [{
-                label: 'Services Provided',
-                data: providerData,
-                backgroundColor: '#f6c23e',
-            }]
-        },
-        options: {
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: ctx => providerLabels[ctx[0].dataIndex],
-                        afterBody: ctx => {
-                            const earnings = providerEarnings[ctx[0].dataIndex] ?? 0;
-                            return [`Earnings: $${Number(earnings).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`];
-                        }
-                    }
-                },
-                legend: { display: false }
-            }
-        }
-    });
+    // Top Services by Request Count chart removed as requested
+
+    // Provider Activity - Stacked Chart (see below)
 
     // Embassy Earnings Over Time - Line
     const embassyEarningsLabels = <?php echo json_encode($months, 15, 512) ?>;
     const embassyEarningsDatasets = <?php echo json_encode($embassyEarningsDatasets, 15, 512) ?>;
+
+    // Check if chart instance already exists and destroy it
+    let embassyEarningsOverTimeChartInstance = Chart.getChart('embassyEarningsOverTimeChart');
+    if (embassyEarningsOverTimeChartInstance) {
+        embassyEarningsOverTimeChartInstance.destroy();
+    }
+
     new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
         type: 'line',
         data: {
@@ -542,6 +560,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const ctx = document.getElementById('providerEarningsChart').getContext('2d');
+
+    // Check if chart instance already exists and destroy it
+    let providerEarningsChartInstance = Chart.getChart('providerEarningsChart');
+    if (providerEarningsChartInstance) {
+        providerEarningsChartInstance.destroy();
+    }
+
     let chart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -606,5 +631,6 @@ document.addEventListener('DOMContentLoaded', function () {
     <script src="<?php echo e(URL::asset('build/js/pages/dashboard-ecommerce.init.js')); ?>"></script>
     <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
+
 
 <?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/administrator/Herd/damis_back_office/resources/views/index.blade.php ENDPATH**/ ?>

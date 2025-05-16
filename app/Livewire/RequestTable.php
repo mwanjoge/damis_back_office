@@ -27,6 +27,6 @@ class RequestTable extends Component
 
     public function render()
     {
-        return view('livewire.request-table');
+        return view('livewire.request-table')->extends('layouts.tabler.app');
     }
 }

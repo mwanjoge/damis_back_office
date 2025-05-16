@@ -20,8 +20,8 @@
 
 <body>
     <!-- Begin page -->
-    <div id="layout-wrapper mb-5">
-        <?php echo $__env->make('layouts.topbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <div id="layout-wrapper" class="">
+        
         <?php echo $__env->make('layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
         <!-- ============================================================== -->
@@ -29,7 +29,8 @@
         <!-- ============================================================== -->
         <div class="main-content">
             <div class="page-content">
-                <div class="container-fluid pb-5 mt-1">
+                <div class="container-fluid pb-5 pt-5">
+
                     <?php echo $__env->yieldContent('content'); ?>
                 </div>
                 <!-- container-fluid -->
@@ -38,7 +39,7 @@
         </div>
         <!-- end main content-->
     </div>
-   
+
     <!-- END layout-wrapper -->
 
     

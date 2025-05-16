@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.tabler.app')
 @include('requests.request_review_modal')
 @section('title', 'Show Request')
 @section('content')

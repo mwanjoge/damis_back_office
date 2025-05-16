@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.tabler.app')
 @section('title', 'Create Request')
 @section('content')
     @php

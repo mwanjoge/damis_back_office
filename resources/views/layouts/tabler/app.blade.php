@@ -19,6 +19,7 @@
       @import url("https://rsms.me/inter/inter.css");
     </style>
     <!-- END CUSTOM FONT -->
+     @livewireStyles
   </head>
 <body>
     <!-- BEGIN GLOBAL THEME SCRIPT -->
@@ -799,5 +800,6 @@
         </div>
     </div>
     <!-- END PAGE WRAPPER -->
+    @include('layouts.tabler.js_files_links')
 </body>
 </html>

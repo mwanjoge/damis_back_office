@@ -19,6 +19,8 @@
       @import url("https://rsms.me/inter/inter.css");
     </style>
     <!-- END CUSTOM FONT -->
+     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
   </head>
 <body>
     <!-- BEGIN GLOBAL THEME SCRIPT -->
@@ -799,5 +801,6 @@
         </div>
     </div>
     <!-- END PAGE WRAPPER -->
+    <?php echo $__env->make('layouts.tabler.js_files_links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
 </html><?php /**PATH /Users/administrator/Herd/damis_back_office/resources/views/layouts/tabler/app.blade.php ENDPATH**/ ?>

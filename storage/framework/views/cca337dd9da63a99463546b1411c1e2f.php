@@ -7,14 +7,10 @@
         </div>
         <div class="card-body">
             <div id="request-items-list" name="request_items">
-                <!-- <select wire:model="test" wire:change="getService">
-                    <option value="test1">Test</option>
-                    <option value="test2">Test 2</option>
-                </select> -->
             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $inputs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $input): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="request-item-row row g-2 mb-2 align-items-end">
                     <div class="col">
-                                <label for="choices-single-default" class="form-label text-muted">Service Provider</label>
+                        <label for="choices-single-default" class="form-label text-muted">Service Provider</label>
                         <select wire:model="inputs.<?php echo e($key); ?>.service_provider_id" wire:model.live wire:change="getServices(<?php echo e($key); ?>)" class="form-control" id="choices-single-default"  name="request_items[<?php echo e($key); ?>][service_provider_id]" required>
                             <option value="">Select Provider</option>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $providers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $provider): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -51,23 +47,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
-                    <div class="col">
-                        <label class="form-label form-label-sm" >Price</label>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">TZS</span>
-                            <input type="number" wire:model="inputs.<?php echo e($key); ?>.price" name="request_items[<?php echo e($key); ?>][price]" class="form-control form-control-sm  choices-select" step="0.01" required>
-                        </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ["inputs.$key.price"];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-danger"><?php echo e($message); ?></span>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                    </div>
+                    
                     <div class="col">
                         <label class="form-label form-label-sm">Certificate Holder</label>
                         <input type="text" wire:model="inputs.<?php echo e($key); ?>.certificate_holder_name" name="request_items[<?php echo e($key); ?>][certificate_holder_name]" class="form-control form-control-sm" required>
