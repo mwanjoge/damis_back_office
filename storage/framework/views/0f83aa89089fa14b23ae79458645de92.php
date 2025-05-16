@@ -22,9 +22,9 @@
     <div class="page " style="min-height: 10vh;">
         <!-- BEGIN NAVBAR  -->
         <header class="navbar navbar-expand-md position-relative"
-            style=" background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Tanzania.svg'); background-size: cover; background-position: center; position: relative;">
+            style=" background-image: url('<?php echo e(URL::asset('images/flag.png')); ?>'); background-size: cover; background-position: center; position: relative;">
             <div
-                style="position: absolute; top: 0; left: 0; width: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;">
+                style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 0;">
             </div>
             <div class="container-xl d-flex justify-content-between align-items-center"
                 style="position: relative; z-index: 2;">
@@ -46,7 +46,7 @@
                         <!-- Bell SVG Icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="icon icon-1 text-muted me-1">
+                            stroke-linejoin="round" class="icon icon-1 text-white  me-1">
                             <path
                                 d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6" />
                             <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
@@ -64,12 +64,12 @@
                                 <?php if(auth()->guard()->check()): ?>
                                     <div>
                                         <span
-                                            class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?php echo e(Auth::user()->name); ?></span>
+                                            class="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-white"><?php echo e(Auth::user()->name); ?></span>
                                         </span>
                                     </div>
                                     <div class="mt-1 small text-secondary">
                                         <span
-                                            class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?php echo e(Auth::user()->role); ?></span>
+                                            class="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-white"><?php echo e(Auth::user()->role); ?></span>
                                         </span>
                                     </div>
                                 <?php endif; ?>
@@ -98,8 +98,8 @@
 
             <!-- Centered Title Block -->
             <div class="position-absolute top-50 start-50 translate-middle text-center">
-                <h1 class="mb-0 text-success" style="font-size: 1.5rem; font-weight: 600; letter-spacing: 3px;">D A M I S</h1>
-                <h4 class="mb-0  text-success" style="font-size: 0.9rem; font-weight: 400;">
+                <h1 class="mb-0 text-white" style="font-size: 1.5rem; font-weight: 600; letter-spacing: 3px; color: white;">D A M I S</h1>
+                <h4 class="mb-0  text-white" style="font-size: 0.9rem; font-weight: 400;">
                     Ministry of Foreign Affairs and East African Cooperation
                 </h4>
             </div>
