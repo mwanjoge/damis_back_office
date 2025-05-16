@@ -1,14 +1,12 @@
-@extends('layouts.tabler.app')
-
-@section('content')
-    @php
+<?php $__env->startSection('content'); ?>
+    <?php
         $breadcrumbs = [
             ['name' => 'Home', 'url' => route('home')],
             ['name' => 'Settings', 'url' => route('settings')]
         ];
-    @endphp
+    ?>
 
-    {{-- @include('layouts.breadcrumb') --}}
+    
 
     <div class="row mt-4 mb-5">
     <div class="col-12 col-xl-12 col-xxl-10">
@@ -50,51 +48,126 @@
                     <!-- Accounts -->
                     <div class="tab-pane fade" id="tab-accounts" role="tabpanel" wire:ignore.self>
 
-                        @livewire('accounts-table')
+                        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('accounts-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-1208284799-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                     </div>
 
                     <!-- Mission -->
                     <div class="tab-pane fade show active" id="tab-embassy" role="tabpanel" wire:ignore.self>
 
-                        @livewire('embassies-table')
+                        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('embassies-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-1208284799-1', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                     </div>
 
                     <!-- Countries -->
                     <div class="tab-pane fade" id="tab-countries" role="tabpanel" wire:ignore.self>
 
-                        @livewire('countries-table')
+                        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('countries-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-1208284799-2', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                     </div>
 
                     <!-- Service Providers -->
                     <div class="tab-pane fade" id="tab-service-provider" role="tabpanel" wire:ignore.self>
 
-                        @livewire('service-provider-table')
+                        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('service-provider-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-1208284799-3', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                     </div>
 
                     <!-- Services -->
                     <div class="tab-pane fade" id="tab-services" role="tabpanel" wire:ignore.self>
 
-                        @livewire('services-table')
+                        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('services-table');
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-1208284799-4', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <script>
     $(function() {
         $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
             localStorage.setItem('lastAuthTab', $(this).attr('href'));
         });
 
-        var lastTab = @json(session('active_tab')) || localStorage.getItem('lastAuthTab');
+        var lastTab = <?php echo json_encode(session('active_tab'), 15, 512) ?> || localStorage.getItem('lastAuthTab');
         if (lastTab) {
             $('a[data-bs-toggle="tab"][href="' + lastTab + '"]').tab('show');
 
-            @if ($errors->any())
+            <?php if($errors->any()): ?>
                 $(document).ready(function() {
                     $('.modal.show').each(function() {
                         const instance = bootstrap.Modal.getInstance(this);
@@ -113,8 +186,10 @@
                         modal.show();
                     }
                 });
-            @endif
+            <?php endif; ?>
         }
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\PROJECTS\damis_back_office\resources\views/settings.blade.php ENDPATH**/ ?>
