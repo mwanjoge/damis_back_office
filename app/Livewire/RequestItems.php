@@ -15,7 +15,7 @@ class RequestItems extends Component
     public $inputs = [['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
     public $services;
     public $servicesInputs = [];
-    // public $price;
+  
     public $test;
 
     public function addInput()
@@ -35,22 +35,12 @@ class RequestItems extends Component
 
     public function getServices($key)
     {
-        // Log::info("providerId ".$this->inputs[$key]['service_provider_id']);
         $this->services = Service::query()->where('service_provider_id', $this->inputs[$key]['service_provider_id'])->get();
         $this->servicesInputs[] = $this->services;
     }
 
-    // public function getServicePrice($key)
-    // {
-    //     $this->price = BillableItem::query()->where('billableItem_id', $this->inputs[$key]['service_id'])->first()->price;
-    //     // Log::info("price ".$this->price);
-    // }
-
-
     public function render()
     {
-        // Log::info('working');
-        //Log::debug("inputs on render ".json_encode($this->inputs));
         return view(
             'livewire.request-items',
             [

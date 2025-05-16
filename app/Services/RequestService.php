@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\Request;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Database\Eloquent\Model;
+use App\Mail\RequestNotificationMail;
 
 class RequestService
 {
@@ -87,10 +88,23 @@ class RequestService
 
         return $request->invoice()->save($invoice);
     }
-    public function sendInvoice($invoice)
+    
+    public function notifyMember($invoice, $request)
+    {
+        $this->sendInvoiceNotification($invoice);
+        $this->sendRequestNotification($request);
+    }
+
+    public function sendInvoiceNotification($invoice)
     {
         // Logic to send invoice to the user
-        Mail::to($invoice->account->email)->send(new InvoiceMail($invoice));
+        Mail::to($invoice->member->email)->send(new InvoiceMail($invoice));
+    }
+
+    public function sendRequestNotification($request)
+    {
+        // Logic to send request notification
+        Mail::to($request->member->email)->send(new RequestNotificationMail($request));
     }
 
     public function getInvoice($id)

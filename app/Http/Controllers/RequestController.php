@@ -71,6 +71,8 @@ class RequestController extends Controller
             $this->requestService->addRequestedItems($request, $data['request_items']);
             $this->requestService->addInvoiceItems($invoice, $request->requestItems);
 
+            $this->requestService->notifyMember($invoice, $request);
+
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
