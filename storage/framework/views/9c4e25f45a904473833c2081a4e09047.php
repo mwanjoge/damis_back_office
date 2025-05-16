@@ -1,19 +1,21 @@
 <?php $__env->startSection('title', 'Requests'); ?>
 <?php $__env->startSection('content'); ?>
-<div class="row">
-        <div class="col-xxl-5">
-            <div class="d-flex flex-column h-100">
-                <div class="row h-100">
-                    <div class="col">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h2 class="mb-0">Requests</h2>
-                            <a href="<?php echo e(route('requests.create')); ?>" class="btn btn-primary mt-5">Create Request</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-4">
-                    <div class="col-md-3">
-                        <?php
+    <?php
+    $breadcrumbs = [
+        ['name' => 'Home', 'url' => route('home')],
+        ['name' => 'Requests', 'url' => route('requests.index')]
+    ];
+    ?>
+
+    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Requests</h2>
+        <a href="<?php echo e(route('requests.create')); ?>" class="btn btn-primary">Create Request</a>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-3">
+            <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
@@ -29,11 +31,11 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card h-100 mb-5">
-                            <div class="card-body">
-                                <?php
+        </div>
+        <div class="col-md-9">
+            <div class="card h-100 mb-5">
+                <div class="card-body">
+                    <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
@@ -49,12 +51,10 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/administrator/Herd/damis_back_office/resources/views/requests/index.blade.php ENDPATH**/ ?>

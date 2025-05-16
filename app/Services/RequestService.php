@@ -35,10 +35,6 @@ class RequestService
         ]);
     }
 
-<<<<<<< HEAD
-    public function addRequestedItems(Model|Request $request, array $requestedItems){
-        foreach ($requestedItems as $index => $item) {
-=======
 
     public function addRequestedItems(Model|HttpRequest $request, array $requestedItems, $price)
     {
@@ -53,7 +49,6 @@ class RequestService
                 }
             }
 
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
             \App\Models\RequestItem::create([
                 'account_id' => $this->getAccountId(),
                 'request_id' => $request->id,
@@ -67,14 +62,10 @@ class RequestService
         }
     }
 
-<<<<<<< HEAD
-    public function addInvoiceItems(Model|Invoice $invoice, $requestedItems){
-=======
 
     public function addInvoiceItems(Model|Invoice $invoice, $requestedItems)
     {
         //dd($requestedItems);
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
         foreach ($requestedItems as $item) {
             $invoice->generalLineItems()->create([
                 'account_id' => $this->getAccountId(),
@@ -102,11 +93,7 @@ class RequestService
 
         return $request->invoice()->save($invoice);
     }
-<<<<<<< HEAD
-
-=======
     
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
     public function notifyMember($invoice, $request)
     {
         $this->sendInvoiceNotification($invoice);

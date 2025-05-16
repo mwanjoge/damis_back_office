@@ -6,11 +6,8 @@ use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
 use App\Services\RequestService;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Mail;
-=======
 use Illuminate\Support\Facades\Log;
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
 use Illuminate\support\Facades\Storage;
 
 class RequestController extends Controller
@@ -55,11 +52,6 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-<<<<<<< HEAD
-        try {
-            $data = $request->validated();
-            $country = $this->requestService->getCountry( $data['country_id']);
-=======
         //   dd($request->all());
 
         try {
@@ -68,7 +60,6 @@ class RequestController extends Controller
             //return $data['request_items'][0]['price'];
 
             $country = $this->requestService->getCountry($data['country_id']);
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
 
             $accountId = \App\Models\Account::query()->where('embassy_id', $country->embassy_id)->first()->id;
             if (!$accountId) {
@@ -79,10 +70,6 @@ class RequestController extends Controller
             $invoice = $this->requestService->createInvoice($request);
             $this->requestService->addRequestedItems($request, $data['request_items'], $data['price']);
             $this->requestService->addInvoiceItems($invoice, $request->requestItems);
-<<<<<<< HEAD
-=======
-
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
             $this->requestService->notifyMember($invoice, $request);
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
@@ -121,7 +108,7 @@ class RequestController extends Controller
         $request->load('requestItems.serviceProvider', 'requestItems.service');
 
         $request->load('embassy', 'member');
-        return view('Requests.show', compact('request'));
+        return view('requests.show', compact('request'));
     }
 
     public function approveRequest($id, Request $request)
