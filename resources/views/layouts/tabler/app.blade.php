@@ -16,7 +16,7 @@
 
 <body>
 
-    <script src="./dist/js/tabler-theme.min.js?1744816593"></script>
+    <script src="{{ asset('vendors/tabler/js/tabler-theme.min.js') }}"></script>
     <!-- END GLOBAL THEME SCRIPT -->
     <div class="page " style="min-height: 10vh;">
         <!-- BEGIN NAVBAR  -->
