@@ -36,7 +36,7 @@ public function handle()
     $newApplicationsCount = Request::whereDate('created_at', '>=', Carbon::now()->subDay())->count();
 
     // 1. Top Services by Earnings
-    $topServices = \App\Models\GeneralLineItem::selectRaw('services.name AS service_name, SUM(general_line_items.price) AS total_earnings, COUNT(request_items.id) AS request_count')
+    $topServices = GeneralLineItem::selectRaw('services.name AS service_name, SUM(general_line_items.price) AS total_earnings, COUNT(request_items.id) AS request_count')
         ->join('services', 'general_line_items.service_id', '=', 'services.id')
         ->join('request_items', 'general_line_items.request_item_id', '=', 'request_items.id')
         ->groupBy('services.name')
@@ -59,7 +59,7 @@ public function handle()
         ->get();
 
     // 4. Provider Activity
-    $providerActivity = \App\Models\GeneralLineItem::selectRaw('service_providers.name AS provider_name, COUNT(general_line_items.id) AS service_count, SUM(general_line_items.price) AS total_earnings')
+    $providerActivity = GeneralLineItem::selectRaw('service_providers.name AS provider_name, COUNT(general_line_items.id) AS service_count, SUM(general_line_items.price) AS total_earnings')
         ->join('services', 'general_line_items.service_id', '=', 'services.id')
         ->join('service_providers', 'services.service_provider_id', '=', 'service_providers.id')
         ->groupBy('service_providers.name')

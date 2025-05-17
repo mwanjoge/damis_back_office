@@ -8,7 +8,7 @@
     ];
     ?>
 
-    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
 
     <form action="<?php echo e(route('requests.store')); ?>" method="POST" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
@@ -261,4 +261,4 @@ if (isset($__slots)) unset($__slots);
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/requests/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/requests/create.blade.php ENDPATH**/ ?>

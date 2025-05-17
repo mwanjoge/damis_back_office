@@ -17,7 +17,7 @@
                             </h5>
                             <p class="mb-0 text-muted small">
                                 <span class="badge bg-light text-warning mb-0">
-                                    <i class="bx bx-time-five align-middle" style="color: #ffc107;"></i>
+                                    <i class="bx bx-time align-middle" style="color: #ffc107;"></i>
                                 </span>
                                 Total: TZS <?php echo e(number_format($totalCost['Pending'] ?? 0)); ?>
 

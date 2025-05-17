@@ -350,8 +350,7 @@
 @endsection
 
 @section('script')
-<link href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<script src="path/to/chartjs/dist/chart.umd.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

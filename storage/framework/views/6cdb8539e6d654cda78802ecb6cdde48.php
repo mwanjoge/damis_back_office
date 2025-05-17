@@ -6,7 +6,7 @@
         ];
     ?>
 
-    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
 
     <div class="row mt-4 mb-5">
         <div class="col-12 col-xl-12 col-xxl-10">

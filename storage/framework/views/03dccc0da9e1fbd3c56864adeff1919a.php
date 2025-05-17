@@ -29,7 +29,7 @@
     <div class="card">
         <div class="card-body">
                  <div class="table-responsive table-card">
-            <table id="scroll-horizontal" class="table dt-responsive nowrap mb-0" style="width: 100%;">
+            <table id="scroll-horizontal" class="table list nowrap mb-0" style="width: 100%;">
                 <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
@@ -47,8 +47,8 @@
                     <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr>
                             <td><?php echo e($loop->iteration); ?></td>
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo e($request->embassy->name); ?>"><?php echo e($request->embassy->name); ?></td>
-                            <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo e($request->country->name); ?>"><?php echo e($request->country->name); ?></td>
+                            <td class="embassy" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo e($request->embassy->name); ?>"><?php echo e($request->embassy->name); ?></td>
+                            <td class="country" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo e($request->country->name); ?>"><?php echo e($request->country->name); ?></td>
                             <td class="text-end"><?php echo e(number_format($request->total_cost, 2)); ?></td>
                             <td class="text-start"><?php echo e($request->country->currency_code); ?></td>
                             <td>

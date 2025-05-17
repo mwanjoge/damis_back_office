@@ -13,7 +13,7 @@
     ];
     ?>
 
-    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
 
     <?php
         $months = collect(range(1, 12))->map(function ($m) {
@@ -353,8 +353,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script'); ?>
-<link href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
-<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<script src="path/to/chartjs/dist/chart.umd.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
