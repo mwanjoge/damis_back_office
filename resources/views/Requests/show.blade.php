@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.tabler.app')
 @include('requests.request_review_modal')
 @section('title', 'Show Request')
 @section('content')
@@ -10,7 +10,7 @@
     ];
     @endphp
 
-    @include('layouts.breadcrumb')
+    {{-- @include('layouts.breadcrumb') --}}
 
     <div class="row g-4 mt-3">
         <!-- Left column: Request Details -->
@@ -81,13 +81,7 @@
                             {{ $request->invoice?->currency ?? 'USD' }}
                         </div>
                         <div class="col-4 text-start">
-                            @if ($request->embassy)
-                                <div class="text-muted small">
-                                    <div>{{ $request->embassy->name }}</div>
-                                    <div>{{ $request->embassy->country ?? '' }}</div>
-
-                                </div>
-                            @endif
+                        
                             <div class="mt-2 text-start">
                                 <strong class="fw-bold">Applicant:</strong> {{ $request->member->name ?? '-' }}<br>
                                 <strong class="fw-bold">Email:</strong> {{ $request->member->email ?? '-' }}<br>

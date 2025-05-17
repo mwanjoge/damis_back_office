@@ -7,7 +7,7 @@
         ];
     @endphp
 
-    @include('layouts.breadcrumb')
+    {{-- @include('layouts.breadcrumb') --}}
 
     @include('modal.alert')
     <div class="row">

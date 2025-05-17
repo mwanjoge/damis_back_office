@@ -14,7 +14,7 @@
     ];
     @endphp
 
-    @include('layouts.breadcrumb')
+    {{-- @include('layouts.breadcrumb') --}}
 
     @php
         $months = collect(range(1, 12))->map(function ($m) {

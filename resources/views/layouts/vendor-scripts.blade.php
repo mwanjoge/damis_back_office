@@ -4,8 +4,6 @@
 <script src="{{ URL::asset('build/libs/node-waves/waves.min.js') }}"></script>
 <script src="{{ URL::asset('build/libs/feather-icons/feather.min.js') }}"></script>
 <script src="{{ URL::asset('build/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-<<<<<<< HEAD
-=======
 <script src="{{ URL::asset('build/js/plugins.js') }}"></script>
 
 <!-- DataTables JS -->
@@ -69,7 +67,6 @@
         });
     });
 </script>
->>>>>>> 701fd51ddf4f8694b3c941a2466a9f682904f9d3
 
 @yield('script')
 @yield('script-bottom')

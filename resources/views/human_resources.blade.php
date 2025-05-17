@@ -7,7 +7,7 @@
         ];
     @endphp
 
-    @include('layouts.breadcrumb')
+    {{-- @include('layouts.breadcrumb') --}}
 
     <div class="row mt-4 mb-5">
         <div class="col-12 col-xl-12 col-xxl-10">

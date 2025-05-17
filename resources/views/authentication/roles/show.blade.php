@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.tabler.app')
 @include('modal.alert')
 @section('title')
     Role Permissions - {{ ucfirst($role->name ?? 'Unknown') }}
