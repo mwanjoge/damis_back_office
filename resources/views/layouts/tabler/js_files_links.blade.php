@@ -14,3 +14,4 @@
 {{-- <script src="{{ asset('vendors/tabler/js/demo.min.js') }}" defer></script> --}}
 <!-- END DEMO SCRIPTS -->
 <!-- BEGIN PAGE SCRIPTS -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>

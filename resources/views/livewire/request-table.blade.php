@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-body">
                  <div class="table-responsive table-card">
-            <table id="scroll-horizontal" class="table dt-responsive nowrap mb-0" style="width: 100%;">
+            <table id="scroll-horizontal" class="table list nowrap mb-0" style="width: 100%;">
                 <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
@@ -30,8 +30,8 @@
                     @forelse($requests as $request)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $request->embassy->name }}">{{ $request->embassy->name }}</td>
-                            <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $request->country->name }}">{{ $request->country->name }}</td>
+                            <td class="embassy" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $request->embassy->name }}">{{ $request->embassy->name }}</td>
+                            <td class="country" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $request->country->name }}">{{ $request->country->name }}</td>
                             <td class="text-end">{{ number_format($request->total_cost, 2) }}</td>
                             <td class="text-start">{{ $request->country->currency_code }}</td>
                             <td>
