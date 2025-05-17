@@ -13,15 +13,18 @@
     <!-- END CUSTOM FONT -->
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+    <link href="<?php echo e(asset('styles/custom_style.css')); ?>" rel="stylesheet">
+
 </head>
 
 <body>
-
-    <script src="./dist/js/tabler-theme.min.js?1744816593"></script>
+    <script src="<?php echo e(asset('vendors/tabler/js/tabler-theme.min.js')); ?>"></script>
     <!-- END GLOBAL THEME SCRIPT -->
-    <div class="page " style="min-height: 10vh;">
+    <div class="page " style="min-height: 5vh;">
         <!-- BEGIN NAVBAR  -->
-        <header class="navbar navbar-expand-md position-relative"
+        <header class="navbar navbar-expand-md navbar-light bg-white shadow-sm "
             style=" background-image: url('<?php echo e(URL::asset('images/flag.png')); ?>'); background-size: cover; background-position: center; position: relative;">
             <div
                 style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 0;">
@@ -98,17 +101,21 @@
 
             <!-- Centered Title Block -->
             <div class="position-absolute top-50 start-50 translate-middle text-center">
-                <h1 class="mb-0 text-white" style="font-size: 1.5rem; font-weight: 600; letter-spacing: 3px; color: white;">D A M I S</h1>
+                <h1 class="mb-0 text-white"
+                    style="font-size: 1.5rem; font-weight: 600; letter-spacing: 3px; color: white;">D A M I S</h1>
                 <h4 class="mb-0  text-white" style="font-size: 0.9rem; font-weight: 400;">
                     Ministry of Foreign Affairs and East African Cooperation
                 </h4>
             </div>
-    
-    </header>
+
+        </header>
     </div>
-    <?php echo $__env->make('layouts.tabler.top_bar_navs', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
     <!-- END NAVBAR  -->
     <div class="page-wrapper">
+        <div class="">
+            <?php echo $__env->make('layouts.tabler.top_bar_navs', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        </div>
         <div class="page-body">
             <div class="container-xl">
                 <?php echo $__env->yieldContent('content'); ?>
@@ -119,6 +126,7 @@
     <!-- END PAGE WRAPPER -->
     <?php echo $__env->make('layouts.tabler.js_files_links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 </html>
 <?php /**PATH D:\PROJECTS\damis_back_office\resources\views/layouts/tabler/app.blade.php ENDPATH**/ ?>

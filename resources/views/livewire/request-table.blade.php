@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-body">
                  <div class="table-responsive table-card">
-            <table id="scroll-horizontal" class="table list nowrap mb-0" style="width: 100%;">
+            <table id="scroll-horizontal" class="table list nowrap mb-0 datatable" style="width: 100%;">
                 <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
@@ -73,3 +73,4 @@
         </div>
     </div>
 </div>
+
