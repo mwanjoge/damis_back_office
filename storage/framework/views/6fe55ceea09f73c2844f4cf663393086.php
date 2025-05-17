@@ -1,22 +1,21 @@
-@extends('layouts.tabler.app')
-@section('title')
-    @lang('Dashboard')
-@endsection
-@section('css')
-    <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
-@endsection
-@section('content')
+<?php $__env->startSection('title'); ?>
+    <?php echo app('translator')->get('Dashboard'); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
+    <link href="<?php echo e(URL::asset('build/libs/jsvectormap/jsvectormap.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('build/libs/swiper/swiper-bundle.min.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 
-    @php
+    <?php
     $breadcrumbs = [
         ['name' => 'Dashboard', 'url' => route('home')]
     ];
-    @endphp
+    ?>
 
-    @include('layouts.breadcrumb')
+    <?php echo $__env->make('layouts.breadcrumb', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-    @php
+    <?php
         $months = collect(range(1, 12))->map(function ($m) {
             return DateTime::createFromFormat('!m', $m)->format('M'); });
         $embassyNames = $requestsPerEmbassy ?? collect([]);
@@ -57,7 +56,7 @@
             // you can add other fields as needed
         ];
     }
-@endphp
+?>
 
     <div class="row">
         <div class="col">
@@ -66,7 +65,7 @@
                     <div class="col-12">
                         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                             <div class="flex-grow-1">
-                                <h4 class="fs-16 mb-1">Hello {{ Auth::user()->name }}</h4>
+                                <h4 class="fs-16 mb-1">Hello <?php echo e(Auth::user()->name); ?></h4>
                             </div>
                             <div class="mt-3 mt-lg-0">
                                 <form action="javascript:void(0);">
@@ -109,7 +108,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ number_format($totalEarnings ?? 0) }}
+                                            <?php echo e(number_format($totalEarnings ?? 0)); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small">View net
                                             earnings</a>
@@ -137,7 +137,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $applicationsCount }}
+                                            <?php echo e($applicationsCount); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small">View all
                                             applications</a>
@@ -165,7 +166,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $customersCount }}
+                                            <?php echo e($customersCount); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small"
                                             style="font-style: normal;">Total customers</a>
@@ -193,7 +195,8 @@
                                 <div class="d-flex align-items-end justify-content-between mt-3">
                                     <div>
                                         <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $newApplicationsCount }}
+                                            <?php echo e($newApplicationsCount); ?>
+
                                         </h4>
                                         <a href="" class="text-decoration-underline text-muted small">New
                                             Applications</a>
@@ -209,7 +212,7 @@
                     </div><!-- end col -->
                 </div> <!-- end row-->
 
-                {{-- Donut and Recent Applications --}}
+                
                 <div class="row g-4 mb-4">
                     <div class="col-lg-4 mb-3 mb-lg-0">
                         <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
@@ -237,14 +240,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                                        <?php $__currentLoopData = $recentApplications->where('status', 'Completed')->take(10); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <td>{{ $request->member->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->created_at->format('Y-m-d') }}</td>
-                                                <td><span class="badge bg-primary">{{ $request->status }}</span></td>
+                                                <td><?php echo e($request->member->name ?? 'N/A'); ?></td>
+                                                <td><?php echo e($request->requestItems->first()->service->name ?? 'N/A'); ?></td>
+                                                <td><?php echo e($request->created_at->format('Y-m-d')); ?></td>
+                                                <td><span class="badge bg-primary"><?php echo e($request->status); ?></span></td>
                                             </tr>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -252,7 +255,7 @@
                     </div>
                 </div>
 
-                {{-- Charts Section --}}
+                
                 <div class="row g-4 mb-4">
                     <div class="col-lg-6">
                         <div class="card shadow h-100">
@@ -291,7 +294,7 @@
                     </div>
                 </div>
 
-                {{-- Embassy Earnings Over Time --}}
+                
                 <div class="row g-4 mb-4">
                     <div class="col-md-12">
                         <div class="card shadow h-100">
@@ -303,7 +306,7 @@
                     </div>
                 </div>
 
-                {{-- Qualitative Embassy Data --}}
+                
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="card">
@@ -323,14 +326,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($topEmbassies as $embassy)
+                                        <?php $__currentLoopData = $topEmbassies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $embassy): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <td>{{ $embassy->name }}</td>
-                                                <td>{{ $embassy->countries ?? '-' }}</td>
-                                                <td>{{ $embassy->top_service ?? 0 }}</td>
-                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
+                                                <td><?php echo e($embassy->name); ?></td>
+                                                <td><?php echo e($embassy->countries ?? '-'); ?></td>
+                                                <td><?php echo e($embassy->top_service ?? 0); ?></td>
+                                                <td><?php echo e(number_format($embassy->total_earnings ?? 0, 2)); ?></td>
                                             </tr>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -339,17 +342,17 @@
                     </div>
                 </div>
 
-                {{-- Qualitative Request Data --}}
-                {{-- Removed Top 5 Highest Earning Requests table as requested --}}
+                
+                
 
 
             </div>
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <link href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet" />
 <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
 
@@ -359,9 +362,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('earningsByCurrencyChart'), {
         type: 'doughnut',
         data: {
-            labels: {!! json_encode(array_keys($statistics['earnings_by_currency'] ?? [])) !!},
+            labels: <?php echo json_encode(array_keys($statistics['earnings_by_currency'] ?? [])); ?>,
             datasets: [{
-                data: {!! json_encode(array_values($statistics['earnings_by_currency'] ?? [])) !!},
+                data: <?php echo json_encode(array_values($statistics['earnings_by_currency'] ?? [])); ?>,
                 backgroundColor: ['#3b76e1', '#63ad6f', '#eebf31', '#f06548', '#6f42c1'],
                 borderWidth: 1
             }]
@@ -378,9 +381,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('requestsPerEmbassyChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(array_keys($statistics['requests_per_embassy'] ?? [])) !!},
+            labels: <?php echo json_encode(array_keys($statistics['requests_per_embassy'] ?? [])); ?>,
             datasets: [{
-                data: {!! json_encode(array_values($statistics['requests_per_embassy'] ?? [])) !!},
+                data: <?php echo json_encode(array_values($statistics['requests_per_embassy'] ?? [])); ?>,
                 backgroundColor: '#3b76e1'
             }]
         },
@@ -401,9 +404,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('monthlyRequestsChart'), {
         type: 'line',
         data: {
-            labels: {!! json_encode(array_keys($statistics['monthly_requests'] ?? [])) !!},
+            labels: <?php echo json_encode(array_keys($statistics['monthly_requests'] ?? [])); ?>,
             datasets: [{
-                data: {!! json_encode(array_values($statistics['monthly_requests'] ?? [])) !!},
+                data: <?php echo json_encode(array_values($statistics['monthly_requests'] ?? [])); ?>,
                 borderColor: '#63ad6f',
                 fill: false,
                 tension: 0.3
@@ -425,9 +428,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('topServicesChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(array_keys($statistics['top_services_by_earnings'] ?? [])) !!},
+            labels: <?php echo json_encode(array_keys($statistics['top_services_by_earnings'] ?? [])); ?>,
             datasets: [{
-                data: {!! json_encode(array_values($statistics['top_services_by_earnings'] ?? [])) !!},
+                data: <?php echo json_encode(array_values($statistics['top_services_by_earnings'] ?? [])); ?>,
                 backgroundColor: '#f06548'
             }]
         },
@@ -450,9 +453,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
         type: 'line',
         data: {
-            labels: {!! json_encode(array_keys($statistics['embassy_earnings_over_time'] ?? [])) !!},
+            labels: <?php echo json_encode(array_keys($statistics['embassy_earnings_over_time'] ?? [])); ?>,
             datasets: [{
-                data: {!! json_encode(array_values($statistics['embassy_earnings_over_time'] ?? [])) !!},
+                data: <?php echo json_encode(array_values($statistics['embassy_earnings_over_time'] ?? [])); ?>,
                 borderColor: '#eebf31',
                 fill: false,
                 tension: 0.4
@@ -473,9 +476,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('providerEarningsChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(array_keys($statistics['provider_earnings'] ?? [])) !!},
+            labels: <?php echo json_encode(array_keys($statistics['provider_earnings'] ?? [])); ?>,
             datasets: [{
-                data: {!! json_encode(array_values($statistics['provider_earnings'] ?? [])) !!},
+                data: <?php echo json_encode(array_values($statistics['provider_earnings'] ?? [])); ?>,
                 backgroundColor: '#6f42c1'
             }]
         },
@@ -495,24 +498,14 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- apexcharts -->
-    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/libs/apexcharts/apexcharts.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/jsvectormap/jsvectormap.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/jsvectormap/maps/world-merc.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/swiper/swiper-bundle.min.js')); ?>"></script>
     <!-- dashboard init -->
-    <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-@endsection
-{{--
-PERFORMANCE NOTE:
-The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being
-negligible.
-This means your dashboard's performance bottleneck is in the backend logic (queries, data aggregation, service
-providers, etc.), not in the Blade view rendering.
-To improve dashboard speed:
-- Move heavy data aggregation to scheduled jobs or queue workers (pre-calculate and cache).
-- Use Cache::remember() for dashboard data, updating it periodically (every 5-10 minutes).
-- Optimize Eloquent queries and eager load relationships.
-- Only pass minimal, required data to the view.
-- See: https://laravel.com/docs/10.x/scheduling and https://laravel.com/docs/10.x/cache
---}}
+    <script src="<?php echo e(URL::asset('build/js/pages/dashboard-ecommerce.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/index.blade.php ENDPATH**/ ?>
