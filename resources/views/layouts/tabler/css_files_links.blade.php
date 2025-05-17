@@ -6,6 +6,7 @@
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PLUGINS STYLES -->
     <link href="{{ asset('vendors/tabler/css/tabler-flags.css') }}" rel="stylesheet" />
+    <link href="{{ asset('vendors/tabler/css/apexcharts.css') }}" rel="stylesheet" />
     {{-- <link href="./dist/css/tabler-socials.css?1744816593" rel="stylesheet" />
     <link href="./dist/css/tabler-payments.css?1744816593" rel="stylesheet" />
     <link href="./dist/css/tabler-vendors.css?1744816593" rel="stylesheet" />

@@ -9,6 +9,7 @@
 <!-- END PAGE LIBRARIES -->
 <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
 <script src="{{ asset('vendors/tabler/js/tabler.min.js') }}" defer></script>
+<script src="{{ asset('vendors/tabler/js/apexcharts.min.js') }}" defer></script>
 <!-- END GLOBAL MANDATORY SCRIPTS -->
 <!-- BEGIN DEMO SCRIPTS -->
 {{-- <script src="{{ asset('vendors/tabler/js/demo.min.js') }}" defer></script> --}}

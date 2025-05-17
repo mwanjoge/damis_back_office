@@ -2,11 +2,11 @@
 @section('title', 'Create Request')
 @section('content')
     @php
-    $breadcrumbs = [
-        ['name' => 'Home', 'url' => route('home')],
-        ['name' => 'Requests', 'url' => route('requests.index')],
-        ['name' => 'Create Request', 'url' => route('requests.create')]
-    ];
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Requests', 'url' => route('requests.index')],
+            ['name' => 'Create Request', 'url' => route('requests.create')]
+        ];
     @endphp
 
     {{-- @include('layouts.breadcrumb') --}}
@@ -54,8 +54,7 @@
                             </button>
                         </div>
 
-                        <select id="member_id" name="member_id" data-choices
-                            class="form-control data-choices @error('member_id') is-invalid @enderror" required>
+                        <select id="member_id" name="member_id" data-choices class="form-control data-choices @error('member_id') is-invalid @enderror" required>
                             <option value="">Select Applicant</option>
                             @foreach ($members as $member)
                                 <option value="{{ $member->id }}" data-type="{{ $member->type }}"
