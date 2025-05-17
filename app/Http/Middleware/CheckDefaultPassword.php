@@ -19,7 +19,7 @@ class CheckDefaultPassword
         $user = Auth::user();
 
         // If user has default password and is not already on the password change page
-        if ($user && $user->is_default_password && !$request->routeIs('password.change') && !$request->routeIs('password.update')) {
+        if ($user && $user->is_default_password && !$request->routeIs('password.update')) {
             return redirect()->route('password.change');
         }
 

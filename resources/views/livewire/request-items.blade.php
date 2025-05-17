@@ -33,7 +33,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- <div class="col">
+                    <div class="col">
                         <label class="form-label form-label-sm" >Price</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text">TZS</span>
@@ -42,7 +42,7 @@
                         @error("inputs.$key.price")
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-                    </div> --}}
+                    </div>
                     <div class="col">
                         <label class="form-label form-label-sm">Certificate Holder</label>
                         <input type="text" wire:model="inputs.{{ $key }}.certificate_holder_name" name="request_items[{{ $key }}][certificate_holder_name]" class="form-control form-control-sm" required>

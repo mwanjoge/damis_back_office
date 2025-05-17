@@ -23,12 +23,8 @@
         $embassyNames = $embassyNames->pluck('embassy.name', 'embassy_id');
         $earningsData = [];
         $embassyCurrencies = [];
-        $countryCoverage = $requestsPerEmbassy->pluck('embassy') ?? collect([]);
         $embassyEarningsOverTime = $embassyEarningsOverTime ?? collect([]);
-        foreach ($countryCoverage as $embassy) {
-            $currency = optional($embassy->countries->first())->currency ?? 'USD';
-            $embassyCurrencies[$embassy->id] = $currency;
-        }
+      
         foreach ($embassyNames as $embassyId => $embassyName) {
             $earningsData[$embassyName] = array_fill(1, 12, 0);
             foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
@@ -36,27 +32,33 @@
             }
         }
         // Build embassy earnings datasets with meta info for chart tooltips
-        $embassyEarningsDatasets = [];
-        foreach ($requestsPerEmbassy as $embassy) {
-            $embassyId = $embassy->embassy_id;
-            $embassyName = $embassy->embassy->name ?? 'N/A';
-            $currency = $embassy->embassy->countries->first()->currency ?? 'USD';
-            $countryCount =
-                $embassy->embassy->countries_count ??
-                ($embassy->embassy->countries ? $embassy->embassy->countries->count() : 0);
-            $data = array_fill(1, 12, 0);
-            foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
-                $data[(int) $row->month] = (float) $row->earnings;
-            }
-            $embassyEarningsDatasets[] = [
-                'data' => array_values($data),
-                'fill' => false,
-                'currency' => $currency,
-                'embassy_name' => $embassyName,
-                'country_coverage' => $countryCoverage,
-            ];
+
+    $embassyEarningsDatasets = [];
+    foreach ($requestsPerEmbassy as $embassy) {
+        $embassyId = $embassy->embassy_id;
+
+        $embassyObj = $embassy->embassy;
+
+        // Defensive checks with null safe operator (PHP 8+)
+        $embassyName = $embassyObj?->name ?? 'N/A';
+        $currency = $embassyObj?->countries?->first()?->currency ?? 'USD';
+        $countryCount = $embassyObj?->countries_count ?? ($embassyObj?->countries ? $embassyObj->countries->count() : 0);
+
+        $data = array_fill(1, 12, 0);
+        foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
+            $data[(int) $row->month] = (float) $row->earnings;
         }
-    @endphp
+
+        $embassyEarningsDatasets[] = [
+            'data' => array_values($data),
+            'fill' => false,
+            'currency' => $currency,
+            'embassy_name' => $embassyName,
+            // you can add other fields as needed
+        ];
+    }
+@endphp
+
     <div class="row">
         <div class="col">
             <div class="h-100">
@@ -315,8 +317,8 @@
                                     <thead>
                                         <tr>
                                             <th>Embassy</th>
+                                            <th>Country Covered</th>
                                             <th>Top Service</th>
-                                            <th>Requests</th>
                                             <th>Earnings</th>
                                         </tr>
                                     </thead>
@@ -324,9 +326,9 @@
                                         @foreach($topEmbassies as $embassy)
                                             <tr>
                                                 <td>{{ $embassy->name }}</td>
-                                                <td>{{ $embassy->top_service ?? '-' }}</td>
-                                                <td>{{ $embassy->total_requests ?? 0 }}</td>
-                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }} {{ optional($embassy->countries->first())->currency ?? 'USD' }}</td>
+                                                <td>{{ $embassy->countries ?? '-' }}</td>
+                                                <td>{{ $embassy->top_service ?? 0 }}</td>
+                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -348,275 +350,147 @@
 @endsection
 
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="path/to/chartjs/dist/chart.umd.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Earnings by Currency - Donut
-    const earningsByCurrency = @json($earningsByCurrency);
-    const donutLabels = Object.keys(earningsByCurrency);
-    const donutData = Object.values(earningsByCurrency);
-    const donutColors = donutLabels.map(() => {
-        const h = Math.floor(Math.random() * 360);
-        return `hsl(${h}, 70%, 60%)`;
-    });
-
-    // Check if chart instance already exists and destroy it
-    let earningsByCurrencyChartInstance = Chart.getChart('earningsByCurrencyChart');
-    if (earningsByCurrencyChartInstance) {
-        earningsByCurrencyChartInstance.destroy();
-    }
-
-    new Chart(document.getElementById('earningsByCurrencyChart').getContext('2d'), {
+    new Chart(document.getElementById('earningsByCurrencyChart'), {
         type: 'doughnut',
         data: {
-            labels: donutLabels,
+            labels: {!! json_encode(array_keys($statistics['earnings_by_currency'] ?? [])) !!},
             datasets: [{
-                label: 'Earnings by Currency',
-                data: donutData,
-                backgroundColor: donutColors
+                data: {!! json_encode(array_values($statistics['earnings_by_currency'] ?? [])) !!},
+                backgroundColor: ['#3b76e1', '#63ad6f', '#eebf31', '#f06548', '#6f42c1'],
+                borderWidth: 1
             }]
         },
         options: {
-            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Earnings by Currency'
-                }
+                tooltip: { enabled: true },
+                legend: { display: false }
             }
         }
     });
-
-    // Requests per Embassy - Bar
-    const embassyLabels = @json($requestsPerEmbassy->pluck('embassy.name'));
-    const embassyData = @json($requestsPerEmbassy->pluck('count'));
-    const embassyEarnings = @json($requestsPerEmbassy->map(function($item) use ($embassyEarningsOverTime) {
-        $earn = $embassyEarningsOverTime->where('embassy_id', $item->embassy_id)->sum('earnings');
-        return $earn ? number_format($earn, 2) : '0.00';
-    }));
-    const embassyCurrencies = @json($requestsPerEmbassy->map(function($item) {
-        return $item->embassy->currency ?? 'USD';
-    }));
-
-    // Check if chart instance already exists and destroy it
-    let requestsPerEmbassyChartInstance = Chart.getChart('requestsPerEmbassyChart');
-    if (requestsPerEmbassyChartInstance) {
-        requestsPerEmbassyChartInstance.destroy();
-    }
 
     new Chart(document.getElementById('requestsPerEmbassyChart'), {
         type: 'bar',
         data: {
-            labels: embassyLabels.map(() => ''),
+            labels: {!! json_encode(array_keys($statistics['requests_per_embassy'] ?? [])) !!},
             datasets: [{
-                label: 'Requests',
-                data: embassyData,
-                backgroundColor: '#4e73df',
+                data: {!! json_encode(array_values($statistics['requests_per_embassy'] ?? [])) !!},
+                backgroundColor: '#3b76e1'
             }]
         },
         options: {
+            maintainAspectRatio: false,
             plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: context => embassyLabels[context[0].dataIndex] || '',
-                        afterBody: context => {
-                            const idx = context[0].dataIndex;
-                            return [
-                                `Requests: ${embassyData[idx] ?? 0}`,
-                                `Earnings: ${embassyEarnings[idx] ?? '0.00'} ${embassyCurrencies[idx] ?? 'USD'}`
-                            ];
-                        }
-                    }
-                },
+                tooltip: { enabled: true },
                 legend: { display: false }
             },
             scales: {
-                x: {
-                    ticks: { display: false }
-                }
+                x: { ticks: { display: false }, grid: { display: false } },
+                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
             }
         }
     });
 
-   // Monthly Requests - Line
-// Check if chart instance already exists and destroy it
-let monthlyRequestsChartInstance = Chart.getChart('monthlyRequestsChart');
-if (monthlyRequestsChartInstance) {
-    monthlyRequestsChartInstance.destroy();
-}
 
-new Chart(document.getElementById('monthlyRequestsChart'), {
-    type: 'line',
-    data: {
-        labels: [
-            @for ($i = 1; $i <= 12; $i++)
-                '{{ DateTime::createFromFormat("!m", $i)->format("M") }}',
-            @endfor
-        ],
-        datasets: [{
-            label: 'Requests',
-            data: [
-                @foreach ($monthlyRequests as $month => $data)
-                    {{ $data['request_count'] }},
-                @endforeach
-            ],
-            borderColor: '#1cc88a',
-            fill: false,
-        }]
-    },
-});
-
-// Top Services - Pie
-    const topServiceLabels = @json($topServices->map(fn($item) => $item->service->name ?? 'N/A'));
-    const topServiceData = @json($topServices->map(fn($item) => $item->count));
-    new Chart(document.getElementById('topServicesChart'), {
-        type: 'pie',
+    new Chart(document.getElementById('monthlyRequestsChart'), {
+        type: 'line',
         data: {
-            labels: topServiceLabels,
+            labels: {!! json_encode(array_keys($statistics['monthly_requests'] ?? [])) !!},
             datasets: [{
-                data: topServiceData,
-                backgroundColor: ['#36b9cc', '#f6c23e', '#e74a3b', '#1cc88a', '#4e73df'],
+                data: {!! json_encode(array_values($statistics['monthly_requests'] ?? [])) !!},
+                borderColor: '#63ad6f',
+                fill: false,
+                tension: 0.3
             }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: { enabled: true },
+                legend: { display: false }
+            },
+            scales: {
+                x: { ticks: { display: false }, grid: { display: false } },
+                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
+            }
         }
     });
 
+    new Chart(document.getElementById('topServicesChart'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_keys($statistics['top_services_by_earnings'] ?? [])) !!},
+            datasets: [{
+                data: {!! json_encode(array_values($statistics['top_services_by_earnings'] ?? [])) !!},
+                backgroundColor: '#f06548'
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                tooltip: { enabled: true },
+                legend: { display: false }
+            },
+            scales: {
+                x: { beginAtZero: true, ticks: { display: false }, grid: { display: false } },
+                y: { ticks: { display: false }, grid: { display: false } }
+            }
+        }
+    });
     // Top Services by Request Count chart removed as requested
 
     // Provider Activity - Stacked Chart (see below)
-
-    // Embassy Earnings Over Time - Line
-    const embassyEarningsLabels = @json($months);
-    const embassyEarningsDatasets = @json($embassyEarningsDatasets);
-
-    // Check if chart instance already exists and destroy it
-    let embassyEarningsOverTimeChartInstance = Chart.getChart('embassyEarningsOverTimeChart');
-    if (embassyEarningsOverTimeChartInstance) {
-        embassyEarningsOverTimeChartInstance.destroy();
-    }
-
     new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
         type: 'line',
         data: {
-            labels: embassyEarningsLabels,
-            datasets: embassyEarningsDatasets.map((ds, idx) => ({
-                ...ds,
-                borderColor: `hsl(${idx * 60}, 70%, 50%)`,
-                backgroundColor: `hsl(${idx * 60}, 70%, 80%)`,
-                label: ds.embassy_name,
-                country_coverage: ds.country_coverage
-            }))
+            labels: {!! json_encode(array_keys($statistics['embassy_earnings_over_time'] ?? [])) !!},
+            datasets: [{
+                data: {!! json_encode(array_values($statistics['embassy_earnings_over_time'] ?? [])) !!},
+                borderColor: '#eebf31',
+                fill: false,
+                tension: 0.4
+            }]
         },
         options: {
+            maintainAspectRatio: false,
             plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        title: ctx => `${ctx[0].dataset.label} - ${ctx[0].label}`,
-                        label: ctx => `Earnings: ${ctx.parsed.y} ${ctx.dataset.currency || 'USD'}`,
-                        afterLabel: ctx => {
-                            const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
-                            const currency = ctx.dataset.currency || 'USD';
-                            const coverage = ctx.dataset.country_coverage || 0;
-                            return [`Total: ${total} ${currency}`, `Country Coverage: ${coverage}`];
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    // Provider Earnings - Stacked Chart
-    const rawProviderStats = @json($providerStats);
-    const sortedStats = rawProviderStats.slice().sort((a, b) => {
-        const sum = obj => Object.values(obj.earnings).reduce((a, b) => a + b, 0);
-        return sum(b) - sum(a);
-    });
-
-    const providerNames = sortedStats.map(p => p.provider);
-    const allCurrencies = Array.from(new Set(sortedStats.flatMap(p => Object.keys(p.earnings))));
-
-    const colorMap = {};
-    allCurrencies.forEach(currency => {
-        colorMap[currency] = getRandomColor();
-    });
-
-    function buildDatasets(filterCurrency = 'all') {
-        const currencies = filterCurrency === 'all' ? allCurrencies : [filterCurrency];
-        return currencies.map(currency => ({
-            label: currency,
-            data: sortedStats.map(p => p.earnings[currency] ?? 0),
-            stack: 'earnings',
-            backgroundColor: colorMap[currency],
-        }));
-    }
-
-    function getRandomColor() {
-        const h = Math.floor(Math.random() * 360);
-        return `hsl(${h}, 70%, 60%)`;
-    }
-
-    const ctx = document.getElementById('providerEarningsChart').getContext('2d');
-
-    // Check if chart instance already exists and destroy it
-    let providerEarningsChartInstance = Chart.getChart('providerEarningsChart');
-    if (providerEarningsChartInstance) {
-        providerEarningsChartInstance.destroy();
-    }
-
-    let chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: providerNames,
-            datasets: buildDatasets()
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Earnings per Provider by Currency'
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    callbacks: {
-                        label: ctx => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}`
-                    }
-                }
+                tooltip: { enabled: true },
+                legend: { display: false }
             },
             scales: {
-                x: { stacked: true },
-                y: {
-                    stacked: true,
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Earnings'
-                    }
-                }
+                x: { ticks: { display: false }, grid: { display: false } },
+                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
+            }
+        }
+    });
+    new Chart(document.getElementById('providerEarningsChart'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_keys($statistics['provider_earnings'] ?? [])) !!},
+            datasets: [{
+                data: {!! json_encode(array_values($statistics['provider_earnings'] ?? [])) !!},
+                backgroundColor: '#6f42c1'
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: { enabled: true },
+                legend: { display: false }
+            },
+            scales: {
+                x: { ticks: { display: false }, grid: { display: false } },
+                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
             }
         }
     });
 
-    // Currency Filter Dropdown
-    const currencyFilter = document.getElementById('currencyFilter');
-    if (currencyFilter) {
-        allCurrencies.forEach(currency => {
-            const opt = document.createElement('option');
-            opt.value = currency;
-            opt.textContent = currency;
-            currencyFilter.appendChild(opt);
-        });
-
-        currencyFilter.addEventListener('change', function () {
-            const selected = this.value;
-            chart.data.datasets = buildDatasets(selected);
-            chart.update();
-        });
-    }
-
-});
 </script>
 
 <!-- apexcharts -->
