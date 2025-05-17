@@ -311,6 +311,8 @@
                                 <h5 class="card-title mb-0">Top 5 Highest Earning Embassies</h5>
                             </div>
                             <div class="card-body">
+                                 <div><canvas id="myChart"></canvas></div>
+                                    
                                 <table id="alternative-pagination"
                                     class="table nowrap dt-responsive align-middle table-hover table-bordered"
                                     style="width:100%">
@@ -350,10 +352,13 @@
 @endsection
 
 @section('script')
-<script src="path/to/chartjs/dist/chart.umd.js"></script>
+{{-- <script type="module" src="{{ asset('build/libs/chart.js/chart.js') }}"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    console.log({!! json_encode(array_keys($requestsPerEmbassy->toArray()[0])) !!});
+    console.log({!! json_encode(array_values($requestsPerEmbassy->toArray())) !!});
+
 
     new Chart(document.getElementById('earningsByCurrencyChart'), {
         type: 'doughnut',
@@ -377,9 +382,9 @@ document.addEventListener('DOMContentLoaded', function () {
     new Chart(document.getElementById('requestsPerEmbassyChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(array_keys($statistics['requests_per_embassy'] ?? [])) !!},
+            labels: {!! json_encode(array_keys($requestsPerEmbassy->toArray())) !!},
             datasets: [{
-                data: {!! json_encode(array_values($statistics['requests_per_embassy'] ?? [])) !!},
+                data: {!! json_encode(array_values($requestsPerEmbassy->toArray())) !!},
                 backgroundColor: '#3b76e1'
             }]
         },
@@ -491,27 +496,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-</script>
+const ctx = document.getElementById('myChart');
 
-<!-- apexcharts -->
-    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
-    <!-- dashboard init -->
-    <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+</script>
+    
 @endsection
-{{--
-PERFORMANCE NOTE:
-The largest share of request time is spent in "Application" (65.83%) and "Booting" (34.15%), with "View" rendering being
-negligible.
-This means your dashboard's performance bottleneck is in the backend logic (queries, data aggregation, service
-providers, etc.), not in the Blade view rendering.
-To improve dashboard speed:
-- Move heavy data aggregation to scheduled jobs or queue workers (pre-calculate and cache).
-- Use Cache::remember() for dashboard data, updating it periodically (every 5-10 minutes).
-- Optimize Eloquent queries and eager load relationships.
-- Only pass minimal, required data to the view.
-- See: https://laravel.com/docs/10.x/scheduling and https://laravel.com/docs/10.x/cache
---}}
+
