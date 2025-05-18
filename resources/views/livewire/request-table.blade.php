@@ -36,9 +36,9 @@
                             <td class="text-start">{{ $request->country->currency_code }}</td>
                             <td>
                                 <span class="badge
-                                    @if($request->status === 'Completed') bg-success text-white
-                                    @elseif($request->status === 'Pending') bg-warning text-white
-                                    @elseif($request->status === 'Cancelled') bg-danger text-white
+                                    @if($request->status === 'Completed') bg-success-subtle text-success
+                                    @elseif($request->status === 'Pending') bg-warning-subtle text-warning
+                                    @elseif($request->status === 'Cancelled') bg-danger-subtle text-danger
                                     @else bg-info
                                     @endif">
                                     {{ $request->status }}
@@ -46,16 +46,16 @@
                             </td>
                             <td>
                                 @if($request->is_approved)
-                                    <span class="badge bg-success text-white">Yes</span>
+                                    <span class="badge bg-success-subtle text-success">Yes</span>
                                 @else
-                                    <span class="badge bg-warning text-white">No</span>
+                                    <span class="badge bg-warning-subtle text-warning">No</span>
                                 @endif
                             </td>
                             <td>
                                 @if($request->is_paid)
-                                    <span class="badge bg-success text-white">Yes</span>
+                                    <span class="badge bg-success-subtle text-success">Yes</span>
                                 @else
-                                    <span class="badge bg-danger text-white">No</span>
+                                    <span class="badge bg-danger-subtle text-danger">No</span>
                                 @endif
                             </td>
                             <td>

@@ -179,7 +179,7 @@
                         <tbody>
                             @foreach ($request->requestItems ?? [] as $i => $item)
                                 @php
-                                    $status = strtolower($item->request->status);
+                                    $status = strtolower($item->is_approved);
                                 @endphp
 
                                 <tr>
@@ -192,10 +192,10 @@
                                     <td>{{ $item->certificate_index_number }}</td>
 
                                     <td>
-                                        @if ($status == 'pending')
-                                            <span class="badge bg-warning-subtle text-warning fs-11">Pending</span>
-                                        @elseif ($status == 'approved')
-                                            <span class="badge bg-success-subtle text-success fs-11">Approved</span>
+                                        @if ($status == 0)
+                                            <span class="badge bg-warning-subtle text-warning fs-11">NOT APPROVED</span>
+                                        @elseif ($status == 1)
+                                            <span class="badge bg-success-subtle text-success fs-11">APPROVED</span>
                                         @elseif ($status == 'rejected')
                                             <span class="badge bg-danger-subtle text-danger fs-11">Rejected</span>
                                         @else
