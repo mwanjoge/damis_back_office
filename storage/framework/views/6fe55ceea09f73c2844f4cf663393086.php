@@ -333,7 +333,7 @@
                                 <h3 class="card-title">Top 5 Highest Earning Embassies</h3>
                             </div>
                             <div class="card-body">
-                     
+
 
                                 <div class="table-responsive">
                                     <table class="table table-vcenter card-table">
@@ -600,11 +600,11 @@
     new Chart(document.getElementById('providerEarningsChart'), {
         type: 'bar',
         data: {
-            labels: <?php echo json_encode(array_map(function($item) { return $item['provider'] ?? ''; }, $providerStats ?? [])); ?>,
+            labels: <?php echo json_encode(collect($providerStats ?? [])->map(function($item) { return $item['provider'] ?? ''; })->toArray()); ?>,
             datasets: [{
-                data: <?php echo json_encode(array_map(function($item) {
+                data: <?php echo json_encode(collect($providerStats ?? [])->map(function($item) {
                     return array_sum($item['earnings'] ?? []);
-                }, $providerStats ?? [])); ?>,
+                })->toArray()); ?>,
                 backgroundColor: '#f66d9b',
                 borderRadius: 4,
                 barPercentage: 0.5,
