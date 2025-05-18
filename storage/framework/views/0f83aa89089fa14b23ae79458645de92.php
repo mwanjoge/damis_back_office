@@ -13,7 +13,7 @@
     <!-- END CUSTOM FONT -->
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
 
     <link href="<?php echo e(asset('styles/custom_style.css')); ?>" rel="stylesheet">
 
@@ -126,7 +126,7 @@
     <!-- END PAGE WRAPPER -->
     <?php echo $__env->make('layouts.tabler.js_files_links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
 
 </html>
 <?php /**PATH D:\PROJECTS\damis_back_office\resources\views/layouts/tabler/app.blade.php ENDPATH**/ ?>

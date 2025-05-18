@@ -12,7 +12,7 @@
     </style>
     <!-- END CUSTOM FONT -->
     @livewireStyles
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
 
     <link href="{{ asset('styles/custom_style.css') }}" rel="stylesheet">
 
@@ -125,6 +125,6 @@
     <!-- END PAGE WRAPPER -->
     @include('layouts.tabler.js_files_links')
 </body>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
 
 </html>
