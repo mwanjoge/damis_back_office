@@ -74,7 +74,46 @@ class HomeController extends Controller
             'countryCoverage' => collect(),
             'earningsByCurrency' => [],
         ]);
+
+        // If topEmbassies is empty, fetch it directly
+        if ($data['topEmbassies']->isEmpty()) {
+            $data['topEmbassies'] = \App\Models\Request::selectRaw("
+                embassies.name AS embassy_name,
+                SUM(requests.total_cost) AS total_earnings,
+                COUNT(requests.id) AS request_count,
+                (SELECT COUNT(DISTINCT countries.id)
+                 FROM countries
+                 WHERE countries.embassy_id = embassies.id) AS countries_count,
+                (SELECT services.name
+                 FROM request_items
+                 JOIN services ON request_items.service_id = services.id
+                 WHERE request_items.request_id = requests.id
+                 GROUP BY services.name
+                 ORDER BY COUNT(*) DESC
+                 LIMIT 1) AS service_name
+            ")
+                ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
+                ->groupBy('embassies.name')
+                ->orderByDesc('total_earnings')
+                ->limit(5)
+                ->get();
+        }
+
         $topEmbassies=$data['topEmbassies'];
+
+        // Ensure the data is in the expected format
+        $topEmbassies = $topEmbassies->map(function($embassy) {
+            return [
+                'embassy_name' => $embassy->embassy_name ?? '-',
+                'countries_count' => $embassy->countries_count ?? 0,
+                'service_name' => $embassy->service_name ?? '-',
+                'total_earnings' => $embassy->total_earnings ?? 0
+            ];
+        });
+
+        // Debug the structure of $topEmbassies
+        // dd($topEmbassies);
+
         $totalEarnings=$data['totalEarnings'];
         $customersCount=$data['customersCount'];
         $applicationsCount=$data['applicationsCount'];

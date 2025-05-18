@@ -31,7 +31,7 @@
     <div class="card">
         <div class="card-body">
                  <div class="table-responsive table-card">
-            <table id="scroll-horizontal" class="table list nowrap mb-0" style="width: 100%;">
+            <table id="scroll-horizontal" class="table list nowrap mb-0 datatable" style="width: 100%;">
                 <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
@@ -55,9 +55,9 @@
                             <td class="text-start"><?php echo e($request->country->currency_code); ?></td>
                             <td>
                                 <span class="badge
-                                    <?php if($request->status === 'Completed'): ?> bg-success
-                                    <?php elseif($request->status === 'Pending'): ?> bg-warning text-dark
-                                    <?php elseif($request->status === 'Cancelled'): ?> bg-danger
+                                    <?php if($request->status === 'Completed'): ?> bg-success-subtle text-success
+                                    <?php elseif($request->status === 'Pending'): ?> bg-warning-subtle text-warning
+                                    <?php elseif($request->status === 'Cancelled'): ?> bg-danger-subtle text-danger
                                     <?php else: ?> bg-info
                                     <?php endif; ?>">
                                     <?php echo e($request->status); ?>
@@ -66,16 +66,16 @@
                             </td>
                             <td>
                                 <!--[if BLOCK]><![endif]--><?php if($request->is_approved): ?>
-                                    <span class="badge bg-success">Yes</span>
+                                    <span class="badge bg-success-subtle text-success">Yes</span>
                                 <?php else: ?>
-                                    <span class="badge bg-warning text-dark">No</span>
+                                    <span class="badge bg-warning-subtle text-warning">No</span>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </td>
                             <td>
                                 <!--[if BLOCK]><![endif]--><?php if($request->is_paid): ?>
-                                    <span class="badge bg-success">Yes</span>
+                                    <span class="badge bg-success-subtle text-success">Yes</span>
                                 <?php else: ?>
-                                    <span class="badge bg-danger">No</span>
+                                    <span class="badge bg-danger-subtle text-danger">No</span>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </td>
                             <td>
@@ -100,4 +100,5 @@
         </div>
     </div>
 </div>
+
 <?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/livewire/request-table.blade.php ENDPATH**/ ?>

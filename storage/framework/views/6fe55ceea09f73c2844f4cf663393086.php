@@ -259,7 +259,7 @@
                     <div class="col-lg-6">
                         <div class="card h-100">
                             <div class="card-header">
-                                <h3 class="card-title">Requests per Embassy</h3>
+                                <h3 class="card-title">Earnings per Embassy</h3>
                             </div>
                             <div class="card-body">
                                 <div class="chart">
@@ -348,10 +348,10 @@
                                         <tbody>
                                             <?php $__currentLoopData = $topEmbassies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $embassy): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
-                                                    <td><?php echo e($embassy->name); ?></td>
-                                                    <td><?php echo e($embassy->countries ?? '-'); ?></td>
-                                                    <td><?php echo e($embassy->top_service ?? 0); ?></td>
-                                                    <td><?php echo e(number_format($embassy->total_earnings ?? 0, 2)); ?></td>
+                                                    <td><?php echo e($embassy['embassy_name'] ?? '-'); ?></td>
+                                                    <td><?php echo e($embassy['countries_count'] ?? 0); ?></td>
+                                                    <td><?php echo e($embassy['service_name'] ?? '-'); ?></td>
+                                                    <td><?php echo e(number_format($embassy['total_earnings'] ?? 0, 2)); ?></td>
                                                 </tr>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </tbody>
@@ -415,7 +415,7 @@
         type: 'bar',
         data: {
              datasets: [{
-                data: <?php echo json_encode($requestsPerEmbassy->pluck('request_count')->toArray()); ?>,
+                data: <?php echo json_encode($requestsPerEmbassy->pluck('total_earnings')->toArray()); ?>,
                 backgroundColor: '#206bc4',
                 borderRadius: 4,
                 barPercentage: 0.5,
@@ -597,19 +597,50 @@
             }
         }
     });
+    // Get all unique currencies from provider stats
+    const providerStats = <?php echo json_encode($providerStats ?? []); ?>;
+    const allCurrencies = [];
+
+    // Collect all unique currencies
+    providerStats.forEach(provider => {
+        if (provider.earnings) {
+            Object.keys(provider.earnings).forEach(currency => {
+                if (!allCurrencies.includes(currency)) {
+                    allCurrencies.push(currency);
+                }
+            });
+        }
+    });
+
+    // Generate a color for each currency
+    const currencyColors = {
+        'USD': '#206bc4',
+        'EUR': '#4299e1',
+        'GBP': '#5eba00',
+        'JPY': '#fab005',
+        'CAD': '#ff922b',
+        'AUD': '#f66d9b'
+    };
+
+    // Create datasets for each currency
+    const datasets = allCurrencies.map(currency => {
+        return {
+            label: currency,
+            data: providerStats.map(provider => {
+                return provider.earnings && provider.earnings[currency] ? provider.earnings[currency] : 0;
+            }),
+            backgroundColor: currencyColors[currency] || '#' + Math.floor(Math.random()*16777215).toString(16),
+            borderRadius: 4,
+            barPercentage: 0.5,
+            categoryPercentage: 0.8
+        };
+    });
+
     new Chart(document.getElementById('providerEarningsChart'), {
         type: 'bar',
         data: {
-            labels: <?php echo json_encode(collect($providerStats ?? [])->map(function($item) { return $item['provider'] ?? ''; })->toArray()); ?>,
-            datasets: [{
-                data: <?php echo json_encode(collect($providerStats ?? [])->map(function($item) {
-                    return array_sum($item['earnings'] ?? []);
-                })->toArray()); ?>,
-                backgroundColor: '#f66d9b',
-                borderRadius: 4,
-                barPercentage: 0.5,
-                categoryPercentage: 0.8
-            }]
+            labels: providerStats.map(item => item.provider || ''),
+            datasets: datasets
         },
         options: {
             maintainAspectRatio: false,
@@ -621,29 +652,51 @@
                     cornerRadius: 3,
                     callbacks: {
                         label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
+                            const currency = context.dataset.label || '';
+                            const value = context.parsed.y;
+
+                            return `${currency}: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: currency
+                            }).format(value)}`;
+                        },
+                        footer: function(tooltipItems) {
+                            // Calculate total for this provider across all currencies
+                            const providerIndex = tooltipItems[0].dataIndex;
+                            const provider = providerStats[providerIndex];
+                            let total = 0;
+
+                            if (provider && provider.earnings) {
+                                Object.values(provider.earnings).forEach(value => {
+                                    total += parseFloat(value);
+                                });
                             }
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('en-US', {
-                                    style: 'currency',
-                                    currency: 'USD'
-                                }).format(context.parsed.y);
-                            }
-                            return label;
+
+                            return `Total: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(total)}`;
                         }
                     }
                 },
-                legend: { display: false }
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15
+                    }
+                }
             },
             scales: {
                 x: {
                     ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { display: false }
+                    grid: { display: false },
+                    stacked: true
                 },
                 y: {
                     beginAtZero: true,
+                    stacked: true,
                     ticks: {
                         display: true,
                         color: '#9aa0ac',
@@ -662,71 +715,7 @@
         }
     });
 
-const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: <?php echo json_encode($topEmbassies->pluck('embassy_name')); ?>,
-      datasets: [{
-        label: 'Total Earnings',
-        data: <?php echo json_encode($topEmbassies->pluck('total_earnings')); ?>,
-        backgroundColor: '#206bc4',
-        borderRadius: 4,
-        barPercentage: 0.5,
-        categoryPercentage: 0.8
-      }]
-    },
-    options: {
-      maintainAspectRatio: false,
-      plugins: {
-        tooltip: {
-          enabled: true,
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          padding: 10,
-          cornerRadius: 3,
-          callbacks: {
-            label: function(context) {
-              let label = context.dataset.label || '';
-              if (label) {
-                label += ': ';
-              }
-              if (context.parsed.y !== null) {
-                label += new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD'
-                }).format(context.parsed.y);
-              }
-              return label;
-            }
-          }
-        },
-        legend: { display: false }
-      },
-      scales: {
-        x: {
-          ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-          grid: { display: false }
-        },
-        y: {
-          beginAtZero: true,
-          ticks: {
-            display: true,
-            color: '#9aa0ac',
-            font: { size: 10 },
-            callback: function(value) {
-              return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                maximumSignificantDigits: 3
-              }).format(value);
-            }
-          },
-          grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
-        }
-      }
-    }
-  });
+// Chart initialization for myChart removed as the element doesn't exist
 
 </script>
 

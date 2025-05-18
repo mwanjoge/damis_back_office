@@ -64,7 +64,7 @@ class CacheDashboardStatistics extends Command
         $requestsPerEmbassy = Request::selectRaw('embassies.name AS embassy_name, COUNT(requests.id) AS request_count, SUM(requests.total_cost) AS total_earnings')
             ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
             ->groupBy('embassies.name')
-            ->orderByDesc('request_count')
+            ->orderByDesc('total_earnings')
             ->get();
 
         // 4. Provider Activity
@@ -85,7 +85,21 @@ class CacheDashboardStatistics extends Command
             ->get();
 
         // 6. Top 5 Highest Earning Embassies
-        $topEmbassies = Request::selectRaw("embassies.name AS embassy_name, SUM(requests.total_cost) AS total_earnings, COUNT(requests.id) AS request_count")
+        $topEmbassies = Request::selectRaw("
+            embassies.name AS embassy_name,
+            SUM(requests.total_cost) AS total_earnings,
+            COUNT(requests.id) AS request_count,
+            (SELECT COUNT(DISTINCT countries.id)
+             FROM countries
+             WHERE countries.embassy_id = embassies.id) AS countries_count,
+            (SELECT services.name
+             FROM request_items
+             JOIN services ON request_items.service_id = services.id
+             WHERE request_items.request_id = requests.id
+             GROUP BY services.name
+             ORDER BY COUNT(*) DESC
+             LIMIT 1) AS service_name
+        ")
             ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
             ->groupBy('embassies.name')
             ->orderByDesc('total_earnings')

@@ -260,7 +260,7 @@
                     <div class="col-lg-6">
                         <div class="card h-100">
                             <div class="card-header">
-                                <h3 class="card-title">Requests per Embassy</h3>
+                                <h3 class="card-title">Earnings per Embassy</h3>
                             </div>
                             <div class="card-body">
                                 <div class="chart">
@@ -349,10 +349,10 @@
                                         <tbody>
                                             @foreach($topEmbassies as $embassy)
                                                 <tr>
-                                                    <td>{{ $embassy->name }}</td>
-                                                    <td>{{ $embassy->countries ?? '-' }}</td>
-                                                    <td>{{ $embassy->top_service ?? 0 }}</td>
-                                                    <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
+                                                    <td>{{ $embassy['embassy_name'] ?? '-' }}</td>
+                                                    <td>{{ $embassy['countries_count'] ?? 0 }}</td>
+                                                    <td>{{ $embassy['service_name'] ?? '-' }}</td>
+                                                    <td>{{ number_format($embassy['total_earnings'] ?? 0, 2) }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -416,7 +416,7 @@
         type: 'bar',
         data: {
              datasets: [{
-                data: {!! json_encode($requestsPerEmbassy->pluck('request_count')->toArray()) !!},
+                data: {!! json_encode($requestsPerEmbassy->pluck('total_earnings')->toArray()) !!},
                 backgroundColor: '#206bc4',
                 borderRadius: 4,
                 barPercentage: 0.5,
@@ -598,19 +598,50 @@
             }
         }
     });
+    // Get all unique currencies from provider stats
+    const providerStats = {!! json_encode($providerStats ?? []) !!};
+    const allCurrencies = [];
+
+    // Collect all unique currencies
+    providerStats.forEach(provider => {
+        if (provider.earnings) {
+            Object.keys(provider.earnings).forEach(currency => {
+                if (!allCurrencies.includes(currency)) {
+                    allCurrencies.push(currency);
+                }
+            });
+        }
+    });
+
+    // Generate a color for each currency
+    const currencyColors = {
+        'USD': '#206bc4',
+        'EUR': '#4299e1',
+        'GBP': '#5eba00',
+        'JPY': '#fab005',
+        'CAD': '#ff922b',
+        'AUD': '#f66d9b'
+    };
+
+    // Create datasets for each currency
+    const datasets = allCurrencies.map(currency => {
+        return {
+            label: currency,
+            data: providerStats.map(provider => {
+                return provider.earnings && provider.earnings[currency] ? provider.earnings[currency] : 0;
+            }),
+            backgroundColor: currencyColors[currency] || '#' + Math.floor(Math.random()*16777215).toString(16),
+            borderRadius: 4,
+            barPercentage: 0.5,
+            categoryPercentage: 0.8
+        };
+    });
+
     new Chart(document.getElementById('providerEarningsChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(collect($providerStats ?? [])->map(function($item) { return $item['provider'] ?? ''; })->toArray()) !!},
-            datasets: [{
-                data: {!! json_encode(collect($providerStats ?? [])->map(function($item) {
-                    return array_sum($item['earnings'] ?? []);
-                })->toArray()) !!},
-                backgroundColor: '#f66d9b',
-                borderRadius: 4,
-                barPercentage: 0.5,
-                categoryPercentage: 0.8
-            }]
+            labels: providerStats.map(item => item.provider || ''),
+            datasets: datasets
         },
         options: {
             maintainAspectRatio: false,
@@ -622,29 +653,51 @@
                     cornerRadius: 3,
                     callbacks: {
                         label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
+                            const currency = context.dataset.label || '';
+                            const value = context.parsed.y;
+
+                            return `${currency}: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: currency
+                            }).format(value)}`;
+                        },
+                        footer: function(tooltipItems) {
+                            // Calculate total for this provider across all currencies
+                            const providerIndex = tooltipItems[0].dataIndex;
+                            const provider = providerStats[providerIndex];
+                            let total = 0;
+
+                            if (provider && provider.earnings) {
+                                Object.values(provider.earnings).forEach(value => {
+                                    total += parseFloat(value);
+                                });
                             }
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('en-US', {
-                                    style: 'currency',
-                                    currency: 'USD'
-                                }).format(context.parsed.y);
-                            }
-                            return label;
+
+                            return `Total: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(total)}`;
                         }
                     }
                 },
-                legend: { display: false }
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15
+                    }
+                }
             },
             scales: {
                 x: {
                     ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { display: false }
+                    grid: { display: false },
+                    stacked: true
                 },
                 y: {
                     beginAtZero: true,
+                    stacked: true,
                     ticks: {
                         display: true,
                         color: '#9aa0ac',

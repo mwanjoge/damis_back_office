@@ -9,7 +9,7 @@
         </div>
 
         <div class="table-responsive table-card" wire:ignore>
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+            <table class="table table-borderless table-centered align-middle table-nowrap mb-0  datatable">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
