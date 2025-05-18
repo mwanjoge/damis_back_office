@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
+use App\Models\RequestItem;
 use App\Services\RequestService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -136,7 +137,7 @@ class RequestController extends Controller
 
     public function approveRequest($id, Request $request)
     {
-        $request = Request::findOrFail($id);
+        $request = RequestItem::findOrFail($id);
         $request->is_approved = true;
         $request->save();
 
@@ -145,7 +146,7 @@ class RequestController extends Controller
 
     public function rejectRequest($id, Request $request)
     {
-        $request = Request::findOrFail($id);
+        $request = RequestItem::findOrFail($id);
         $request->is_approved = false;
         $request->save();
 

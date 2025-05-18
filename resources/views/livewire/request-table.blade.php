@@ -30,7 +30,7 @@
     <div class="card">
         <div class="card-body">
                  <div class="table-responsive table-card">
-            <table id="scroll-horizontal" class="table list nowrap mb-0" style="width: 100%;">
+            <table id="scroll-horizontal" class="table list nowrap mb-0 datatable" style="width: 100%;">
                 <thead class="text-muted table-light">
                         <tr>
                             <th>#</th>
@@ -54,9 +54,9 @@
                             <td class="text-start">{{ $request->country->currency_code }}</td>
                             <td>
                                 <span class="badge
-                                    @if($request->status === 'Completed') bg-success
-                                    @elseif($request->status === 'Pending') bg-warning text-dark
-                                    @elseif($request->status === 'Cancelled') bg-danger
+                                    @if($request->status === 'Completed') bg-success-subtle text-success
+                                    @elseif($request->status === 'Pending') bg-warning-subtle text-warning
+                                    @elseif($request->status === 'Cancelled') bg-danger-subtle text-danger
                                     @else bg-info
                                     @endif">
                                     {{ $request->status }}
@@ -64,16 +64,16 @@
                             </td>
                             <td>
                                 @if($request->is_approved)
-                                    <span class="badge bg-success">Yes</span>
+                                    <span class="badge bg-success-subtle text-success">Yes</span>
                                 @else
-                                    <span class="badge bg-warning text-dark">No</span>
+                                    <span class="badge bg-warning-subtle text-warning">No</span>
                                 @endif
                             </td>
                             <td>
                                 @if($request->is_paid)
-                                    <span class="badge bg-success">Yes</span>
+                                    <span class="badge bg-success-subtle text-success">Yes</span>
                                 @else
-                                    <span class="badge bg-danger">No</span>
+                                    <span class="badge bg-danger-subtle text-danger">No</span>
                                 @endif
                             </td>
                             <td>
@@ -98,3 +98,4 @@
         </div>
     </div>
 </div>
+
