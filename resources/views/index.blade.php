@@ -663,71 +663,7 @@
         }
     });
 
-const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: {!! json_encode($topEmbassies->pluck('embassy_name')) !!},
-      datasets: [{
-        label: 'Total Earnings',
-        data: {!! json_encode($topEmbassies->pluck('total_earnings')) !!},
-        backgroundColor: '#206bc4',
-        borderRadius: 4,
-        barPercentage: 0.5,
-        categoryPercentage: 0.8
-      }]
-    },
-    options: {
-      maintainAspectRatio: false,
-      plugins: {
-        tooltip: {
-          enabled: true,
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          padding: 10,
-          cornerRadius: 3,
-          callbacks: {
-            label: function(context) {
-              let label = context.dataset.label || '';
-              if (label) {
-                label += ': ';
-              }
-              if (context.parsed.y !== null) {
-                label += new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD'
-                }).format(context.parsed.y);
-              }
-              return label;
-            }
-          }
-        },
-        legend: { display: false }
-      },
-      scales: {
-        x: {
-          ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-          grid: { display: false }
-        },
-        y: {
-          beginAtZero: true,
-          ticks: {
-            display: true,
-            color: '#9aa0ac',
-            font: { size: 10 },
-            callback: function(value) {
-              return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                maximumSignificantDigits: 3
-              }).format(value);
-            }
-          },
-          grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
-        }
-      }
-    }
-  });
+// Chart initialization for myChart removed as the element doesn't exist
 
 </script>
 
