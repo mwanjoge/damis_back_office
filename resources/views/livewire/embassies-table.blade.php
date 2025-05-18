@@ -37,7 +37,7 @@
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".mission-modal"
                                     onclick='openMissionModal(@json($embassyData))'>
-                                    <i class="bx bx-edit-alt"></i>
+                                    <i class="bx bx-pencil"></i>
                                 </button>
 
 
@@ -46,11 +46,11 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bxs-trash"></i>
+                                        <i class="bx bx-trash-alt"></i>
                                     </button>
                                 </form>
                                 <a href="{{ route('embassies.show', $embassy->id) }}" class="btn btn-info btn-sm">
-                                    <i class="bx bxs-show"></i>
+                                    <i class="bx bx-detail"></i>
                                 </a>
 
                             </td>

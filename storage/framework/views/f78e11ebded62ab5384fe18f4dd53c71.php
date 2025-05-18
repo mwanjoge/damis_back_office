@@ -32,12 +32,12 @@
                             <!-- Edit Button -->
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                 data-bs-target=".countries-modal" wire:click="openForm(<?php echo e($country->id); ?>)">
-                                <i class="bx bx-edit-alt"></i>
+                                <i class="bx bx-pencil"></i>
                             </button>
 
                             <!-- Delete Button -->
                             <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="<?php echo e($country->id); ?>">
-                                <i class="bx bxs-trash"></i>
+                                <i class="bx bx-trash-alt"></i>
                             </button>
                         </td>
                     </tr>

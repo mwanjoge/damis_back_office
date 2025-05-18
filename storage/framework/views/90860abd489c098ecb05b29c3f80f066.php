@@ -1,5 +1,10 @@
 <?php $__env->startSection('content'); ?>
-<?php echo $__env->make("modal.alert", array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Settings', 'url' => route('settings')]
+        ];
+    ?>
 
     <div class="profile-foreground position-relative mx-n4 mt-n4">
         <div class="profile-wid-bg">
@@ -128,4 +133,4 @@
     </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/embassy_profile.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.tabler.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/embassy_profile.blade.php ENDPATH**/ ?>

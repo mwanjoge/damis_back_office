@@ -20,14 +20,14 @@
                     <tr>
                         <td><?php echo e($loop->iteration); ?></td>
                         <td><?php echo e($provider['name']); ?></td>
-                       
+
                         <td class="text-end">
                             <button class="btn btn-warning btn-sm" wire:click="openForm('<?php echo e($provider['id']); ?>')">
-                                <i class="bx bx-edit-alt"></i>
+                                <i class="bx bx-pencil"></i>
                             </button>
 
                             <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="<?php echo e($provider['id']); ?>">
-                                <i class="bx bxs-trash"></i>
+                                <i class="bx bx-trash-alt"></i>
                             </button>
                         </td>
                     </tr>
@@ -51,8 +51,8 @@
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> 
-                                <span class="text-danger"><?php echo e($message); ?></span> 
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-danger"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -72,8 +72,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> 
-                                <span class="text-danger"><?php echo e($message); ?></span> 
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-danger"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -109,7 +109,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             if (deleteBtn) {
                 e.preventDefault();
                 const providerId = deleteBtn.dataset.id;
-                
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -143,4 +143,5 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         });
     });
 </script>
-<?php $__env->stopPush(); ?><?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/livewire/service-provider-table.blade.php ENDPATH**/ ?>
+<?php $__env->stopPush(); ?>
+<?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/livewire/service-provider-table.blade.php ENDPATH**/ ?>

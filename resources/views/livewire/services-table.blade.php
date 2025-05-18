@@ -27,11 +27,11 @@
                         <td class="text-end">
                             <button type="button" class="btn btn-warning btn-sm edit-btn" data-bs-toggle="modal"
                                     data-bs-target=".services-modal" data-id="{{ $service->id }}" data-name="{{ $service->name }}" data-provider="{{ $service->serviceProvider->id ?? '' }}">
-                                <i class="bx bx-edit-alt"></i>
+                                <i class="bx bx-pencil"></i>
                             </button>
 
                             <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $service->id }}">
-                                <i class="bx bxs-trash"></i>
+                                <i class="bx bx-trash-alt"></i>
                             </button>
                         </td>
                     </tr>

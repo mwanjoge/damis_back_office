@@ -29,7 +29,7 @@
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".designation-modal"
                                     onclick="openDesignationModal({{ json_encode($designation) }})">
-                                    <i class="bx bx-edit-alt"></i>
+                                    <i class="bx bx-pencil"></i>
                                 </button>
 
                                 <form method="POST" action="{{ route('designation.destroy', $designation->id) }}"
@@ -37,7 +37,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bxs-trash"></i>
+                                        <i class="bx bx-trash-alt"></i>
                                     </button>
                                 </form>
                             </td>

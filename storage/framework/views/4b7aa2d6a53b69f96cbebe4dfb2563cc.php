@@ -29,7 +29,7 @@
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".designation-modal"
                                     onclick="openDesignationModal(<?php echo e(json_encode($designation)); ?>)">
-                                    <i class="bx bx-edit-alt"></i>
+                                    <i class="bx bx-pencil"></i>
                                 </button>
 
                                 <form method="POST" action="<?php echo e(route('designation.destroy', $designation->id)); ?>"
@@ -37,7 +37,7 @@
                                     <?php echo csrf_field(); ?>
                                     <?php echo method_field('DELETE'); ?>
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bxs-trash"></i>
+                                        <i class="bx bx-trash-alt"></i>
                                     </button>
                                 </form>
                             </td>

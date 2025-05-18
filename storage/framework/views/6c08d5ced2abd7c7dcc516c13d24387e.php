@@ -16,27 +16,27 @@
                 <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                 <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#tab-accounts" role="tab">
-                            <i class="fas fa-user-shield"></i> Accounts
+                            <i class="bx bx-user-circle"></i> Accounts
                         </a>
                     </li>
                 <li class="nav-item">
                         <a class="nav-link active" data-bs-toggle="tab" href="#tab-embassy" role="tab">
-                            <i class="far fa-user"></i> Mission
+                            <i class="bx bx-building-house"></i> Mission
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#tab-countries" role="tab">
-                            <i class="fas fa-home"></i> Countries
+                            <i class="bx bx-globe"></i> Countries
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#tab-service-provider" role="tab">
-                            <i class="far fa-user"></i> Service Providers
+                            <i class="bx bx-briefcase"></i> Service Providers
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#tab-services" role="tab">
-                            <i class="far fa-user"></i> Services
+                            <i class="bx bx-cog"></i> Services
                         </a>
                     </li>
 

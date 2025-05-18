@@ -27,7 +27,7 @@
                                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                                     data-bs-target=".department-modal"
                                                     onclick="openDepartmentModal(<?php echo e(json_encode($department)); ?>)">
-                                                    <i class="bx bx-edit-alt"></i>
+                                                    <i class="bx bx-pencil"></i>
                                                 </button>
                                                 <form method="POST"
                                                     action="<?php echo e(route('department.destroy', $department->id)); ?>"
@@ -35,7 +35,7 @@
                                                     <?php echo csrf_field(); ?>
                                                     <?php echo method_field('DELETE'); ?>
                                                     <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="bx bxs-trash"></i>
+                                                        <i class="bx bx-trash-alt"></i>
                                                     </button>
                                                 </form>
                                             </td>

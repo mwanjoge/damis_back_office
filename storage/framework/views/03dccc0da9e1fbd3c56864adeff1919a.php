@@ -15,11 +15,13 @@
     <div class="row mb-4">
         <div class="col-md-6">
             <div class="input-group">
-                <span class="input-group-text"><i class="ri-search-line"></i></span>
+                <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                </span>
                 <input type="text" class="form-control" placeholder="Search by embassy, country, tracking number, or type..." wire:model.debounce.300ms="search">
                 <!--[if BLOCK]><![endif]--><?php if(!empty($search)): ?>
                     <button class="btn btn-outline-secondary" type="button" wire:click="$set('search', '')">
-                        <i class="ri-close-line"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
                     </button>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
@@ -77,7 +79,14 @@
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </td>
                             <td>
-                                <a href="<?php echo e(route('requests.show', $request->id)); ?>" class="btn btn-primary btn-sm">View</a>
+                                <a href="<?php echo e(route('requests.show', $request->id)); ?>" class="btn btn-primary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                    </svg>
+                                    View
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
