@@ -28,5 +28,5 @@ Route::post('testJamii', function () {
 Route::prefix('v1')->group(function () {
     Route::post('members', [MemberController::class, 'store'])->name('v1.members.store');
     Route::post('requests', [\App\Http\Controllers\API\RequestController::class, 'store']);
-    Route::get('invoice/{id}', [InvoiceController::class, 'show'])->name('invoicess.show')
+    Route::get('invoice/{id}', [InvoiceController::class, 'show'])->name('invoicess.show');
 });
