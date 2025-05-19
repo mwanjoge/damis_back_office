@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->unsignedBigInteger('country_id')->nullable();
-            $table->enum('type', ['Embassy', 'Permanent Mission', 'High Commission' ]);
+            $table->enum('type', ['Embassy', 'Permanent Mission', 'High Commission'])->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('synced')->default(false);
             $table->timestamps();
