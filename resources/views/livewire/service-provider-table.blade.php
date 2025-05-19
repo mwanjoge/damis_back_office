@@ -1,7 +1,7 @@
 @include('modal.alert')
 <div class="tab-pane px-4" id="service_provider" role="tabpanel">
     <div class="text-end pb-4">
-        <button class="btn btn-primary" wire:click="openForm">
+        <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target=".service-provider-modal" wire:click="openForm">
             New Service Provider
         </button>
     </div>
@@ -22,7 +22,7 @@
                         <td>{{ $provider['name'] }}</td>
 
                         <td class="text-end">
-                            <button class="btn btn-warning btn-sm" wire:click="openForm('{{ $provider['id'] }}')">
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".service-provider-modal" wire:click="openForm('{{ $provider['id'] }}')">
                                 <i class="bx bx-pencil"></i>
                             </button>
 
@@ -37,7 +37,7 @@
     </div>
 
     <!-- Modal -->
-    <div wire:ignore.self class="modal fade service-provider-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade service-provider-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body p-5">
@@ -80,14 +80,14 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
-        const elements = document.querySelectorAll('[data-choices]');
-        elements.forEach(el => {
-            new Choices(el, {
-                removeItemButton: true,
-                searchEnabled: true,
-                itemSelectText: '',
-            });
-        });
+        // const elements = document.querySelectorAll('[data-choices]');
+        // elements.forEach(el => {
+        //     new Choices(el, {
+        //         removeItemButton: true,
+        //         searchEnabled: true,
+        //         itemSelectText: '',
+        //     });
+        // });
 
         // Handle delete confirmation
         document.addEventListener('click', function(e) {
