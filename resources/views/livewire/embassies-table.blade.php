@@ -120,9 +120,9 @@
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
-                        <div id="accreditedCountriesWrapper" class="mb-3">
+                        <div id="accreditedCountriesWrapper" class="mb-3 w-100">
                             <p class="mt-4">Accredited Countries</p>
-                            <select name="country_id[]" class="js-example-basic-multiple form-select" multiple
+                            <select name="country_id[]" class=" select2" multiple
                                 wire:model="states" required>
                                 @foreach ($countries as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>

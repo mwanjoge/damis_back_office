@@ -126,7 +126,48 @@
     <!-- END PAGE WRAPPER -->
     <?php echo $__env->make('layouts.tabler.js_files_links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const elements = document.querySelectorAll('[data-choices]');
+        elements.forEach(el => {
+            new Choices(el, {
+                searchEnabled: true,
+                itemSelectText: '',
+            });
+        });
+    });
 
+    function initializeSelect2(context = document) {
+        // Find all selects with 'select2' class that are not already initialized
+        $(context).find('select.select2').each(function() {
+            if (!$(this).hasClass('select2-hidden-accessible')) {
+                const parentModal = $(this).closest('.modal');
+                $(this).select2({
+                    dropdownParent: parentModal.length ? parentModal : $(this).parent(),
+                    width: '100%' 
+                });
+
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        // Initial call on page load
+        initializeSelect2();
+
+        // Reinitialize when any Bootstrap modal is shown
+        $(document).on('shown.bs.modal', function(e) {
+            initializeSelect2(e.target); // initialize only within this modal
+        });
+
+        // Reinitialize after Livewire DOM updates
+        window.addEventListener('livewire:load', function() {
+            Livewire.hook('message.processed', (message, component) => {
+                initializeSelect2();
+            });
+        });
+    });
+</script>
 
 </html>
 <?php /**PATH D:\PROJECTS\damis_back_office\resources\views/layouts/tabler/app.blade.php ENDPATH**/ ?>

@@ -13,9 +13,12 @@ use App\Http\Requests\UpdateEmbassyRequest;
 
 class EmbassyController extends Controller
 {
+    protected $embassyService;
 
-    public function __construct()
+    public function __construct(EmbassyService $embassyService)
     {
+        $this->embassyService = $embassyService;
+
         $model = 'embassy';
         $this->middleware("permission:read_{$model}")->only(['index', 'show']);
         $this->middleware("permission:create_{$model}")->only(['create', 'store']);

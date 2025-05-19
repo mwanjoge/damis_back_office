@@ -196,8 +196,6 @@
                                             <span class="badge bg-warning-subtle text-warning fs-11">NOT APPROVED</span>
                                         @elseif ($status == 1)
                                             <span class="badge bg-success-subtle text-success fs-11">APPROVED</span>
-                                        @elseif ($status == 'rejected')
-                                            <span class="badge bg-danger-subtle text-danger fs-11">Rejected</span>
                                         @else
                                             <span class="badge bg-secondary-subtle text-secondary fs-11">Unknown</span>
                                         @endif

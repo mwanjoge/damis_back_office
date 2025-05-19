@@ -20,6 +20,8 @@ class CountriesTable extends Component
     public $code;
     public $phone_code;
     public $embassy_id;
+    public $currency;
+    public $currency_code;
 
     protected $listeners = ['refreshCountries' => '$refresh'];
 

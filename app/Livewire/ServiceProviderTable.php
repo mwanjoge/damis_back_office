@@ -48,6 +48,7 @@ class ServiceProviderTable extends Component
         } else {
             $this->reset(['editingId', 'name', 'selectedServices']);
         }
+        
     }
 
     public function updated($propertyName): void

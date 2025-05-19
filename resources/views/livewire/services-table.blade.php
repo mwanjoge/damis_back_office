@@ -79,26 +79,23 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // document.getElementById('modal-title').innerText = data.id ? 'Edit Service' : 'Add New Service';
-    document.getElementById('service-form').value = data.id ? 'PUT' : 'POST';
+document.addEventListener('DOMContentLoaded', function() {
     const servicesModal = new bootstrap.Modal(document.querySelector('.services-modal'));
     const form = document.getElementById('service-form');
-    const submitBtn = document.getElementById('submit-btn');
     const modalTitle = document.getElementById('modal-title');
     const serviceNameInput = document.getElementById('service-name');
     const serviceProviderSelect = document.getElementById('service-provider');
     const closeModalBtn = document.getElementById('close-modal-btn');
 
     const formActionBase = "{{ url('service') }}";
-    document.getElementById('service-form').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
 
     // Handle new service button
     document.getElementById('new-service-btn').addEventListener('click', function() {
         modalTitle.innerText = 'New Service';
+        form.action = formActionBase;
+        form.method = 'POST';
         serviceNameInput.value = '';
         serviceProviderSelect.value = '';
-        submitBtn.innerText = 'Save';
         servicesModal.show();
     });
 
@@ -112,10 +109,18 @@
             modalTitle.innerText = 'Edit Service';
             serviceNameInput.value = serviceName;
             serviceProviderSelect.value = serviceProviderId || '';
-            submitBtn.innerText = 'Update';
+            form.action = `${formActionBase}/${serviceId}`;
+            form.method = 'POST'; // HTML forms only support GET or POST. Use hidden _method for PUT.
 
-            // form.action = `{{ url('service') }}/${serviceId}/edit`;
-
+            // Add hidden _method field for PUT request
+            let methodInput = form.querySelector('input[name="_method"]');
+            if (!methodInput) {
+                methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                form.appendChild(methodInput);
+            }
+            methodInput.value = 'PUT';
 
             servicesModal.show();
         });

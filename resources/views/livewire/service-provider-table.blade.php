@@ -77,8 +77,8 @@
     </div>
 </div>
 
-@push('scripts')
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
         const elements = document.querySelectorAll('[data-choices]');
         elements.forEach(el => {
@@ -129,4 +129,3 @@
         });
     });
 </script>
-@endpush

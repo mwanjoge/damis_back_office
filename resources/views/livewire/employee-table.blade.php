@@ -32,7 +32,7 @@
                             <td>{{ $employee->department->name ?? 'N/A' }}</td>
                             <td>{{ $employee->designation->name ?? 'N/A' }}</td>
                             <td><span
-                                    class="badge {{ $employee->is_active ? 'bg-success' : 'bg-danger' }}">{{ $employee->is_active ? 'Active' : 'Inactive' }}</span>
+                                    class="badge {{ $employee->is_active ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">{{ $employee->is_active ? 'Active' : 'Inactive' }}</span>
                             </td>
                             <td class="text-end">
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"

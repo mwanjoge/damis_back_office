@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Select Mission</label>
-                                <select class="form-control" wire:model="embassy_id" data-choices name="embassy_id">
+                                <select class="form-select" wire:model="embassy_id" data-choices name="embassy_id">
                                     <option value="">Select Mission</option>
                                     @foreach ($embassies as $embassy)
                                         <option value="{{ $embassy['id'] }}">{{ $embassy['name'] }}</option>
@@ -116,21 +116,18 @@
     </div>
 
     <!-- Include SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const elements = document.querySelectorAll('[data-choices]');
-            elements.forEach(el => {
-                new Choices(el, {
-                    searchEnabled: true,
-                    itemSelectText: '',
-                });
-            });
-        });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const elements = document.querySelectorAll('[data-choices]');
+        //     elements.forEach(el => {
+        //         new Choices(el, {
+        //             searchEnabled: true,
+        //             itemSelectText: '',
+        //         });
+        //     });
+        // });
 
         document.addEventListener('click', function(e) {
             const deleteBtn = e.target.closest('.delete-btn');
