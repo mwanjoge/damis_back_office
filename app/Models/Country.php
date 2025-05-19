@@ -16,7 +16,7 @@ class Country extends Model
 
     public function embassy()
     {
-        return $this->belongsTo(Embassy::class);
+        return $this->belongsTo(Embassy::class, 'country_id');
     }
 
     public function requests()

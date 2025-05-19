@@ -56,9 +56,9 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
+                        {{-- <tr>
                             <td colspan="5" class="text-center">No missions found.</td>
-                        </tr>
+                        </tr> --}}
                     @endforelse
                 </tbody>
             </table>
