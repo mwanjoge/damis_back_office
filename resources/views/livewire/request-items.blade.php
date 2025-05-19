@@ -39,7 +39,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-2">
+                            {{-- <div class="col-md-2">
                                 <div class="form-label">Price</div>
                                 <div class="input-group">
                                     <span class="input-group-text">TZS</span>
@@ -48,7 +48,7 @@
                                 @error("inputs.$key.price")
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="col-md-2">
                                 <div class="form-label">Certificate Holder</div>
                                 <input type="text" wire:model="inputs.{{ $key }}.certificate_holder_name" name="request_items[{{ $key }}][certificate_holder_name]" class="form-control" required>

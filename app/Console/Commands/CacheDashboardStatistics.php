@@ -86,26 +86,25 @@ class CacheDashboardStatistics extends Command
 
         // 6. Top 5 Highest Earning Embassies
         $topEmbassies = Request::selectRaw("
-            embassies.name AS embassy_name,
-            SUM(requests.total_cost) AS total_earnings,
-            COUNT(requests.id) AS request_count,
-            (SELECT COUNT(DISTINCT countries.id)
-             FROM countries
-             WHERE countries.embassy_id = embassies.id) AS countries_count,
-            (SELECT services.name
-             FROM request_items
-             JOIN services ON request_items.service_id = services.id
-             WHERE request_items.request_id = requests.id
-             GROUP BY services.name
-             ORDER BY COUNT(*) DESC
-             LIMIT 1) AS service_name
-        ")
+                embassies.name AS embassy_name,
+                SUM(requests.total_cost) AS total_earnings,
+                COUNT(requests.id) AS request_count,
+                (SELECT COUNT(DISTINCT countries.id)
+                 FROM countries
+                 WHERE countries.embassy_id = embassies.id) AS countries_count,
+                (SELECT services.name
+                 FROM request_items
+                 JOIN services ON request_items.service_id = services.id
+                 WHERE request_items.request_id = requests.id
+                 GROUP BY services.name
+                 ORDER BY COUNT(*) DESC
+                 LIMIT 1) AS service_name
+            ")
             ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
-            ->groupBy('embassies.name')
-            ->orderByDesc('total_earnings')
-            ->limit(5)
-            ->get();
-
+                ->groupBy('embassies.id', 'embassies.name', 'requests.id')
+                ->orderByDesc('total_earnings')
+                ->limit(5)
+                ->get();
         // 7. Recent Completed Applications
         $recentApplications = Request::with(['member', 'requestItems.service', 'embassy'])
             ->where('status', 'Completed')
@@ -167,7 +166,7 @@ class CacheDashboardStatistics extends Command
             'providerStats' => $providerEarningsMatrix,
             'earningsByCurrency' => $earningsByCurrency,
             'providerActivity' => $providerActivity,
-        ], now()->addMinutes(720));
+        ], now()->addMinutes(12720));
 
         \Log::info('CacheDashboardStatistics ran and cached data.');
 

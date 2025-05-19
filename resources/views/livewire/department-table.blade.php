@@ -41,9 +41,6 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center">No departments found.</td>
-                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>
