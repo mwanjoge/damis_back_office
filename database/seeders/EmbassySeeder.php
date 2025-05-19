@@ -35,6 +35,7 @@ class EmbassySeeder extends Seeder
         foreach ($csv as $record) {
             $embassy = Embassy::create([
                 'name' => $record['name'],
+                'type' => $record['type'],
             ]);
             $embassy->account()->save(\App\Models\Account::factory()->create());
         }
