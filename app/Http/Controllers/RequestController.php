@@ -53,18 +53,15 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
-        //   dd($request->all());
-
         try {
             $data = $request->validated();
-
-            //return $data['request_items'][0]['price'];
 
             $country = $this->requestService->getCountry($data['country_id']);
 
             $accountId = \App\Models\Account::query()->where('embassy_id', $country->embassy_id)->first()->id;
             if (!$accountId) {
                 if ($request->ajax() || $request->wantsJson()) {
+
                     return response()->json([
                         'success' => false,
                         'message' => 'Account not found for the specified embassy.'
