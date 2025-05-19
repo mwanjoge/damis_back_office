@@ -124,6 +124,7 @@
     </div>
     <!-- END PAGE WRAPPER -->
     @include('layouts.tabler.js_files_links')
+    @yield('script')
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

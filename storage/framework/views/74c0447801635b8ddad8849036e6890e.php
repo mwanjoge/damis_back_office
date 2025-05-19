@@ -70,4 +70,4 @@
 
 <?php echo $__env->yieldContent('script'); ?>
 <?php echo $__env->yieldContent('script-bottom'); ?>
-<?php /**PATH D:\PROJECTS\damis_back_office\resources\views/layouts/vendor-scripts.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/layouts/vendor-scripts.blade.php ENDPATH**/ ?>

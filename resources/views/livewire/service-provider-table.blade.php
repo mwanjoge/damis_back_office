@@ -20,14 +20,14 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $provider['name'] }}</td>
-                       
+
                         <td class="text-end">
                             <button class="btn btn-warning btn-sm" wire:click="openForm('{{ $provider['id'] }}')">
-                                <i class="bx bx-edit-alt"></i>
+                                <i class="bx bx-pencil"></i>
                             </button>
 
                             <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $provider['id'] }}">
-                                <i class="bx bxs-trash"></i>
+                                <i class="bx bx-trash-alt"></i>
                             </button>
                         </td>
                     </tr>
@@ -47,8 +47,8 @@
                         <div class="mb-3">
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" wire:model="name" required>
-                            @error('name') 
-                                <span class="text-danger">{{ $message }}</span> 
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -61,8 +61,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            @error('selectedServices') 
-                                <span class="text-danger">{{ $message }}</span> 
+                            @error('selectedServices')
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -95,7 +95,7 @@
             if (deleteBtn) {
                 e.preventDefault();
                 const providerId = deleteBtn.dataset.id;
-                
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",

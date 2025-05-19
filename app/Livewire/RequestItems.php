@@ -15,12 +15,12 @@ class RequestItems extends Component
     public $inputs = [['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
     public $services;
     public $servicesInputs = [];
-  
+
     public $test;
 
     public function addInput()
     {
-        $this->inputs[] = [['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => '']];
+        $this->inputs[] = ['service_provider_id' => '', 'service_id' => '', 'price' => '', 'certificate_holder_name' => '', 'certificate_index_number' => '', 'attachment' => ''];
     }
 
 
@@ -36,7 +36,23 @@ class RequestItems extends Component
     public function getServices($key)
     {
         $this->services = Service::query()->where('service_provider_id', $this->inputs[$key]['service_provider_id'])->get();
-        $this->servicesInputs[] = $this->services;
+        $this->servicesInputs[$key] = $this->services;
+    }
+
+    public function updatedInputsServiceId($value, $key)
+    {
+        // Extract the index from the key (format: "0.service_id")
+        $index = explode('.', $key)[0];
+
+        if (!empty($value)) {
+            // Get the service
+            $service = Service::find($value);
+
+            if ($service) {
+                // Set the price for this service
+                $this->inputs[$index]['price'] = $service->price;
+            }
+        }
     }
 
     public function render()

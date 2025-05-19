@@ -24,7 +24,8 @@
 
 
 
-<!-- END PLUGINS STYLES -->
-<!-- BEGIN DEMO STYLES -->
-{{-- <link href="./preview/css/demo.css" rel="stylesheet" /> --}}
-<!-- END DEMO STYLES -->
+    <!-- Material Design Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />

@@ -125,6 +125,7 @@
     </div>
     <!-- END PAGE WRAPPER -->
     <?php echo $__env->make('layouts.tabler.js_files_links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <?php echo $__env->yieldContent('script'); ?>
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -170,4 +171,4 @@
 </script>
 
 </html>
-<?php /**PATH D:\PROJECTS\damis_back_office\resources\views/layouts/tabler/app.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Public\projects\damis_back_office\resources\views/layouts/tabler/app.blade.php ENDPATH**/ ?>

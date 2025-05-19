@@ -1,7 +1,12 @@
-@extends('layouts.master')
+@extends('layouts.tabler.app')
 
 @section('content')
-@include("modal.alert")
+    @php
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Settings', 'url' => route('settings')]
+        ];
+    @endphp
 
     <div class="profile-foreground position-relative mx-n4 mt-n4">
         <div class="profile-wid-bg">

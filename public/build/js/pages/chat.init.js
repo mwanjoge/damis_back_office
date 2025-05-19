@@ -7,8 +7,8 @@ File: Chat init js
 */
 
 (function () {
-    var dummyUserImage = "assets/images/users/user-dummy-img.jpg";
-    var dummyMultiUserImage = "assets/images/users/multi-user.jpg";
+    var dummyUserImage = "/build/images/users/avatar-1.jpg";
+    var dummyMultiUserImage = "/build/images/users/avatar-group.jpg";
     var isreplyMessage = false;
 
     // favourite btn
@@ -48,7 +48,7 @@ File: Chat init js
     //User current Id
     var currentChatId = "users-chat";
     var currentSelectedChat = "users";
-    var url="assets/json/";
+    var url="/build/json/";
     var usersList = "";
     var userChatId = 1;
 
@@ -230,7 +230,7 @@ File: Chat init js
                     isreplyMessage = false;
                     document.querySelector(".replyCard").classList.remove("show");
                 }
-                
+
                 if (item.querySelector(".align-items-center").querySelector(".avatar-xxs img")) {
                     var contactImg = item.querySelector(".align-items-center").querySelector(".avatar-xxs .rounded-circle").getAttribute("src");
                     document.querySelector(".user-own-img .avatar-xs").setAttribute("src", contactImg);
@@ -636,7 +636,7 @@ File: Chat init js
         });
     }
 
-    //Delete Message 
+    //Delete Message
     function deleteMessage() {
         var deleteItems = itemList.querySelectorAll(".delete-item");
         deleteItems.forEach(function (item) {
@@ -648,7 +648,7 @@ File: Chat init js
         });
     }
 
-    //Delete Image 
+    //Delete Image
     function deleteImage() {
         var deleteImage = itemList.querySelectorAll(".chat-conversation-list .chat-list");
         deleteImage.forEach(function (item) {
@@ -798,7 +798,7 @@ File: Chat init js
             });
         });
 
-        //reply Message model    
+        //reply Message model
         newChatList.querySelectorAll(".reply-message").forEach(function (subitem) {
             subitem.addEventListener("click", function () {
                 var replyToggleOpenNew = document.querySelector(".replyCard");
@@ -916,31 +916,32 @@ File: Chat init js
     };
 
 
-    var emojiPicker = new FgEmojiPicker({
-        trigger: [".emoji-btn"],
-        removeOnSelection: false,
-        closeButton: true,
-        position: ["top", "right"],
-        preFetch: true,
-        dir: "assets/js/pages/plugins/json",
-        insertInto: document.querySelector(".chat-input"),
-    });
+    // Emoji picker functionality is disabled because the required JSON files are not available
+    // var emojiPicker = new FgEmojiPicker({
+    //     trigger: [".emoji-btn"],
+    //     removeOnSelection: false,
+    //     closeButton: true,
+    //     position: ["top", "right"],
+    //     preFetch: true,
+    //     dir: "/build/js/pages/plugins/json",
+    //     insertInto: document.querySelector(".chat-input"),
+    // });
 
-    // emojiPicker position
-    var emojiBtn = document.getElementById("emoji-btn");
-    emojiBtn.addEventListener("click", function () {
-        setTimeout(function () {
-            var fgEmojiPicker = document.getElementsByClassName("fg-emoji-picker")[0];
-            if (fgEmojiPicker) {
-                var leftEmoji = window.getComputedStyle(fgEmojiPicker) ? window.getComputedStyle(fgEmojiPicker).getPropertyValue("left") : "";
-                if (leftEmoji) {
-                    leftEmoji = leftEmoji.replace("px", "");
-                    leftEmoji = leftEmoji - 40 + "px";
-                    fgEmojiPicker.style.left = leftEmoji;
-                }
-            }
-        }, 0);
-    });
+    // // emojiPicker position
+    // var emojiBtn = document.getElementById("emoji-btn");
+    // emojiBtn.addEventListener("click", function () {
+    //     setTimeout(function () {
+    //         var fgEmojiPicker = document.getElementsByClassName("fg-emoji-picker")[0];
+    //         if (fgEmojiPicker) {
+    //             var leftEmoji = window.getComputedStyle(fgEmojiPicker) ? window.getComputedStyle(fgEmojiPicker).getPropertyValue("left") : "";
+    //             if (leftEmoji) {
+    //                 leftEmoji = leftEmoji.replace("px", "");
+    //                 leftEmoji = leftEmoji - 40 + "px";
+    //                 fgEmojiPicker.style.left = leftEmoji;
+    //             }
+    //         }
+    //     }, 0);
+    // });
 
 })();
 //Search Message
