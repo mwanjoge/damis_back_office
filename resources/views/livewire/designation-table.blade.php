@@ -43,7 +43,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
+                        <tr>      
                             <td colspan="4" class="text-center">No designations found.</td>
                         </tr>
                     @endforelse

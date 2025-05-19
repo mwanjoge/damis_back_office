@@ -31,6 +31,7 @@ class BillableItemController extends Controller
      */
     public function store(StoreBillableItemRequest $request)
     {
+        // dd($request->all());
         Service::query()->get()->each(function ($service) use ($request) {
             $service->billableItems()->create([
                 'account_id' => $request->account_id,

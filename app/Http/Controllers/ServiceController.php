@@ -79,21 +79,20 @@ class ServiceController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to update service: ' . $e->getMessage()]);
         }
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, $serviceId )
+    public function destroy($id)
     {
-
         try {
-            $service = Service::find($serviceId);
+            $service = Service::findOrFail($id);
             $service->delete();
-            return redirect()->back()->with('success', 'Service deleted successfully!');
-        
+            session()->flash('success', 'Service deleted successfully!');
+            return redirect()->back();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete service: ' . $e->getMessage());
-        }
+            session()->flash('error', 'Delete failed: ' . $e->getMessage());
+            return redirect()->back(); }
     }
 }

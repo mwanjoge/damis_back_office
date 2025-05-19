@@ -28,8 +28,6 @@ class RequestSeeder extends Seeder
             $request = Request::factory()->create([
                 'account_id' => $accounts->random(),
                 'embassy_id' => $embassies->random(),
-                'service_id' => $services->random(),
-                'service_provider_id' => $serviceProviders->random(),
                 'member_id' => $members->random(),
                 'country_id' => $countries->random(),
                 'total_cost' => $amount

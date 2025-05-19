@@ -26,9 +26,13 @@
                                 <i class="bx bx-pencil"></i>
                             </button>
 
-                            <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $provider['id'] }}">
-                                <i class="bx bx-trash-alt"></i>
-                            </button>
+                            <form method="POST" action="{{ route('service_provider.destroy', $provider['id']) }}" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bx bx-trash-alt"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -89,28 +93,6 @@
         //     });
         // });
 
-        // Handle delete confirmation
-        document.addEventListener('click', function(e) {
-            const deleteBtn = e.target.closest('.delete-btn');
-            if (deleteBtn) {
-                e.preventDefault();
-                const providerId = deleteBtn.dataset.id;
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        @this.deleteConfirm(providerId);
-                    }
-                });
-            }
-        });
 
         // Handle Livewire events
         Livewire.on('showAlert', data => {

@@ -88,9 +88,9 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
+                        {{-- <tr>
                             <td colspan="9" class="text-center text-muted">No requests found.</td>
-                        </tr>
+                        </tr> --}}
                     @endforelse
                     </tbody>
                 </table>
