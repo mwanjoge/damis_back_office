@@ -93,7 +93,7 @@ class HomeController extends Controller
                  LIMIT 1) AS service_name
             ")
                 ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
-                ->groupBy('embassies.name')
+                ->groupBy('embassies.id', 'embassies.name', 'requests.id')
                 ->orderByDesc('total_earnings')
                 ->limit(5)
                 ->get();

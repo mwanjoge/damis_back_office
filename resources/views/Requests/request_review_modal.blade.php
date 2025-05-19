@@ -31,11 +31,11 @@
              <div class="modal-footer border-0">
                  <form method="POST" id="reject-form" class="me-2">
                      @csrf
-                     <button type="submit" class="btn btn-outline-danger rounded-pill px-4">Reject</button>
+                     <button type="button" class="btn btn-outline-danger rounded-pill px-4">Reject</button>
                  </form>
                  <form method="POST" id="approve-form">
                      @csrf
-                     <button type="submit" class="btn btn-success rounded-pill px-4">Approve</button>
+                     <button type="button" class="btn btn-success rounded-pill px-4">Approve</button>
                  </form>
              </div>
          </div>

@@ -11,7 +11,7 @@
     </ul>
 
     <!-- Search Box -->
-    <div class="row mb-4">
+    {{-- <div class="row mb-4">
         <div class="col-md-6">
             <div class="input-group">
                 <span class="input-group-text">
@@ -25,7 +25,7 @@
                 @endif
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="card">
         <div class="card-body">
