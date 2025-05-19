@@ -53,8 +53,8 @@ class DatabaseSeeder extends Seeder
             //MemberSeeder::class,
             CountrySeeder::class,
             PermissionSeeder::class,
-            RoleSeeder::class
-            //RequestSeeder::class, // Requests last!
+            RoleSeeder::class,
+            RequestSeeder::class, // Requests last!
         ]);
     }
 }
