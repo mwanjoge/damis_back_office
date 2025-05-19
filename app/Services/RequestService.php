@@ -22,7 +22,7 @@ class RequestService
         $country = $this->getCountry($data['country_id']);
         $totalCost = 0;
         foreach ($data['request_items'] as $item) {
-            $totalCost += $data['price'];
+            $totalCost += $item['price'] ?? $data['price'];
         }
         return Request::create([
             'account_id' => $this->getAccountId(),
@@ -56,7 +56,7 @@ class RequestService
                 'service_provider_id' => $item['service_provider_id'],
                 'certificate_holder_name' => $item['certificate_holder_name'],
                 'certificate_index_number' => $item['certificate_index_number'] ?? null,
-                'price' => $price,
+                'price' => $item['price'] ?? $price,
                 'attachment' => $filePath,
             ]);
         }
@@ -93,7 +93,7 @@ class RequestService
 
         return $request->invoice()->save($invoice);
     }
-    
+
     public function notifyMember($invoice, $request)
     {
         $this->sendInvoiceNotification($invoice);

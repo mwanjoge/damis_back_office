@@ -5,7 +5,7 @@
         </button>
     </div>
     <div class="table-responsive table-card" wire:ignore>
-        <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+        <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
             <thead class="text-muted table-light pt-3">
                 <tr>
                     <th>#</th>
@@ -32,12 +32,12 @@
                             <!-- Edit Button -->
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                 data-bs-target=".countries-modal" wire:click="openForm({{ $country->id }})">
-                                <i class="bx bx-edit-alt"></i>
+                                <i class="bx bx-pencil"></i>
                             </button>
 
                             <!-- Delete Button -->
                             <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $country->id }}">
-                                <i class="bx bxs-trash"></i>
+                                <i class="bx bx-trash-alt"></i>
                             </button>
                         </td>
                     </tr>
@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Select Mission</label>
-                                <select class="form-control" wire:model="embassy_id" data-choices name="embassy_id">
+                                <select class="form-select" wire:model="embassy_id" data-choices name="embassy_id">
                                     <option value="">Select Mission</option>
                                     @foreach ($embassies as $embassy)
                                         <option value="{{ $embassy['id'] }}">{{ $embassy['name'] }}</option>
@@ -116,21 +116,18 @@
     </div>
 
     <!-- Include SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const elements = document.querySelectorAll('[data-choices]');
-            elements.forEach(el => {
-                new Choices(el, {
-                    searchEnabled: true,
-                    itemSelectText: '',
-                });
-            });
-        });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const elements = document.querySelectorAll('[data-choices]');
+        //     elements.forEach(el => {
+        //         new Choices(el, {
+        //             searchEnabled: true,
+        //             itemSelectText: '',
+        //         });
+        //     });
+        // });
 
         document.addEventListener('click', function(e) {
             const deleteBtn = e.target.closest('.delete-btn');

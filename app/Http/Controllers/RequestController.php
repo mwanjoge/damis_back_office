@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRequestRequest;
 use App\Http\Requests\UpdateRequestRequest;
+use App\Models\RequestItem;
 use App\Services\RequestService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -63,17 +64,40 @@ class RequestController extends Controller
 
             $accountId = \App\Models\Account::query()->where('embassy_id', $country->embassy_id)->first()->id;
             if (!$accountId) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Account not found for the specified embassy.'
+                    ]);
+                }
                 return redirect()->back()->withInput()->withErrors(['embassy_id' => 'Account not found for the specified embassy.']);
             }
             $this->requestService->setAccountId($country->id);
-            $request = $this->requestService->createRequest($data);
-            $invoice = $this->requestService->createInvoice($request);
-            $this->requestService->addRequestedItems($request, $data['request_items'], $data['price']);
-            $this->requestService->addInvoiceItems($invoice, $request->requestItems);
-            $this->requestService->notifyMember($invoice, $request);
+            $requestModel = $this->requestService->createRequest($data);
+            $invoice = $this->requestService->createInvoice($requestModel);
+            $this->requestService->addRequestedItems($requestModel, $data['request_items'], $data['price']);
+            $this->requestService->addInvoiceItems($invoice, $requestModel->requestItems);
+            $this->requestService->notifyMember($invoice, $requestModel);
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Request created successfully!',
+                    'redirect' => route('requests.index')
+                ]);
+            }
 
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
         } catch (\Exception $e) {
+            Log::error('Request creation error: ' . $e->getMessage());
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to create request: ' . $e->getMessage()
+                ]);
+            }
+
             return redirect()->back()->withInput()->withErrors(['error' => 'Failed to create request: ' . $e->getMessage()]);
         }
     }
@@ -113,7 +137,7 @@ class RequestController extends Controller
 
     public function approveRequest($id, Request $request)
     {
-        $request = Request::findOrFail($id);
+        $request = RequestItem::findOrFail($id);
         $request->is_approved = true;
         $request->save();
 
@@ -122,7 +146,7 @@ class RequestController extends Controller
 
     public function rejectRequest($id, Request $request)
     {
-        $request = Request::findOrFail($id);
+        $request = RequestItem::findOrFail($id);
         $request->is_approved = false;
         $request->save();
 

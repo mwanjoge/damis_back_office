@@ -9,7 +9,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-nowrap mb-0">
+            <table class="table table-nowrap mb-0  datatable">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
@@ -32,30 +32,30 @@
                             <td>{{ $employee->department->name ?? 'N/A' }}</td>
                             <td>{{ $employee->designation->name ?? 'N/A' }}</td>
                             <td><span
-                                    class="badge {{ $employee->is_active ? 'bg-success' : 'bg-danger' }}">{{ $employee->is_active ? 'Active' : 'Inactive' }}</span>
+                                    class="badge {{ $employee->is_active ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">{{ $employee->is_active ? 'Active' : 'Inactive' }}</span>
                             </td>
                             <td class="text-end">
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".employee-modal"
                                     onclick="openEmployeeModal({{ json_encode($employee) }})">
-                                    <i class="bx bx-edit-alt"></i>
+                                    <i class="bx bx-pencil"></i>
                                 </button>
                                 <form method="POST" action="{{ route('employee.destroy', $employee->id) }}"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bxs-trash"></i>
+                                        <i class="bx bx-trash-alt"></i>
                                     </button>
                                 </form>
                                 <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info btn-sm">
-                                    <i class="bx bxs-show"></i>
+                                    <i class="bx bx-detail"></i>
                                 </a>
                                 <form method="POST" action="{{ route('employee.reset-password', $employee->id) }}"
                                     style="display:inline-block;" onsubmit="return confirm('Are you sure you want to reset the password to default?');">
                                     @csrf
                                     <button type="submit" class="btn btn-secondary btn-sm" title="Reset Password">
-                                        <i class="bx bx-reset"></i>
+                                        <i class="bx bx-lock-open-alt"></i>
                                     </button>
                                 </form>
                             </td>

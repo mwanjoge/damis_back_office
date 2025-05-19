@@ -12,7 +12,29 @@
 
     {{-- @include('layouts.breadcrumb') --}}
 
-    <div class="row g-4 mt-3">
+    <div class="page-header d-print-none mb-4">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">Request Details</h2>
+                    <div class="text-muted mt-1">Tracking Number: {{ $request->tracking_number }}</div>
+                </div>
+                <div class="col-auto ms-auto">
+                    <a href="{{ route('requests.index') }}" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l14 0"></path>
+                            <path d="M5 12l6 6"></path>
+                            <path d="M5 12l6 -6"></path>
+                        </svg>
+                        Back to Requests
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
         <!-- Left column: Request Details -->
         <div class="col-lg-5">
             <div class="card h-100">
@@ -57,7 +79,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a href="{{ route('requests.index') }}" class="btn btn-secondary btn-sm">Back</a>
                     @if (session()->has('success'))
                         <div class="alert alert-success mt-2">{{ session('success') }}</div>
                     @endif
@@ -81,12 +102,12 @@
                             {{ $request->invoice?->currency ?? 'USD' }}
                         </div>
                         <div class="col-4 text-start">
-                        
+
                             <div class="mt-2 text-start">
                                 <strong class="fw-bold">Applicant:</strong> {{ $request->member->name ?? '-' }}<br>
                                 <strong class="fw-bold">Email:</strong> {{ $request->member->email ?? '-' }}<br>
                                 <strong class="fw-bold">Phone:</strong> {{ $request->member->phone ?? '-' }}
-                                                                    
+
                             </div>
                         </div>
                     </div>
@@ -179,7 +200,7 @@
                         <tbody>
                             @foreach ($request->requestItems ?? [] as $i => $item)
                                 @php
-                                    $status = strtolower($item->request->status);
+                                    $status = strtolower($item->is_approved);
                                 @endphp
 
                                 <tr>
@@ -192,21 +213,24 @@
                                     <td>{{ $item->certificate_index_number }}</td>
 
                                     <td>
-                                        @if ($status == 'pending')
-                                            <span class="badge bg-warning-subtle text-warning fs-11">Pending</span>
-                                        @elseif ($status == 'approved')
-                                            <span class="badge bg-success-subtle text-success fs-11">Approved</span>
-                                        @elseif ($status == 'rejected')
-                                            <span class="badge bg-danger-subtle text-danger fs-11">Rejected</span>
+                                        @if ($status == 0)
+                                            <span class="badge bg-warning-subtle text-warning fs-11">NOT APPROVED</span>
+                                        @elseif ($status == 1)
+                                            <span class="badge bg-success-subtle text-success fs-11">APPROVED</span>
                                         @else
                                             <span class="badge bg-secondary-subtle text-secondary fs-11">Unknown</span>
                                         @endif
                                     </td>
                                     <td>
                                         @if ($item->attachment)
-                                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
                                                 onclick="previewDocument('{{ asset('storage/' . $item->attachment) }}', '{{ $item->certificate_holder_name }}', '{{ $item->certificate_index_number }}', '{{ $item->id }}', '{{ $item->service->name }}', '{{ $item->service->serviceProvider->name }}')">
-                                                <i class="bi bi-eye"></i> View
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                    <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                                </svg>
+                                                View
                                             </button>
                                         @else
                                             <span class="text-muted">-</span>
@@ -226,4 +250,3 @@
         </div>
     </div>
 @endsection
-

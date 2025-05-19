@@ -30,7 +30,7 @@ class StoreRequestRequest extends FormRequest
              'request_items' => 'required|array|min:1',
              'request_items.*.service_provider_id' => 'required|exists:service_providers,id',
              'request_items.*.service_id' => 'required|exists:services,id',
-             'request_items.*.price' => 'required|numeric|min:0',
+             'request_items.*.price' => 'nullable|numeric|min:0',
              'request_items.*.certificate_holder_name' => 'required|string|max:255',
              'request_items.*.certificate_index_number' => 'nullable|string|max:255',
              'request_items.*.attachment' => 'required|file|mimes:pdf,docx,jpg,png|max:2048',

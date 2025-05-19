@@ -24,7 +24,7 @@
         $earningsData = [];
         $embassyCurrencies = [];
         $embassyEarningsOverTime = $embassyEarningsOverTime ?? collect([]);
-      
+
         foreach ($embassyNames as $embassyId => $embassyName) {
             $earningsData[$embassyName] = array_fill(1, 12, 0);
             foreach ($embassyEarningsOverTime->where('embassy_id', $embassyId) as $row) {
@@ -94,31 +94,29 @@
                 </div>
                 <!--end row-->
 
-                <div class="row g-4 mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100 shadow-sm">
+                        <div class="card h-100">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
-                                            Total Earnings
-                                        </p>
+                                        <h3 class="mb-1">Total Earnings</h3>
+                                    </div>
+                                    <div class="avatar bg-success-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-coin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                            <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1"></path>
+                                            <path d="M12 7v10"></path>
+                                        </svg>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-3">
-                                    <div>
-                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ number_format($totalEarnings ?? 0) }}
-                                        </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">View net
-                                            earnings</a>
-                                    </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-success-subtle rounded fs-3">
-                                            <i class="bx bx-dollar-circle text-success"></i>
-                                        </span>
-                                    </div>
+                                <div class="d-flex align-items-baseline mt-3">
+                                    <div class="h1 mb-0 me-2">{{ number_format($totalEarnings ?? 0) }}</div>
+                                </div>
+                                <div class="mt-2">
+                                    <a href="" class="text-muted">View net earnings</a>
                                 </div>
                             </div><!-- end card body -->
                         </div><!-- end card -->
@@ -126,27 +124,28 @@
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100 shadow-sm">
+                        <div class="card h-100">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
-                                            Applications</p>
+                                        <h3 class="mb-1">Applications</h3>
+                                    </div>
+                                    <div class="avatar bg-azure-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-text" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                            <path d="M9 9l1 0"></path>
+                                            <path d="M9 13l6 0"></path>
+                                            <path d="M9 17l6 0"></path>
+                                        </svg>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-3">
-                                    <div>
-                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $applicationsCount }}
-                                        </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">View all
-                                            applications</a>
-                                    </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-info-subtle rounded fs-3">
-                                            <i class="bx bx-shopping-bag text-info"></i>
-                                        </span>
-                                    </div>
+                                <div class="d-flex align-items-baseline mt-3">
+                                    <div class="h1 mb-0 me-2">{{ $applicationsCount }}</div>
+                                </div>
+                                <div class="mt-2">
+                                    <a href="" class="text-muted">View all applications</a>
                                 </div>
                             </div><!-- end card body -->
                         </div><!-- end card -->
@@ -154,27 +153,27 @@
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100 shadow-sm">
+                        <div class="card h-100">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
-                                            Customers</p>
+                                        <h3 class="mb-1">Customers</h3>
+                                    </div>
+                                    <div class="avatar bg-yellow-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                        </svg>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-3">
-                                    <div>
-                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $customersCount }}
-                                        </h4>
-                                        <a href="" class="text-decoration-underline text-muted small"
-                                            style="font-style: normal;">Total customers</a>
-                                    </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-warning-subtle rounded fs-3">
-                                            <i class="bx bx-user-circle text-warning"></i>
-                                        </span>
-                                    </div>
+                                <div class="d-flex align-items-baseline mt-3">
+                                    <div class="h1 mb-0 me-2">{{ $customersCount }}</div>
+                                </div>
+                                <div class="mt-2">
+                                    <a href="" class="text-muted">Total customers</a>
                                 </div>
                             </div><!-- end card body -->
                         </div><!-- end card -->
@@ -182,27 +181,27 @@
 
                     <div class="col-xl-3 col-md-6">
                         <!-- card -->
-                        <div class="card card-animate h-100 shadow-sm">
+                        <div class="card h-100">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 overflow-hidden">
-                                        <p class="text-uppercase fw-medium text-muted text-truncate mb-1">
-                                            NEW APPLICATIONS</p>
+                                        <h3 class="mb-1">New Applications</h3>
+                                    </div>
+                                    <div class="avatar bg-primary-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                            <path d="M12 11l0 6"></path>
+                                            <path d="M9 14l6 0"></path>
+                                        </svg>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-end justify-content-between mt-3">
-                                    <div>
-                                        <h4 class="fs-22 fw-bold ff-secondary mb-2">
-                                            {{ $newApplicationsCount }}
-                                        </h4>
-                                        <a href="" class="text-decoration-underline text-muted small">New
-                                            Applications</a>
-                                    </div>
-                                    <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                            <i class="bx bx-wallet text-primary"></i>
-                                        </span>
-                                    </div>
+                                <div class="d-flex align-items-baseline mt-3">
+                                    <div class="h1 mb-0 me-2">{{ $newApplicationsCount }}</div>
+                                </div>
+                                <div class="mt-2">
+                                    <a href="" class="text-muted">View new applications</a>
                                 </div>
                             </div><!-- end card body -->
                         </div><!-- end card -->
@@ -210,134 +209,157 @@
                 </div> <!-- end row-->
 
                 {{-- Donut and Recent Applications --}}
-                <div class="row g-4 mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-lg-4 mb-3 mb-lg-0">
-                        <div class="card shadow h-100 d-flex flex-column justify-content-center align-items-center">
-                            <div class="card-body w-100">
-                                <h6 class="text-center mb-3"></h6>
-                                <canvas id="earningsByCurrencyChart" height="260"></canvas>
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Earnings by Currency</h3>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-center">
+                                <div class="chart-lg">
+                                    <canvas id="earningsByCurrencyChart" height="260"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="card-title mb-0">Recent Applications</h5>
+                                <h3 class="card-title">Recent Applications</h3>
                             </div>
                             <div class="card-body">
-                                <table id="alternative-pagination"
-                                    class="table nowrap dt-responsive align-middle table-hover table-bordered"
-                                    style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-nowrap">Member</th>
-                                            <th class="text-nowrap">Service</th>
-                                            <th class="text-nowrap">Date</th>
-                                            <th class="text-nowrap">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                                <div class="table-responsive">
+                                    <table class="table table-vcenter card-table">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $request->member->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
-                                                <td>{{ $request->created_at->format('Y-m-d') }}</td>
-                                                <td><span class="badge bg-primary">{{ $request->status }}</span></td>
+                                                <th>Member</th>
+                                                <th>Service</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                                                <tr>
+                                                    <td>{{ $request->member->name ?? 'N/A' }}</td>
+                                                    <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
+                                                    <td>{{ $request->created_at->format('Y-m-d') }}</td>
+                                                    <td><span class="badge bg-primary">{{ $request->status }}</span></td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {{-- Charts Section --}}
-                <div class="row g-4 mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-lg-6">
-                        <div class="card shadow h-100">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Earnings per Embassy</h3>
+                            </div>
                             <div class="card-body">
-                                <h6 class="mb-3">Requests per Embassy</h6>
-                                <canvas id="requestsPerEmbassyChart" height="200"></canvas>
+                                <div class="chart">
+                                    <canvas id="requestsPerEmbassyChart" height="200"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="card shadow h-100">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Monthly Requests</h3>
+                            </div>
                             <div class="card-body">
-                                <h6 class="mb-3">Monthly Requests</h6>
-                                <canvas id="monthlyRequestsChart" height="200"></canvas>
+                                <div class="chart">
+                                    <canvas id="monthlyRequestsChart" height="200"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row g-4 mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-lg-6">
-                        <div class="card shadow h-100">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Top Services by Earnings</h3>
+                            </div>
                             <div class="card-body">
-                                <h6 class="mb-3">Top Services by Earnings</h6>
-                                <canvas id="topServicesChart" height="200"></canvas>
+                                <div class="chart">
+                                    <canvas id="topServicesChart" height="200"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="card shadow h-100">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Provider Activity</h3>
+                            </div>
                             <div class="card-body">
-                                <h6 class="mb-3">Provider Activity</h6>
-                                <canvas id="providerEarningsChart" height="200"></canvas>
+                                <div class="chart">
+                                    <canvas id="providerEarningsChart" height="200"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {{-- Embassy Earnings Over Time --}}
-                <div class="row g-4 mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-md-12">
-                        <div class="card shadow h-100">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h3 class="card-title">Embassy Earnings Over Time</h3>
+                            </div>
                             <div class="card-body">
-                                <h6 class="mb-3">Embassy Earnings Over Time</h6>
-                                <canvas id="embassyEarningsOverTimeChart" height="220"></canvas>
+                                <div class="chart">
+                                    <canvas id="embassyEarningsOverTimeChart" height="220"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {{-- Qualitative Embassy Data --}}
-                <div class="row mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="card-title mb-0">Top 5 Highest Earning Embassies</h5>
+                                <h3 class="card-title">Top 5 Highest Earning Embassies</h3>
                             </div>
                             <div class="card-body">
-                                 <div><canvas id="myChart"></canvas></div>
-                                    
-                                <table id="alternative-pagination"
-                                    class="table nowrap dt-responsive align-middle table-hover table-bordered"
-                                    style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Embassy</th>
-                                            <th>Country Covered</th>
-                                            <th>Top Service</th>
-                                            <th>Earnings</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($topEmbassies as $embassy)
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-vcenter card-table">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $embassy->name }}</td>
-                                                <td>{{ $embassy->countries ?? '-' }}</td>
-                                                <td>{{ $embassy->top_service ?? 0 }}</td>
-                                                <td>{{ number_format($embassy->total_earnings ?? 0, 2) }}</td>
+                                                <th>Embassy</th>
+                                                <th>Country Covered</th>
+                                                <th>Top Service</th>
+                                                <th>Earnings</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($topEmbassies as $embassy)
+                                                <tr>
+                                                    <td>{{ $embassy['embassy_name'] ?? '-' }}</td>
+                                                    <td>{{ $embassy['countries_count'] ?? 0 }}</td>
+                                                    <td>{{ $embassy['service_name'] ?? '-' }}</td>
+                                                    <td>{{ number_format($embassy['total_earnings'] ?? 0, 2) }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -352,29 +374,40 @@
 @endsection
 
 @section('script')
-{{-- <script type="module" src="{{ asset('build/libs/chart.js/chart.js') }}"></script> --}}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart.js is already included in the main layout -->
 
 <script>
-    console.log({!! json_encode(array_keys($requestsPerEmbassy->toArray()[0])) !!});
-    console.log({!! json_encode(array_values($requestsPerEmbassy->toArray())) !!});
+    // Initialize charts for dashboard
 
 
     new Chart(document.getElementById('earningsByCurrencyChart'), {
         type: 'doughnut',
         data: {
-            labels: {!! json_encode(array_keys($statistics['earnings_by_currency'] ?? [])) !!},
+            labels: {!! json_encode(array_keys($earningsByCurrency ?? [])) !!},
             datasets: [{
-                data: {!! json_encode(array_values($statistics['earnings_by_currency'] ?? [])) !!},
-                backgroundColor: ['#3b76e1', '#63ad6f', '#eebf31', '#f06548', '#6f42c1'],
+                data: {!! json_encode(array_values($earningsByCurrency ?? [])) !!},
+                backgroundColor: ['#206bc4', '#4299e1', '#5eba00', '#fab005', '#ff922b', '#f66d9b'],
                 borderWidth: 1
             }]
         },
         options: {
             maintainAspectRatio: false,
+            cutout: '70%',
             plugins: {
-                tooltip: { enabled: true },
-                legend: { display: false }
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    padding: 10,
+                    cornerRadius: 3
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15
+                    }
+                }
             }
         }
     });
@@ -382,21 +415,35 @@
     new Chart(document.getElementById('requestsPerEmbassyChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(array_keys($requestsPerEmbassy->toArray())) !!},
-            datasets: [{
-                data: {!! json_encode(array_values($requestsPerEmbassy->toArray())) !!},
-                backgroundColor: '#3b76e1'
+             datasets: [{
+                data: {!! json_encode($requestsPerEmbassy->pluck('total_earnings')->toArray()) !!},
+                backgroundColor: '#206bc4',
+                borderRadius: 4,
+                barPercentage: 0.5,
+                categoryPercentage: 0.8
             }]
         },
         options: {
             maintainAspectRatio: false,
             plugins: {
-                tooltip: { enabled: true },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    padding: 10,
+                    cornerRadius: 3
+                },
                 legend: { display: false }
             },
             scales: {
-                x: { ticks: { display: false }, grid: { display: false } },
-                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
+                x: {
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
+                }
             }
         }
     });
@@ -405,23 +452,41 @@
     new Chart(document.getElementById('monthlyRequestsChart'), {
         type: 'line',
         data: {
-            labels: {!! json_encode(array_keys($statistics['monthly_requests'] ?? [])) !!},
+            labels: {!! json_encode(array_keys($monthlyRequests->toArray() ?? [])) !!},
             datasets: [{
-                data: {!! json_encode(array_values($statistics['monthly_requests'] ?? [])) !!},
-                borderColor: '#63ad6f',
-                fill: false,
-                tension: 0.3
+                data: {!! json_encode(array_values($monthlyRequests->toArray() ?? [])) !!},
+                borderColor: '#5eba00',
+                backgroundColor: 'rgba(94, 186, 0, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 3,
+                pointBackgroundColor: '#5eba00',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2
             }]
         },
         options: {
             maintainAspectRatio: false,
             plugins: {
-                tooltip: { enabled: true },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    padding: 10,
+                    cornerRadius: 3
+                },
                 legend: { display: false }
             },
             scales: {
-                x: { ticks: { display: false }, grid: { display: false } },
-                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
+                x: {
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
+                }
             }
         }
     });
@@ -429,22 +494,37 @@
     new Chart(document.getElementById('topServicesChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(array_keys($statistics['top_services_by_earnings'] ?? [])) !!},
+            labels: {!! json_encode(array_keys($topServices->toArray() ?? [])) !!},
             datasets: [{
-                data: {!! json_encode(array_values($statistics['top_services_by_earnings'] ?? [])) !!},
-                backgroundColor: '#f06548'
+                data: {!! json_encode(array_values($topServices->toArray() ?? [])) !!},
+                backgroundColor: '#fab005',
+                borderRadius: 4,
+                barPercentage: 0.6,
+                categoryPercentage: 0.8
             }]
         },
         options: {
             maintainAspectRatio: false,
             indexAxis: 'y',
             plugins: {
-                tooltip: { enabled: true },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    padding: 10,
+                    cornerRadius: 3
+                },
                 legend: { display: false }
             },
             scales: {
-                x: { beginAtZero: true, ticks: { display: false }, grid: { display: false } },
-                y: { ticks: { display: false }, grid: { display: false } }
+                x: {
+                    beginAtZero: true,
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
+                },
+                y: {
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { display: false }
+                }
             }
         }
     });
@@ -454,70 +534,190 @@
     new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
         type: 'line',
         data: {
-            labels: {!! json_encode(array_keys($statistics['embassy_earnings_over_time'] ?? [])) !!},
+            labels: {!! json_encode(array_keys($embassyEarningsOverTime->toArray() ?? [])) !!},
             datasets: [{
-                data: {!! json_encode(array_values($statistics['embassy_earnings_over_time'] ?? [])) !!},
-                borderColor: '#eebf31',
-                fill: false,
-                tension: 0.4
+                data: {!! json_encode(array_values($embassyEarningsOverTime->toArray() ?? [])) !!},
+                borderColor: '#4299e1',
+                backgroundColor: 'rgba(66, 153, 225, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 3,
+                pointBackgroundColor: '#4299e1',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2
             }]
         },
         options: {
             maintainAspectRatio: false,
             plugins: {
-                tooltip: { enabled: true },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    padding: 10,
+                    cornerRadius: 3,
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD'
+                                }).format(context.parsed.y);
+                            }
+                            return label;
+                        }
+                    }
+                },
                 legend: { display: false }
             },
             scales: {
-                x: { ticks: { display: false }, grid: { display: false } },
-                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
+                x: {
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        display: true,
+                        color: '#9aa0ac',
+                        font: { size: 10 },
+                        callback: function(value) {
+                            return new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                maximumSignificantDigits: 3
+                            }).format(value);
+                        }
+                    },
+                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
+                }
             }
         }
     });
+    // Get all unique currencies from provider stats
+    const providerStats = {!! json_encode($providerStats ?? []) !!};
+    const allCurrencies = [];
+
+    // Collect all unique currencies
+    providerStats.forEach(provider => {
+        if (provider.earnings) {
+            Object.keys(provider.earnings).forEach(currency => {
+                if (!allCurrencies.includes(currency)) {
+                    allCurrencies.push(currency);
+                }
+            });
+        }
+    });
+
+    // Generate a color for each currency
+    const currencyColors = {
+        'USD': '#206bc4',
+        'EUR': '#4299e1',
+        'GBP': '#5eba00',
+        'JPY': '#fab005',
+        'CAD': '#ff922b',
+        'AUD': '#f66d9b'
+    };
+
+    // Create datasets for each currency
+    const datasets = allCurrencies.map(currency => {
+        return {
+            label: currency,
+            data: providerStats.map(provider => {
+                return provider.earnings && provider.earnings[currency] ? provider.earnings[currency] : 0;
+            }),
+            backgroundColor: currencyColors[currency] || '#' + Math.floor(Math.random()*16777215).toString(16),
+            borderRadius: 4,
+            barPercentage: 0.5,
+            categoryPercentage: 0.8
+        };
+    });
+
     new Chart(document.getElementById('providerEarningsChart'), {
         type: 'bar',
         data: {
-            labels: {!! json_encode(array_keys($statistics['provider_earnings'] ?? [])) !!},
-            datasets: [{
-                data: {!! json_encode(array_values($statistics['provider_earnings'] ?? [])) !!},
-                backgroundColor: '#6f42c1'
-            }]
+            labels: providerStats.map(item => item.provider || ''),
+            datasets: datasets
         },
         options: {
             maintainAspectRatio: false,
             plugins: {
-                tooltip: { enabled: true },
-                legend: { display: false }
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    padding: 10,
+                    cornerRadius: 3,
+                    callbacks: {
+                        label: function(context) {
+                            const currency = context.dataset.label || '';
+                            const value = context.parsed.y;
+
+                            return `${currency}: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: currency
+                            }).format(value)}`;
+                        },
+                        footer: function(tooltipItems) {
+                            // Calculate total for this provider across all currencies
+                            const providerIndex = tooltipItems[0].dataIndex;
+                            const provider = providerStats[providerIndex];
+                            let total = 0;
+
+                            if (provider && provider.earnings) {
+                                Object.values(provider.earnings).forEach(value => {
+                                    total += parseFloat(value);
+                                });
+                            }
+
+                            return `Total: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(total)}`;
+                        }
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15
+                    }
+                }
             },
             scales: {
-                x: { ticks: { display: false }, grid: { display: false } },
-                y: { beginAtZero: true, ticks: { display: false }, grid: { display: false } }
+                x: {
+                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
+                    grid: { display: false },
+                    stacked: true
+                },
+                y: {
+                    beginAtZero: true,
+                    stacked: true,
+                    ticks: {
+                        display: true,
+                        color: '#9aa0ac',
+                        font: { size: 10 },
+                        callback: function(value) {
+                            return new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                maximumSignificantDigits: 3
+                            }).format(value);
+                        }
+                    },
+                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
+                }
             }
         }
     });
 
-const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
+// Chart initialization for myChart removed as the element doesn't exist
 
 </script>
-    
-@endsection
 
+@endsection

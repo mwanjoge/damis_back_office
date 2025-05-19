@@ -40,6 +40,7 @@ class ServiceProviderTable extends Component
 
     public function openForm($id = null)
     {
+        dd($id);
         if ($id) {
             $provider = ServiceProvider::with('services')->findOrFail($id);
             $this->editingId = $provider->id;

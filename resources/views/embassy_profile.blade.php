@@ -1,10 +1,15 @@
-@extends('layouts.master')
+@extends('layouts.tabler.app')
 
 @section('content')
-@include("modal.alert")
+    @php
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Settings', 'url' => route('settings')]
+        ];
+    @endphp
 
     <div class="profile-foreground position-relative mx-n4 mt-n4">
-        <div class="profile-wid-bg">
+        <div class="profile-wid-bg ">
             <img src="{{ URL::asset('build/images/profile-bg.jpg') }}" alt="" class="profile-wid-img" />
         </div>
     </div>
@@ -13,17 +18,17 @@
         <div class="row g-4">
             <div class="col-auto">
                 <div
-                    class="avatar-lg bg-primary text-white d-flex align-items-center justify-content-center rounded-circle fs-4 fw-bold">
+                    class="avatar-lg bg-primary d-flex text-black align-items-center justify-content-center rounded-circle fs-4 fw-bold">
                     {{ strtoupper(substr($embassy->name, 0, 1)) }}
                 </div>
             </div>
             <div class="col">
                 <div class="p-2">
-                    <h3 class="text-white mb-1">{{ $embassy->name }}</h3>
-                    <p class="text-white text-opacity-75">{{ ucfirst($embassy->type) }}</p>
-                    <div class="hstack text-white-50 gap-2">
-                        <div><i class="ri-map-pin-user-line me-1"></i>{{ $embassy->address ?? 'N/A' }}</div>
-                        <div><i class="ri-phone-line me-1"></i>{{ $embassy->phone ?? 'N/A' }}</div>
+                    <h3 class="text-black mb-1">{{ $embassy->name }}</h3>
+                    <p class="text-black text-opacity-75">{{ ucfirst($embassy->type) }}</p>
+                    <div class="hstack text-black-50 gap-2">
+                        <div><i class="ri-map-pin-user-line me-1 text-black"></i>{{ $embassy->country->name ?? 'N/A' }}</div>
+                        <div><i class="ri-phone-line text-black me-1"></i>{{ $embassy->phone ?? 'N/A' }}</div>
                     </div>
                 </div>
             </div>

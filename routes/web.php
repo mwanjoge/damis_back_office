@@ -59,6 +59,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('human_resources', function () {
         return view('human_resources');
     })->name('human_resources');
+    Route::get('apps-chat', function () {
+        return view('apps-chat');
+    })->name('apps-chat');
 
     Route::get('/embassies/{id}', [HomeController::class, 'showEmbassy'])->name('embassies.show');
     Route::get('/requestItem', RequestItems::class);

@@ -1,13 +1,13 @@
 @include('modal.alert')
 <div class="tab-pane px-4" id="service_provider" role="tabpanel">
     <div class="text-end pb-4">
-        <button class="btn btn-primary" wire:click="openForm">
+        <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target=".service-provider-modal" wire:click="openForm">
             New Service Provider
         </button>
     </div>
 
     <div class="table-responsive table-card">
-        <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+        <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
             <thead class="text-muted table-light">
                 <tr>
                     <th>#</th>
@@ -20,14 +20,14 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $provider['name'] }}</td>
-                       
+
                         <td class="text-end">
-                            <button class="btn btn-warning btn-sm" wire:click="openForm('{{ $provider['id'] }}')">
-                                <i class="bx bx-edit-alt"></i>
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target=".service-provider-modal" wire:click="openForm('{{ $provider['id'] }}')">
+                                <i class="bx bx-pencil"></i>
                             </button>
 
                             <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $provider['id'] }}">
-                                <i class="bx bxs-trash"></i>
+                                <i class="bx bx-trash-alt"></i>
                             </button>
                         </td>
                     </tr>
@@ -37,7 +37,7 @@
     </div>
 
     <!-- Modal -->
-    <div wire:ignore.self class="modal fade service-provider-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade service-provider-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body p-5">
@@ -47,8 +47,8 @@
                         <div class="mb-3">
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" wire:model="name" required>
-                            @error('name') 
-                                <span class="text-danger">{{ $message }}</span> 
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -61,8 +61,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            @error('selectedServices') 
-                                <span class="text-danger">{{ $message }}</span> 
+                            @error('selectedServices')
+                                <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -77,17 +77,17 @@
     </div>
 </div>
 
-@push('scripts')
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
-        const elements = document.querySelectorAll('[data-choices]');
-        elements.forEach(el => {
-            new Choices(el, {
-                removeItemButton: true,
-                searchEnabled: true,
-                itemSelectText: '',
-            });
-        });
+        // const elements = document.querySelectorAll('[data-choices]');
+        // elements.forEach(el => {
+        //     new Choices(el, {
+        //         removeItemButton: true,
+        //         searchEnabled: true,
+        //         itemSelectText: '',
+        //     });
+        // });
 
         // Handle delete confirmation
         document.addEventListener('click', function(e) {
@@ -95,7 +95,7 @@
             if (deleteBtn) {
                 e.preventDefault();
                 const providerId = deleteBtn.dataset.id;
-                
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -129,4 +129,3 @@
         });
     });
 </script>
-@endpush

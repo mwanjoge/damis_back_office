@@ -288,13 +288,13 @@
                 </li>
                 <li class="nav-item <?php echo e(Request::is('settings*') ? 'active' : ''); ?>">
                     <a class="nav-link menu-link <?php echo e(Request::is('settings*') ? 'active' : ''); ?>" href="/settings">
-                        <i class="las la-flask"></i> <span>Settings</span>
+                        <i class="bx bx-cog"></i> <span>Settings</span>
                     </a>
                 </li>
                 <li class="nav-item <?php echo e(Request::is('human_resources*') ? 'active' : ''); ?>">
                     <a class="nav-link menu-link <?php echo e(Request::is('human_resources*') ? 'active' : ''); ?>"
                         href="/human_resources">
-                        <i class="las la-flask"></i> <span>HR</span>
+                        <i class="bx bx-group"></i> <span>HR</span>
                     </a>
                 </li>
                 <li class="nav-item">

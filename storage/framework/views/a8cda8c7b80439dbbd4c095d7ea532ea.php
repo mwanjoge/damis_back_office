@@ -1,15 +1,14 @@
-<header class="navbar-expand-md">
-    <div class="collapse navbar-collapse" id="navbar-menu">
-        <div class="navbar">
+<header class="nav-sub-menu navbar-expand-md container-fluid">
+    <div class="navbar-collapse justify-content-center align-items-center rounded-3 border mx-2">
+        <div class="text-center text-md-center text-black">
             <div class="container-xl">
                 <div class="row flex-column flex-md-row flex-fill align-items-center">
                     <div class="col">
                         <!-- BEGIN NAVBAR MENU -->
                         <ul class="navbar-nav">
-                            <li class="nav-item">
+                            <li class="nav-item px-3">
                                 <a class="nav-link" href="/">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/home -->
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
@@ -21,7 +20,6 @@
                                     <span class="nav-link-title"> Dashboard </span>
                                 </a>
                             </li>
-                            
                             <li class="nav-item">
                                 <a class="nav-link menu-link <?php echo e(Request::is('requests*') ? 'active' : ''); ?>"
                                     href="/requests">
@@ -38,7 +36,7 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            <li class="nav-item px-3">
                                 <a class="nav-link menu-link <?php echo e(Request::is('settings*') ? 'active' : ''); ?>"
                                     href="/settings">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -49,7 +47,7 @@
                                             d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
                                         </path>
                                     </svg>
-                                    <span>Settings</span>
+                                    <span class="nav-link-title">Settings</span>
                                 </a>
                             </li>
 
@@ -62,11 +60,11 @@
                                         <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                    <span>HR</span>
+                                    <span class="nav-link-title">Human Resource</span>
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            <li class="nav-item px-3">
                                 <a class="nav-link menu-link" href="/authentication">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -75,7 +73,7 @@
                                         </rect>
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                     </svg>
-                                    <span>Authentication</span>
+                                    <span class="nav-link-title">Authentication</span>
                                 </a>
                             </li>
 

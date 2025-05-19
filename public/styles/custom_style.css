@@ -1,0 +1,43 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background: url("{{ asset('images/flag.png') }}");
+}
+
+.page-wrapper {
+    position: relative;
+    top: 15%;
+    height: calc(100% - 100px);
+    overflow-y: auto;
+}
+
+.page-body {
+    padding: 1rem;
+}
+
+.nav-link-title {
+    padding: 0.5rem 0.2rem;
+    font-size: 0.8rem;
+}
+
+.nav-sub-menu {
+    position: fixed !important;
+    height: 40px;
+    top: 100px;
+    /* z-index: 1; */
+}

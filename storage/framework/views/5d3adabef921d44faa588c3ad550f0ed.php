@@ -9,7 +9,7 @@
         </div>
 
         <div class="table-responsive table-card" wire:ignore>
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+            <table class="table table-borderless table-centered align-middle table-nowrap mb-0  datatable">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
@@ -37,7 +37,7 @@
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".mission-modal"
                                     onclick='openMissionModal(<?php echo json_encode($embassyData, 15, 512) ?>)'>
-                                    <i class="bx bx-edit-alt"></i>
+                                    <i class="bx bx-pencil"></i>
                                 </button>
 
 
@@ -46,11 +46,11 @@
                                     <?php echo csrf_field(); ?>
                                     <?php echo method_field('DELETE'); ?>
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bxs-trash"></i>
+                                        <i class="bx bx-trash-alt"></i>
                                     </button>
                                 </form>
                                 <a href="<?php echo e(route('embassies.show', $embassy->id)); ?>" class="btn btn-info btn-sm">
-                                    <i class="bx bxs-show"></i>
+                                    <i class="bx bx-detail"></i>
                                 </a>
 
                             </td>

@@ -8,7 +8,7 @@
                             </button>
                         </div>
                         <div class="table-responsive table-card">
-                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
                                 <thead class="text-muted table-light">
                                     <tr>
                                         <th>#</th>
@@ -27,7 +27,7 @@
                                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                                     data-bs-target=".department-modal"
                                                     onclick="openDepartmentModal({{ json_encode($department) }})">
-                                                    <i class="bx bx-edit-alt"></i>
+                                                    <i class="bx bx-pencil"></i>
                                                 </button>
                                                 <form method="POST"
                                                     action="{{ route('department.destroy', $department->id) }}"
@@ -35,7 +35,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="bx bxs-trash"></i>
+                                                        <i class="bx bx-trash-alt"></i>
                                                     </button>
                                                 </form>
                                             </td>

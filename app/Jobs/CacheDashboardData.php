@@ -30,7 +30,11 @@ class CacheDashboardData implements ShouldQueue
         $activeServiceProvidersData = [ServiceProvider::count()];
         $activeRequestsData = [Request::where('status', 'active')->count()];
         $activeServicesData = [Service::count()];
-        $requestsPerEmbassy = Embassy::withCount('requests')->get();
+        $requestsPerEmbassy = Request::selectRaw('embassies.id as embassy_id, embassies.name AS embassy_name, COUNT(requests.id) AS request_count, SUM(requests.total_amount) AS total_earnings')
+            ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
+            ->groupBy('embassies.id', 'embassies.name')
+            ->orderByDesc('total_earnings')
+            ->get();
         $monthlyRequests = Request::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereYear('created_at', Carbon::now()->year)
             ->groupBy('month')

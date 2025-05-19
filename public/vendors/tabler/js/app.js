@@ -1,10 +1,10 @@
 $(document).ready( function () {
     console.log(jQuery.fn.jquery);
-   // $('.datatable').DataTable();
+    $('.datatable').DataTable();
 } );
 
 var options = {
   valueNames: [ 'embassy', 'country' ]
 };
 
-var userList = new List('users', options);
+// var userList = new List('users', options);
