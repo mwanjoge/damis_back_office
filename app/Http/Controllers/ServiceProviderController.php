@@ -37,30 +37,29 @@ class ServiceProviderController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 $serviceProvider = ServiceProvider::query()
-                ->create([
-                    'name' => $request->name,
-                ]);
+                    ->create([
+                        'name' => $request->name,
+                    ]);
 
-                if($request->service_name[0] != null){
+                if ($request->service_name[0] != null) {
                     foreach ($request->service_name as $service) {
                         $serviceProvider->services()
                             ->create(
                                 [
                                     'name' => $service,
                                     'service_provider_id' => $serviceProvider->id,
-                                ]);
+                                ]
+                            );
                     }
                 }
 
                 // Dispatch the event to push the service provider data to the public server
                 event(new EmbassyCreated($serviceProvider));
                 session()->flash('success', 'Service Provider saved successfully!');
-                
             });
             return redirect()->route('settings');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->withErrors(['error' => 'Request Failed: ' . $e->getMessage()]);
-            
         }
     }
 
@@ -96,15 +95,11 @@ class ServiceProviderController extends Controller
     {
         try {
             $serviceProvider->delete();
-            return response()->json([
-                'success' => true,
-                'message' => 'Service Provider deleted successfully'
-            ]);
+            session()->flash('success', 'Service Provider deleted successfully!');
+            return redirect()->back();
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete Service Provider: ' . $e->getMessage()
-            ], 500);
+            session()->flash('error', 'Deleted successfully!');
+            return redirect()->back()->withInput()->withErrors(['error' => 'Request Failed: ' . $e->getMessage()]);
         }
     }
 }
