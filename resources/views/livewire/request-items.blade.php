@@ -39,16 +39,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-2">
-                                <div class="form-label">Price</div>
-                                <div class="input-group">
-                                    <span class="input-group-text">TZS</span>
-                                    <input type="number" wire:model="inputs.{{ $key }}.price" name="request_items[{{ $key }}][price]" class="form-control" step="0.01" readonly required>
-                                </div>
-                                @error("inputs.$key.price")
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
+                           
                             <div class="col-md-2">
                                 <div class="form-label">Certificate Holder</div>
                                 <input type="text" wire:model="inputs.{{ $key }}.certificate_holder_name" name="request_items[{{ $key }}][certificate_holder_name]" class="form-control" required>
