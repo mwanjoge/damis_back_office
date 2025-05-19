@@ -1,13 +1,15 @@
 <div class="mt-5">
     <div class="card">
         <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h3 class="card-title">Requested Items</h3>
-                <button type="button" wire:click="addInput" id="add-request-item" class="btn btn-primary btn-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                    Add Item
-                </button>
-            </div>
+    <div class="d-flex align-items-center w-100">
+        <h3 class="card-title mb-0">Requested Items</h3>
+        <button type="button" wire:click="addInput" id="add-request-item" class="btn btn-primary ms-auto">
+            Add Item
+        </button>
+    </div>
+</div>
+
+
         </div>
         <div class="card-body">
             <div id="request-items-list" name="request_items">
