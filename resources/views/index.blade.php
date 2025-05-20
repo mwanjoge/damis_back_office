@@ -533,24 +533,29 @@
         embassyGroups[e.embassy_name][e.month] = e.earnings;
     });
     const months = [...new Set(embassyEarningsOverTime.map(e => e.month))];
+
     const datasets = Object.keys(embassyGroups).map((embassy, i) => ({
         label: embassy,
         data: months.map(m => embassyGroups[embassy][m] || 0),
         borderColor: `hsl(${i * 60}, 70%, 50%)`,
-        fill: false
+        fill: false,
+        tension: 0.5
     }));
+
     new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
         type: 'line',
         data: {
             labels: months,
-            datasets: datasets
+            datasets: datasets,
+            
         },
         options: {
             plugins: {
                 legend: { display: false },
                 title: { display: false }
             }
-        }
+        },
+        
     });
 </script>
 @endsection
