@@ -55,8 +55,9 @@
                             <td>
                                 <span class="badge
                                     @if($request->status === 'Completed') bg-success-subtle text-success
-                                    @elseif($request->status === 'Pending') bg-warning-subtle text-warning
-                                    @elseif($request->status === 'Cancelled') bg-danger-subtle text-danger
+                                    @elseif($request->status === 'Pending') bg-warning-subtle text-success
+                                    @elseif($request->status === 'Cancelled') bg-danger-subtle text-dark
+                                    @elseif($request->status === 'In Progress') bg-info text-dark
                                     @else bg-info
                                     @endif">
                                     {{ $request->status }}
