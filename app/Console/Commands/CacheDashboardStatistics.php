@@ -12,6 +12,7 @@ use App\Models\Embassy;
 use App\Models\GeneralLineItem;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CacheDashboardStatistics extends Command
 {
@@ -168,8 +169,6 @@ class CacheDashboardStatistics extends Command
             'providerActivity' => $providerActivity,
         ], now()->addMinutes(12720));
 
-        \Log::info('CacheDashboardStatistics ran and cached data.');
-
-        return 0;
+        Log::info('CacheDashboardStatistics ran and cached data.');
     }
 }

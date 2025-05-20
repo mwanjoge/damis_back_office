@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('currency')->nullable();
             $table->string('currency_code')->default('TZS');
             $table->string('comment')->nullable();
-            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_approved')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

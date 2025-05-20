@@ -1,4 +1,5 @@
  <!-- Document Preview Modal -->
+ @include('requests.request_rejection_modal')
  <div class="modal fade" id="documentPreviewModal" tabindex="-1" aria-labelledby="documentPreviewLabel" aria-hidden="true">
      <div class="modal-dialog modal-xl modal-dialog-scrollable">
          <div class="modal-content">
@@ -31,11 +32,15 @@
              <div class="modal-footer border-0">
                  <form method="POST" id="reject-form" class="me-2">
                      @csrf
-                     <button type="button" class="btn btn-outline-danger rounded-pill px-4">Reject</button>
+                     <button type="button" class="btn btn-outline-danger rounded-pill px-4 reject-button"
+                         >
+                         Reject
+                     </button>
                  </form>
+
                  <form method="POST" id="approve-form">
                      @csrf
-                     <button type="button" class="btn btn-success rounded-pill px-4">Approve</button>
+                     <button type="submit" class="btn btn-success rounded-pill px-4">Approve</button>
                  </form>
              </div>
          </div>
@@ -65,8 +70,8 @@
             `;
 
          // Update form actions
-         document.getElementById('approve-form').action = `/requests/approve/${itemId}`;
-         document.getElementById('reject-form').action = `/requests/reject/${itemId}`;
+         document.getElementById('approve-form').action = `/request/approve/${itemId}`;
+         //  document.getElementById('reject-form').action = `/requests/reject/${itemId}`;
 
          const iframe = document.getElementById('preview-frame');
          const spinner = document.getElementById('preview-loading');
@@ -92,4 +97,36 @@
              };
          });
      }
+
+     document.addEventListener("DOMContentLoaded", function() {
+         const rejectForm = document.getElementById("reject-form");
+         const rejectComment = document.getElementById("reject-comment");
+         const rejectItemIdField = document.getElementById("reject-item-id");
+
+         function openRejectModal(itemId) {
+             const reviewModalEl = document.getElementById("documentPreviewModal");
+             const reviewModal = bootstrap.Modal.getInstance(reviewModalEl);
+             reviewModal.hide();
+
+             rejectItemIdField.value = itemId;
+             const modalEl = new bootstrap.Modal(document.getElementById("rejectConfirmationModal"));
+             modalEl.show();
+         }
+
+         // Attach event listener to reject buttons dynamically
+         document.querySelectorAll(".reject-button").forEach(button => {
+             button.addEventListener("click", function() {
+                 const itemId = selectedItemId;
+                 openRejectModal(itemId);
+             });
+         });
+
+         // Validate rejection comment before submission
+         rejectForm.addEventListener("submit", function(event) {
+             if (!rejectComment.value.trim()) {
+                 event.preventDefault();
+                 alert("Please provide a reason for rejection.");
+             }
+         });
+     });
  </script>
