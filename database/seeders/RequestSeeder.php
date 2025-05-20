@@ -16,7 +16,6 @@ class RequestSeeder extends Seeder
 {
     public function run()
     {
-        $services = Service::all();
         $members = Member::all();
 
         foreach ($members as $member) {
@@ -34,8 +33,10 @@ class RequestSeeder extends Seeder
                     'request_id' => $request->id,
                     'member_id' => $request->member_id,
                 ]);
+
                 $take = random_int(1,  3);
-                foreach ($services->take($take) as $service) {
+                //$services->random();
+                foreach (Service::query()->inRandomOrder()->take($take)->get() as $service) {
                     $bill = $service->billableItems()->where('embassy_id', $request->embassy_id)->first();
                     $request->requestItems()->create([
                         'account_id' => $request->account_id,
