@@ -171,9 +171,8 @@ class RequestController extends Controller
 
     public function rejectRequest(Request $request)
     {
-        $id = $request->input('request_item_id');
-        $comment = $request->input('comment');
-
+        $id = $request->request_item_id;
+        $comment = $request->comment;
 
         $requestItem = RequestItem::findOrFail($id);
         $requestId = $requestItem->request_id;

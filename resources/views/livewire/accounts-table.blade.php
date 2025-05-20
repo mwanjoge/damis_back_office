@@ -5,6 +5,7 @@
                 <tr>
                     <th>#</th>
                     <th>Account Name</th>
+                    <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -12,6 +13,10 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $embassy->account->name ?? 'N/A' }}</td>
+                        <td class="text-end">
+                            <a href="{{ route('embassies.show', $embassy->id) }}" class="btn btn-info btn-sm">
+                                <i class="bx bx-detail"></i>
+                            </a>
                     </tr>
                 @endforeach
             </tbody>

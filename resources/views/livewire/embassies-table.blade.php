@@ -49,10 +49,6 @@
                                         <i class="bx bx-trash-alt"></i>
                                     </button>
                                 </form>
-                                <a href="{{ route('embassies.show', $embassy->id) }}" class="btn btn-info btn-sm">
-                                    <i class="bx bx-detail"></i>
-                                </a>
-
                             </td>
                         </tr>
                     @empty

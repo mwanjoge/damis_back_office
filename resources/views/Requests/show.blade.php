@@ -214,11 +214,11 @@
 
                                     <td>
                                         @if ($status == 0)
-                                            <span class="badge bg-warning-subtle text-warning fs-11">NOT APPROVED</span>
+                                            <span class="badge bg-warning-subtle text-warning fs-11">REJECTED</span>
                                         @elseif ($status == 1)
                                             <span class="badge bg-success-subtle text-success fs-11">APPROVED</span>
                                         @else
-                                            <span class="badge bg-secondary-subtle text-secondary fs-11">Unknown</span>
+                                            <span class="badge bg-secondary-subtle text-secondary fs-11">PENDING</span>
                                         @endif
                                     </td>
                                     <td>
