@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->morphs('billable');
             $table->decimal('price', 22, 2)->default(0);
-            $table->string('currency', 10)->default('TZS');
+            $table->string('currency', 30)->nullable();
+            $table->string('currency_code', 30)->default('TZS');
             $table->boolean('synced')->default(false);
             $table->timestamps();
             $table->softDeletes();

@@ -58,7 +58,7 @@ class ServiceProviderSeeder extends Seeder
                 ]);
             }
             // Fire the event for each service provider created
-            event(new EmbassyCreated($provider));
+            //event(new EmbassyCreated($provider));
         }
     }
 }

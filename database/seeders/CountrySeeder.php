@@ -23,10 +23,10 @@ class CountrySeeder extends Seeder
                 'phone_code' => $record['telephone'],
                 'embassy_id' => empty($record['embassy_id']) ? null : (int) $record['embassy_id'],
                 'code' => $record['code'],
-                'currency' => $record['currency'],
+                'currency' => $record['currency_name'],
+                'currency_code' => $record['currency_code'],
             ]);
         }
-        \App\Models\Member::factory()->count(95)->create();
-        //\App\Models\Request::factory()->count(100)->create();
+        
     }
 }

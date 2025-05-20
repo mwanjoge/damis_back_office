@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('attachment')->nullable();
             $table->decimal('price', 22, 2)->default(0);
             $table->string('currency')->nullable();
+            $table->string('currency_code')->default('TZS');
             $table->string('comment')->nullable();
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

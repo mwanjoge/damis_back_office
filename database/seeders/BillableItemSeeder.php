@@ -13,8 +13,8 @@ class BillableItemSeeder extends Seeder
      */
     public function run(): void
     {
-        $services = \App\Models\Service::pluck('id');
-        $embassies = \App\Models\Embassy::pluck('id');
+        $services = \App\Models\Service::query()->get();
+        $embassies = \App\Models\Embassy::query()->get();
         $fakery = Factory::create();
 
         foreach ($embassies as $embassy) {
@@ -23,10 +23,11 @@ class BillableItemSeeder extends Seeder
                 if(!is_null($embassy->country_id)){
                     $country = \App\Models\Country::where('id', $embassy->country_id)->first();
                     $service->billableItems()->create([
-                        'embassy_id' => $embassy,
+                        'embassy_id' => $embassy->id,
                         'country_id' => $embassy->country_id,
                         'account_id' => $embassy->account->id,
                         'currency' => $country->currency,
+                        'currency_code' => $country->currency_code,
                         'price' => $price,
                     ]);
                 }
