@@ -68,26 +68,25 @@
                             <div class="flex-grow-1">
                                 <h4 class="fs-16 mb-1">Hello {{ Auth::user()->name }}</h4>
                             </div>
-                            <div class="mt-3 mt-lg-0">
-                                <form action="javascript:void(0);">
-                                    <div class="row g-3 mb-0 align-items-center">
-                                        <div class="col-sm-auto">
-                                            <div class="input-group">
-                                                <input type="text"
-                                                    class="form-control border-0 fs-13 dash-filter-picker shadow"
-                                                    data-provider="flatpickr" data-range-date="true"
-                                                    data-date-format="d M, Y"
-                                                    data-deafult-date="01 Jan 2022 to 31 Jan 2022">
-                                                <div class="input-group-text bg-secondary border-secondary text-white">
-                                                    <i class="ri-calendar-2-line"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--end col-->
-                                    </div>
-                                    <!--end row-->
-                                </form>
-                            </div>
+{{--                            <div class="mt-3 mt-lg-0">--}}
+{{--                                <form action="javascript:void(0);">--}}
+{{--                                    <div class="row g-3 mb-0 align-items-center">--}}
+{{--                                        <div class="col-sm-auto">--}}
+{{--                                            <div class="input-group">--}}
+{{--                                                <input type="text"--}}
+{{--                                                    class="form-control border-0 fs-13 dash-filter-picker shadow"--}}
+{{--                                                    data-provider="flatpickr" data-range-date="true"--}}
+{{--                                                    data-date-format="d M, Y"--}}
+{{--                                                    data-deafult-date="01 Jan 2022 to 31 Jan 2022">--}}
+{{--                                                <div class="input-group-text bg-secondary border-secondary text-white">--}}
+{{--                                                    <i class="ri-calendar-2-line"></i>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <!--end col-->--}}
+{{--                                    </div>--}}
+{{--                                    <!--end row-->--}}
+{{--                                </form>--}}
                         </div><!-- end card header -->
                     </div>
                     <!--end col-->
@@ -264,7 +263,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="chart">
-                                    <canvas id="requestsPerEmbassyChart" height="200"></canvas>
+                                    <canvas id="earningsPerEmbassyChart" height="200"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -366,6 +365,15 @@
                 {{-- Qualitative Request Data --}}
                 {{-- Removed Top 5 Highest Earning Requests table as requested --}}
 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive table-card">
+                            <table id="scroll-horizontal" class="table list nowrap mb-0 datatable" style="width: 100%;">
+                                {{-- Existing table content --}}
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -374,238 +382,100 @@
 @endsection
 
 @section('script')
-<!-- Chart.js is already included in the main layout -->
-
 <script>
-    // Initialize charts for dashboard
-
-
-    new Chart(document.getElementById('earningsByCurrencyChart'), {
-        type: 'doughnut',
-        data: {
-            labels: {!! json_encode(array_keys($earningsByCurrency ?? [])) !!},
-            datasets: [{
-                data: {!! json_encode(array_values($earningsByCurrency ?? [])) !!},
-                backgroundColor: ['#206bc4', '#4299e1', '#5eba00', '#fab005', '#ff922b', '#f66d9b'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            cutout: '70%',
-            plugins: {
-                tooltip: {
-                    enabled: true,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
-                    cornerRadius: 3
-                },
-                legend: { display: false }
-            }
-        }
-    });
-
-    new Chart(document.getElementById('requestsPerEmbassyChart'), {
+    // Earnings per Embassy
+    const earningsPerEmbassy = @json($requestsPerEmbassy ?? []);
+    new Chart(document.getElementById('earningsPerEmbassyChart'), {
         type: 'bar',
         data: {
-             datasets: [{
-                data: {!! json_encode($requestsPerEmbassy->pluck('total_earnings')->toArray()) !!},
-                backgroundColor: '#206bc4',
-                borderRadius: 4,
-                barPercentage: 0.5,
-                categoryPercentage: 0.8
+            labels: earningsPerEmbassy.map(e => e.embassy?.name ?? 'N/A'),
+            datasets: [{
+                label: 'Earnings',
+                data: earningsPerEmbassy.map(e => e.total_earnings),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
             }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            plugins: {
-                tooltip: {
-                    enabled: true,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
-                    cornerRadius: 3
-                },
-                legend: { display: false }
-            },
-            scales: {
-                x: {
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { display: false }
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
-                }
-            }
         }
     });
 
-
+    // Monthly Requests
+    const monthlyRequests = @json($monthlyRequests ?? []);
     new Chart(document.getElementById('monthlyRequestsChart'), {
         type: 'line',
         data: {
-            labels: {!! json_encode(array_keys($monthlyRequests->toArray() ?? [])) !!},
+            labels: monthlyRequests.map(m => m.month),
             datasets: [{
-                data: {!! json_encode(array_values($monthlyRequests->toArray() ?? [])) !!},
-                borderColor: '#5eba00',
-                backgroundColor: 'rgba(94, 186, 0, 0.1)',
-                fill: true,
-                tension: 0.4,
-                borderWidth: 2,
-                pointRadius: 3,
-                pointBackgroundColor: '#5eba00',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2
+                label: 'Requests',
+                data: monthlyRequests.map(m => m.request_count),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                fill: false
             }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            plugins: {
-                tooltip: {
-                    enabled: true,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
-                    cornerRadius: 3
-                },
-                legend: { display: false }
-            },
-            scales: {
-                x: {
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { display: false }
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
-                }
-            }
         }
     });
 
+    // Top Services by Earnings
+    const topServices = @json($topServices ?? []);
     new Chart(document.getElementById('topServicesChart'), {
         type: 'bar',
         data: {
+            labels: topServices.map(s => s.service_name),
             datasets: [{
-                data: {!! json_encode(array_values($topServices->toArray() ?? [])) !!},
-                backgroundColor: '#fab005',
-                borderRadius: 4,
-                barPercentage: 0.6,
-                categoryPercentage: 0.8
+                label: 'Earnings',
+                data: topServices.map(s => s.total_earnings),
+                backgroundColor: 'rgba(255, 99, 132, 0.6)'
             }]
         },
         options: {
-            maintainAspectRatio: false,
-            indexAxis: 'y',
             plugins: {
+                legend: { display: false },
                 tooltip: {
-                    enabled: true,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
-                    cornerRadius: 3
-                },
-                legend: { display: false }
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
-                },
-                y: {
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { display: false }
-                }
-            }
-        }
-    });
-    // Top Services by Request Count chart removed as requested
-
-    // Provider Activity - Stacked Chart (see below)
-    new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
-        type: 'line',
-        data: {
-            labels: {!! json_encode(array_keys($embassyEarningsOverTime->toArray() ?? [])) !!},
-            datasets: [{
-                data: {!! json_encode(array_values($embassyEarningsOverTime->toArray() ?? [])) !!},
-                borderColor: '#4299e1',
-                backgroundColor: 'rgba(66, 153, 225, 0.1)',
-                fill: true,
-                tension: 0.4,
-                borderWidth: 2,
-                pointRadius: 3,
-                pointBackgroundColor: '#4299e1',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            plugins: {
-                tooltip: {
-                    enabled: true,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
-                    cornerRadius: 3,
                     callbacks: {
+                        title: function(context) {
+                            // Show service name in tooltip title
+                            return context[0].label;
+                        },
                         label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('en-US', {
-                                    style: 'currency',
-                                    currency: 'USD'
-                                }).format(context.parsed.y);
-                            }
-                            return label;
+                            // Show earnings in tooltip label
+                            return `Earnings: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(context.parsed.y)}`;
                         }
                     }
-                },
-                legend: { display: false }
+                }
             },
             scales: {
                 x: {
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { display: false }
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        display: true,
-                        color: '#9aa0ac',
-                        font: { size: 10 },
-                        callback: function(value) {
-                            return new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                maximumSignificantDigits: 3
-                            }).format(value);
-                        }
-                    },
-                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
+                    ticks: { display: false } // Hide service names below the graph
                 }
             }
         }
     });
-    // Get all unique currencies from provider stats
-    const providerStats = {!! json_encode($providerStats ?? []) !!};
-    const allCurrencies = [];
 
-    // Collect all unique currencies
-    providerStats.forEach(provider => {
-        if (provider.earnings) {
-            Object.keys(provider.earnings).forEach(currency => {
-                if (!allCurrencies.includes(currency)) {
-                    allCurrencies.push(currency);
-                }
-            });
+    // Earnings by Currency
+    const earningsByCurrency = @json($earningsByCurrency ?? []);
+    new Chart(document.getElementById('earningsByCurrencyChart'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(earningsByCurrency),
+            datasets: [{
+                label: 'Earnings',
+                data: Object.values(earningsByCurrency),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ]
+            }]
         }
     });
 
-    // Generate a color for each currency
+    // Provider Activity (Stacked Bar by Currency)
+    const providerStats = @json($providerStats ?? []);
+    const providerNames = providerStats.map(p => p.provider);
+    const allCurrencies = Array.from(new Set(providerStats.flatMap(p => Object.keys(p.earnings))));
     const currencyColors = {
         'USD': '#206bc4',
         'EUR': '#4299e1',
@@ -614,95 +484,73 @@
         'CAD': '#ff922b',
         'AUD': '#f66d9b'
     };
+    const providerDatasets = allCurrencies.map((currency, idx) => ({
+        label: currency,
+        data: providerStats.map(p => p.earnings[currency] || 0),
+        backgroundColor: currencyColors[currency] || `hsl(${idx * 60}, 70%, 60%)`,
+        stack: 'Stack 0',
+    }));
+    const providerChartEl = document.getElementById('providerEarningsChart');
+    if (providerChartEl) {
+        if (window.Chart && Chart.getChart && Chart.getChart(providerChartEl)) Chart.getChart(providerChartEl).destroy();
+        new Chart(providerChartEl, {
+            type: 'bar',
+            data: {
+                labels: providerNames,
+                datasets: providerDatasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const currency = context.dataset.label;
+                                const value = context.parsed.y;
+                                return `${currency}: ${new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: currency
+                                }).format(value)}`;
+                            }
+                        }
+                    },
+                    legend: { display: false },
+                    title: { display: false, text: 'Provider Earnings by Currency' }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Earnings' } }
+                }
+            }
+        });
+    }
 
-    // Create datasets for each currency
-    const datasets = allCurrencies.map(currency => {
-        return {
-            label: currency,
-            data: providerStats.map(provider => {
-                return provider.earnings && provider.earnings[currency] ? provider.earnings[currency] : 0;
-            }),
-            backgroundColor: currencyColors[currency] || '#' + Math.floor(Math.random()*16777215).toString(16),
-            borderRadius: 4,
-            barPercentage: 0.5,
-            categoryPercentage: 0.8
-        };
+    // Embassy Earnings Over Time
+    const embassyEarningsOverTime = @json($embassyEarningsOverTime ?? []);
+    const embassyGroups = {};
+    embassyEarningsOverTime.forEach(e => {
+        if (!embassyGroups[e.embassy_name]) embassyGroups[e.embassy_name] = {};
+        embassyGroups[e.embassy_name][e.month] = e.earnings;
     });
-
-    new Chart(document.getElementById('providerEarningsChart'), {
-        type: 'bar',
+    const months = [...new Set(embassyEarningsOverTime.map(e => e.month))];
+    const datasets = Object.keys(embassyGroups).map((embassy, i) => ({
+        label: embassy,
+        data: months.map(m => embassyGroups[embassy][m] || 0),
+        borderColor: `hsl(${i * 60}, 70%, 50%)`,
+        fill: false
+    }));
+    new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
+        type: 'line',
         data: {
-            labels: providerStats.map(item => item.provider || ''),
+            labels: months,
             datasets: datasets
         },
         options: {
-            maintainAspectRatio: false,
             plugins: {
-                tooltip: {
-                    enabled: true,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    padding: 10,
-                    cornerRadius: 3,
-                    callbacks: {
-                        label: function(context) {
-                            const currency = context.dataset.label || '';
-                            const value = context.parsed.y;
-
-                            return `${currency}: ${new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: currency
-                            }).format(value)}`;
-                        },
-                        footer: function(tooltipItems) {
-                            // Calculate total for this provider across all currencies
-                            const providerIndex = tooltipItems[0].dataIndex;
-                            const provider = providerStats[providerIndex];
-                            let total = 0;
-
-                            if (provider && provider.earnings) {
-                                Object.values(provider.earnings).forEach(value => {
-                                    total += parseFloat(value);
-                                });
-                            }
-
-                            return `Total: ${new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: 'USD'
-                            }).format(total)}`;
-                        }
-                    }
-                },
-                legend: { display: false }
-            },
-            scales: {
-                x: {
-                    ticks: { display: true, color: '#9aa0ac', font: { size: 10 } },
-                    grid: { display: false },
-                    stacked: true
-                },
-                y: {
-                    beginAtZero: true,
-                    stacked: true,
-                    ticks: {
-                        display: true,
-                        color: '#9aa0ac',
-                        font: { size: 10 },
-                        callback: function(value) {
-                            return new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                maximumSignificantDigits: 3
-                            }).format(value);
-                        }
-                    },
-                    grid: { color: 'rgba(154, 160, 172, 0.1)', drawBorder: false }
-                }
+                legend: { display: false },
+                title: { display: false }
             }
         }
     });
-
-// Chart initialization for myChart removed as the element doesn't exist
-
 </script>
-
 @endsection
