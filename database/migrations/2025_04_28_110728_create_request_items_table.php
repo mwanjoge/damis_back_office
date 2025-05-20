@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('price', 22, 2)->default(0);
             $table->string('currency')->nullable();
             $table->string('comment')->nullable();
-            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_approved')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

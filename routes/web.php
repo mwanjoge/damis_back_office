@@ -78,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/billable-price', [RequestController::class, 'getPrice']);
 
     Route::post('/request/approve/{id}', [RequestController::class, 'approveRequest'])->name('requests.approve');
-    Route::post('/request/reject/{id}', [RequestController::class, 'rejectRequest'])->name('requests.reject');
+    Route::post('/request/reject', [RequestController::class, 'rejectRequest'])->name('requests.reject');
 
 
     // Route::get('/tables', function () {
