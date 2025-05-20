@@ -23,11 +23,11 @@
             <div class="col">
                 <div class="p-2">
                     <h3 class="text-black mb-1">{{ $embassy->name }}</h3>
-                    <p class="text-black text-opacity-75">{{ ucfirst($embassy->type) }}</p>
+                    <p class="text-black text-opacity-75">{{ $embassy->id == 1 ? 'Ministry' : ucfirst($embassy->type) }}</p>
                     <div class="hstack text-black-50 gap-2">
                         {{-- <div><i class="ri-map-pin-user-line me-1 text-black"></i>{{ $embassy->country->name ?? 'N/A' }}
                         </div> --}}
-                        <div><i class="ri-phone-line text-black me-1"></i>{{ $embassy->phone ?? 'N/A' }}</div>
+                        {{-- <div><i class="ri-phone-line text-black me-1"></i>{{ $embassy->phone ?? 'N/A' }}</div> --}}
                     </div>
                 </div>
             </div>

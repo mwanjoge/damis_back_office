@@ -1,4 +1,4 @@
-@extends('layouts.master')
+{{-- @extends('layouts.master')
 @section('title')
     @lang('translation.datatables')
 @endsection
@@ -68,4 +68,4 @@
 
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
 
-<script src="{{ URL::asset('build/js/app.js') }}"></script>
+<script src="{{ URL::asset('build/js/app.js') }}"></script> --}}
