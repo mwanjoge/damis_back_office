@@ -47,14 +47,15 @@ class DatabaseSeeder extends Seeder
         // Seed related tables first
         $this->call([
             //AccountSeeder::class,
+            CountrySeeder::class,
             EmbassySeeder::class,
             // ServiceSeeder::class,
             ServiceProviderSeeder::class,
             //MemberSeeder::class,
-            CountrySeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
-            RequestSeeder::class, // Requests last!
+            RequestSeeder::class, 
+            BillableItemSeeder::class,
         ]);
     }
 }
