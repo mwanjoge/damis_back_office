@@ -399,14 +399,7 @@
                     padding: 10,
                     cornerRadius: 3
                 },
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 15
-                    }
-                }
+                legend: { display: false }
             }
         }
     });
@@ -493,7 +486,6 @@
     new Chart(document.getElementById('topServicesChart'), {
         type: 'bar',
         data: {
-            labels: <?php echo json_encode(array_keys($topServices->toArray() ?? [])); ?>,
             datasets: [{
                 data: <?php echo json_encode(array_values($topServices->toArray() ?? [])); ?>,
                 backgroundColor: '#fab005',
@@ -679,14 +671,7 @@
                         }
                     }
                 },
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 15
-                    }
-                }
+                legend: { display: false }
             },
             scales: {
                 x: {
