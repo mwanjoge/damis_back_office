@@ -68,26 +68,25 @@
                             <div class="flex-grow-1">
                                 <h4 class="fs-16 mb-1">Hello {{ Auth::user()->name }}</h4>
                             </div>
-                            <div class="mt-3 mt-lg-0">
-                                <form action="javascript:void(0);">
-                                    <div class="row g-3 mb-0 align-items-center">
-                                        <div class="col-sm-auto">
-                                            <div class="input-group">
-                                                <input type="text"
-                                                    class="form-control border-0 fs-13 dash-filter-picker shadow"
-                                                    data-provider="flatpickr" data-range-date="true"
-                                                    data-date-format="d M, Y"
-                                                    data-deafult-date="01 Jan 2022 to 31 Jan 2022">
-                                                <div class="input-group-text bg-secondary border-secondary text-white">
-                                                    <i class="ri-calendar-2-line"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--end col-->
-                                    </div>
-                                    <!--end row-->
-                                </form>
-                            </div>
+{{--                            <div class="mt-3 mt-lg-0">--}}
+{{--                                <form action="javascript:void(0);">--}}
+{{--                                    <div class="row g-3 mb-0 align-items-center">--}}
+{{--                                        <div class="col-sm-auto">--}}
+{{--                                            <div class="input-group">--}}
+{{--                                                <input type="text"--}}
+{{--                                                    class="form-control border-0 fs-13 dash-filter-picker shadow"--}}
+{{--                                                    data-provider="flatpickr" data-range-date="true"--}}
+{{--                                                    data-date-format="d M, Y"--}}
+{{--                                                    data-deafult-date="01 Jan 2022 to 31 Jan 2022">--}}
+{{--                                                <div class="input-group-text bg-secondary border-secondary text-white">--}}
+{{--                                                    <i class="ri-calendar-2-line"></i>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <!--end col-->--}}
+{{--                                    </div>--}}
+{{--                                    <!--end row-->--}}
+{{--                                </form>--}}
                         </div><!-- end card header -->
                     </div>
                     <!--end col-->
@@ -424,6 +423,31 @@
                 data: topServices.map(s => s.total_earnings),
                 backgroundColor: 'rgba(255, 99, 132, 0.6)'
             }]
+        },
+        options: {
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            // Show service name in tooltip title
+                            return context[0].label;
+                        },
+                        label: function(context) {
+                            // Show earnings in tooltip label
+                            return `Earnings: ${new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(context.parsed.y)}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { display: false } // Hide service names below the graph
+                }
+            }
         }
     });
 
@@ -448,70 +472,58 @@
         }
     });
 
-    // Provider Activity
-    const providerActivity = @json($providerActivity ?? []);
-    new Chart(document.getElementById('providerEarningsChart'), {
-        type: 'bar',
-        data: {
-            labels: providerActivity.map(p => p.provider_name ?? p.provider ?? 'N/A'),
-            datasets: [
-                {
-                    label: 'Service Count',
-                    data: providerActivity.map(p => p.service_count),
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)'
-                },
-                {
-                    label: 'Total Earnings',
-                    data: providerActivity.map(p => p.total_earnings),
-                    backgroundColor: 'rgba(255, 99, 132, 0.7)'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) label += ': ';
-                            label += context.parsed.y;
-                            if (context.dataset.label === 'Total Earnings') {
-                                label += ' (currency)';
+    // Provider Activity (Stacked Bar by Currency)
+    const providerStats = @json($providerStats ?? []);
+    const providerNames = providerStats.map(p => p.provider);
+    const allCurrencies = Array.from(new Set(providerStats.flatMap(p => Object.keys(p.earnings))));
+    const currencyColors = {
+        'USD': '#206bc4',
+        'EUR': '#4299e1',
+        'GBP': '#5eba00',
+        'JPY': '#fab005',
+        'CAD': '#ff922b',
+        'AUD': '#f66d9b'
+    };
+    const providerDatasets = allCurrencies.map((currency, idx) => ({
+        label: currency,
+        data: providerStats.map(p => p.earnings[currency] || 0),
+        backgroundColor: currencyColors[currency] || `hsl(${idx * 60}, 70%, 60%)`,
+        stack: 'Stack 0',
+    }));
+    const providerChartEl = document.getElementById('providerEarningsChart');
+    if (providerChartEl) {
+        if (window.Chart && Chart.getChart && Chart.getChart(providerChartEl)) Chart.getChart(providerChartEl).destroy();
+        new Chart(providerChartEl, {
+            type: 'bar',
+            data: {
+                labels: providerNames,
+                datasets: providerDatasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const currency = context.dataset.label;
+                                const value = context.parsed.y;
+                                return `${currency}: ${new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: currency
+                                }).format(value)}`;
                             }
-                            return label;
                         }
-                    }
+                    },
+                    legend: { display: false },
+                    title: { display: false, text: 'Provider Earnings by Currency' }
                 },
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Provider Activity (Service Count & Earnings)'
-                }
-            },
-            interaction: {
-                mode: 'index',
-                intersect: false
-            },
-            scales: {
-                x: {
-                    stacked: true
-                },
-                y: {
-                    stacked: true,
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Count / Earnings'
-                    }
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Earnings' } }
                 }
             }
-        }
-    });
+        });
+    }
 
     // Embassy Earnings Over Time
     const embassyEarningsOverTime = @json($embassyEarningsOverTime ?? []);
