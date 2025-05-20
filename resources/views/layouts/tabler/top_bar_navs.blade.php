@@ -1,5 +1,5 @@
-<header class="nav-sub-menu navbar-expand-md container-fluid">
-    <div class="navbar-collapse justify-content-center align-items-center rounded-3 border mx-2">
+<header class="nav-sub-menu navbar-expand-md container-fluid pt-3 ">
+    <div class="navbar-collapse justify-content-center align-items-center border rounded-3 container-fluid" style="width: 100%;">
         <div class="text-center text-md-center text-black">
             <div class="container-xl">
                 <div class="row flex-column flex-md-row flex-fill align-items-center">
