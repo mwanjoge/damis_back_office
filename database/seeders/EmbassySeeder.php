@@ -45,7 +45,14 @@ class EmbassySeeder extends Seeder
                 'type' => 'Embassy',
                 'country_id' => $country?->id,
             ]);
-            $embassy->account()->save(\App\Models\Account::factory()->create());
+
+            $embassy->account()->save(\App\Models\Account::factory()->create([
+                'name' => $embassy->name
+            ]));
+
+            $country?->update([
+                'embassy_id' => $embassy->id,
+            ]);
         }
     }
 
