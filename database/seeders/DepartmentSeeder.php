@@ -12,6 +12,14 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $departments = [
+            'ICT'
+        ];
+
+        foreach ($departments as $department) {
+            \App\Models\Department::create([
+                'name' => $department,
+            ]);
+        }
     }
 }

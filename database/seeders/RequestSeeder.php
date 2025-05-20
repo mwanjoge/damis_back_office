@@ -10,19 +10,14 @@ use App\Models\Service;
 use App\Models\ServiceProvider;
 use App\Models\Member;
 use App\Models\Country;
-use App\Models\Invoice;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 class RequestSeeder extends Seeder
 {
     public function run()
     {
-        $accounts = Account::all();
-        $embassies = Embassy::all();
         $services = Service::all();
-        $serviceProviders = ServiceProvider::pluck('id');
         $members = Member::all();
-        $countries = Country::pluck('id');
 
         foreach ($members as $member) {
             $embassy = Embassy::where('id', $member->account->embassy_id)->first();
@@ -75,5 +70,7 @@ class RequestSeeder extends Seeder
             }
             
         }
+
+        Artisan::call('app:cache-dashboard-statistics');
     }
 }
