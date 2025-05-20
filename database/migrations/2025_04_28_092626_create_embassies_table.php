@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('type', ['Embassy', 'Permanent Mission', 'High Commission'])->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('synced')->default(false);
+            $table->string('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

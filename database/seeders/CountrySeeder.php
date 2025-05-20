@@ -12,11 +12,6 @@ class CountrySeeder extends Seeder
 {
     public function run()
     {
-        // $embassyIds = Embassy::pluck('id');
-        // foreach ($embassyIds as $embassyId) {
-        //     Country::factory()->count(2)->create(['embassy_id' => $embassyId]);
-        // }
-
         // Load CSV file
         $csv = Reader::createFromPath(base_path('database/seeders/data/countries.csv'), 'r');
         $csv->setHeaderOffset(0);
@@ -28,9 +23,10 @@ class CountrySeeder extends Seeder
                 'phone_code' => $record['telephone'],
                 'embassy_id' => empty($record['embassy_id']) ? null : (int) $record['embassy_id'],
                 'code' => $record['code'],
+                'currency' => $record['currency_name'],
+                'currency_code' => $record['currency_code'],
             ]);
         }
-        \App\Models\Member::factory()->count(95)->create();
-        \App\Models\Request::factory()->count(100)->create();
+        
     }
 }

@@ -10,37 +10,67 @@ use App\Models\Service;
 use App\Models\ServiceProvider;
 use App\Models\Member;
 use App\Models\Country;
-use App\Models\Invoice;
-
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 class RequestSeeder extends Seeder
 {
     public function run()
     {
-        $accounts = Account::pluck('id');
-        $embassies = Embassy::pluck('id');
-        $services = Service::pluck('id');
-        $serviceProviders = ServiceProvider::pluck('id');
-        $members = Member::pluck('id');
-        $countries = Country::pluck('id');
+        $services = Service::all();
+        $members = Member::all();
 
-        $amount = 20000;
-        foreach (range(1, 10) as $i) {
-            $request = Request::factory()->create([
-                'account_id' => $accounts->random(),
-                'embassy_id' => $embassies->random(),
-                'member_id' => $members->random(),
-                'country_id' => $countries->random(),
-                'total_cost' => $amount
-            ]);
+        foreach ($members as $member) {
+            $embassy = Embassy::where('id', $member->account->embassy_id)->first();
+            if($embassy->country_id) {
+                $request = Request::factory()->create([
+                    'account_id' => $member->account_id,
+                    'embassy_id' => $member->account->embassy_id,
+                    'member_id' => $member->id,
+                    'country_id' => $embassy->country_id,
+                ]);
+                
+                $invoice = $request->invoice()->create([
+                    'account_id' => $request->account_id,
+                    'request_id' => $request->id,
+                    'member_id' => $request->member_id,
+                ]);
+                $take = random_int(1,  3);
+                foreach ($services->take($take) as $service) {
+                    $bill = $service->billableItems()->where('embassy_id', $request->embassy_id)->first();
+                    $request->requestItems()->create([
+                        'account_id' => $request->account_id,
+                        'service_id' => $service->id,
+                        'certificate_holder_name' => $member->name,
+                        'certificate_index_number' => Str::random(8),
+                        'price' => $bill->price,
+                        'currency' => $bill->currency,
+                        'currency_code' => $bill->currency_code,
+                    ]);
+
+                    $invoice->generalLineItems()->create([
+                        'account_id' => $request->account_id,
+                        'service_id' => $service->id,
+                        'service_provider_id' => $service->service_provider_id,
+                        'request_item_id' => $request->requestItems()->where('service_id', $service->id)->where('request_id', $request->id)->first()->id,
+                        'price' => $bill->price,
+                        'currency' => $bill->currency,
+                    ]);
+                }
+
+                $request->update([
+                    'total_cost' => $request->requestItems->sum('price'),
+                    'tracking_number' => strtoupper(Str::random(10)),
+                ]);
+
+                $request->invoice()->update([
+                    'amount' => $request->requestItems->sum('price'),
+                    'payable_amount' => $request->requestItems->sum('price'),
+                    'balance' => $request->requestItems->sum('price')
+                ]);
+            }
             
-            $request->invoice()->create([
-                'account_id' => $request->account_id,
-                'request_id' => $request->id,
-                'member_id' => $request->member_id,
-                'amount'  => $amount,
-                'payable_amount' => $amount,
-                'balance' => $amount
-            ]);
         }
+
+        Artisan::call('app:cache-dashboard-statistics');
     }
 }

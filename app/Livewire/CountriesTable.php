@@ -39,6 +39,8 @@ class CountriesTable extends Component
             $this->name = $country->name;
             $this->code = $country->code;
             $this->phone_code = $country->phone_code;
+            $this->currency = $country->currency;
+            $this->currency_code = $country->currency_code;
             $this->embassy_id = $country->embassy_id;
         } else {
             $this->reset(['editingId', 'name', 'code', 'phone_code', 'embassy_id']);

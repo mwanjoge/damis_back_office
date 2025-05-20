@@ -10,11 +10,6 @@ class MemberSeeder extends Seeder
 {
     public function run()
     {
-        $accountIds = Account::pluck('id');
-        foreach ($accountIds as $accountId) {
-            Member::factory()->count(2)->create(['account_id' => $accountId]);
-        }
-
-        Member::factory()->count(6)->create();
+        \App\Models\Member::factory()->count(95)->create();
     }
 }

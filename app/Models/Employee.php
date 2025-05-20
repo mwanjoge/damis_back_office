@@ -34,4 +34,9 @@ class Employee extends Model
     {
         return $this->belongsTo(Designation::class);
     }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }
