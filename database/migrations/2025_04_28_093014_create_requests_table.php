@@ -18,12 +18,14 @@ return new class extends Migration
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['Diaspora', 'Domestic']);
-            $table->enum('status', ['Pending', 'In Progress', 'Completed', 'Cancelled']);
+            $table->enum('status', ['Pending', 'In Progress', 'Completed', 'Cancelled', 'Rejected']);
             $table->uuid('tracking_number')->unique();
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_paid')->default(false);
             $table->decimal('total_cost', 22, 2)->default(0);
             $table->enum('sent_status', ['sent','failed']);
+            $table->text('approval_history')->nullable();  
+            $table->string('comment')->nullable();   
             $table->timestamps();
             $table->softDeletes();
         });

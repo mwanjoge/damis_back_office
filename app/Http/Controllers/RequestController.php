@@ -132,22 +132,94 @@ class RequestController extends Controller
         return view('requests.show', compact('request'));
     }
 
-    public function approveRequest($id, Request $request)
+    public function approveRequest($id)
     {
-        $request = RequestItem::findOrFail($id);
+        $approverId = auth()->id();
+        $requestItem = RequestItem::findOrFail($id);
+        $requestId = $requestItem->request_id;
+        $request = \App\Models\Request::findOrFail($requestId);
+
+        // Approve the request item
+        $requestItem->is_approved = true;
+        $requestItem->save();
+
+        // Check if all request items under this request are approved
+        $allApproved = RequestItem::where('request_id', $requestId)
+            ->where('is_approved', false)
+            ->doesntExist();
+
+        // Update the request status
+        $request->status = $allApproved ? 'Completed' : 'In Progress';
         $request->is_approved = true;
         $request->save();
 
-        return redirect()->back()->with('success', 'Request approved successfully.');
-    }
-
-    public function rejectRequest($id, Request $request)
-    {
-        $request = RequestItem::findOrFail($id);
-        $request->is_approved = false;
+        // Update approval history
+        $approvalHistory = json_decode($request->approval_history, true) ?? [];
+        $approvalHistory[] = [
+            'approver_id' => $approverId,
+            'request_id' => $requestId,
+            'request_item_id' => $requestItem->id,
+            'action' => 'approved',
+            'timestamp' => now(),
+        ];
+        $request->approval_history = json_encode($approvalHistory);
         $request->save();
 
-        return redirect()->back()->with('error', 'Request rejected.');
+        return redirect()->back()->with('success', 'Request item approved successfully.');
+    }
+
+
+    public function rejectRequest(Request $request)
+    {
+        $id = $request->input('request_item_id');
+        $comment = $request->input('comment');
+
+
+        $requestItem = RequestItem::findOrFail($id);
+        $requestId = $requestItem->request_id;
+        $request = \App\Models\Request::findOrFail($requestId);
+
+        // Reject the request item
+        $requestItem->is_approved = false;
+        $requestItem->save();
+
+        // Check if all request items are rejected or mixed
+        $allRejected = RequestItem::where('request_id', $requestId)
+            ->where('is_approved', true)
+            ->doesntExist();
+
+        // Update the request status
+        $request->status = $allRejected ? 'Rejected' : 'In Progress';
+        $request->comment = $comment;
+        $request->save();
+
+        // Update approval history
+        $approvalHistory = json_decode($request->approval_history, true) ?? [];
+        $approvalHistory[] = [
+            'request_id' => $requestId,
+            'request_item_id' => $requestItem->id,
+            'action' => 'rejected',
+            'timestamp' => now(),
+            'approver_id' => auth()->id(),
+        ];
+        $request->approval_history = json_encode($approvalHistory);
+        $request->save();
+
+        return redirect()->back()->with('success', 'Request rejected successfully.');
+    }
+
+    public function getRequestByTrackingNumber($trackingNumber)
+    {
+        // Find the request based on the tracking number
+        $request = \App\Models\Request::where('tracking_number', $trackingNumber)->firstOrFail();
+
+        // Load related request items
+        $requestItems = $request->requestItems()->get();
+
+        return response()->json([
+            'request' => $request,
+            'request_items' => $requestItems,
+        ]);
     }
 
     /**
