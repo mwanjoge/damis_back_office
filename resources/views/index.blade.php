@@ -232,7 +232,7 @@
                                     <table class="table table-vcenter card-table">
                                         <thead>
                                             <tr>
-                                                <th>Member</th>
+                                                <th>Applicant</th>
                                                 <th>Service</th>
                                                 <th>Date</th>
                                                 <th>Status</th>
@@ -244,7 +244,7 @@
                                                     <td>{{ $request->member->name ?? 'N/A' }}</td>
                                                     <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
                                                     <td>{{ $request->created_at->format('Y-m-d') }}</td>
-                                                    <td><span class="badge bg-primary">{{ $request->status }}</span></td>
+                                                    <td><span class="badge bg-primary-subtle text-primary">{{ $request->status }}</span></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

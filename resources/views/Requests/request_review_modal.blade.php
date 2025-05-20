@@ -33,7 +33,7 @@
                  <form method="POST" id="reject-form" class="me-2">
                      @csrf
                      <button type="button" class="btn btn-outline-danger rounded-pill px-4 reject-button"
-                         data-item-id="123">
+                         >
                          Reject
                      </button>
                  </form>
@@ -116,7 +116,7 @@
          // Attach event listener to reject buttons dynamically
          document.querySelectorAll(".reject-button").forEach(button => {
              button.addEventListener("click", function() {
-                 const itemId = this.dataset.itemId;
+                 const itemId = selectedItemId;
                  openRejectModal(itemId);
              });
          });
