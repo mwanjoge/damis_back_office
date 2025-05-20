@@ -7,6 +7,7 @@ use App\Models\GeneralLineItem;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Invoice;
 use App\Models\Request;
+use App\Models\Embassy;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Database\Eloquent\Model;
 use App\Mail\RequestNotificationMail;
@@ -25,7 +26,7 @@ class RequestService
             $totalCost += $item['price'] ?? $data['price'];
         }
         return Request::create([
-            'account_id' => $this->getAccountId(),
+            'account_id' => $country->embassy_id,
             'embassy_id' => $country->embassy_id,
             'member_id' => $data['member_id'],
             'country_id' => $data['country_id'],
@@ -136,6 +137,6 @@ class RequestService
     }
     public function getAccountId()
     {
-        return $this->accountId;
+        return Embassy::where('country_id', $this->accountId)->first()->id;
     }
 }
