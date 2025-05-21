@@ -2,19 +2,12 @@
 @section('title')
     @lang('Dashboard')
 @endsection
-@section('css')
-    <link href="{{ URL::asset('build/libs/jsvectormap/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
-@endsection
 @section('content')
-
     @php
     $breadcrumbs = [
         ['name' => 'Dashboard', 'url' => route('home')]
     ];
     @endphp
-
-    {{-- @include('layouts.breadcrumb') --}}
 
     @php
         $months = collect(range(1, 12))->map(function ($m) {

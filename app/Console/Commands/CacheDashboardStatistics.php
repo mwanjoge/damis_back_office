@@ -8,7 +8,6 @@ use App\Models\Request;
 use App\Models\Member;
 use App\Models\ServiceProvider;
 use App\Models\Service;
-use App\Models\Embassy;
 use App\Models\GeneralLineItem;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -33,20 +32,19 @@ class CacheDashboardStatistics extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      */
-    public function handle()
+    public function handle(): void
     {
-        $totalEarnings = Request::where('status', 'Completed')
+        $totalEarnings = Request::query()->where('status', 'Completed')
             ->where('type', 'Domestic')
             ->sum('total_cost');
 
-        $applicationsCount = Request::count();
-        $customersCount = Member::count();
-        $newApplicationsCount = Request::whereDate('created_at', '>=', Carbon::now()->subDay())->count();
+        $applicationsCount = Request::query()->count();
+        $customersCount = Member::query()->count();
+        $newApplicationsCount = Request::query()->whereDate('created_at', '>=', Carbon::now()->subDay())->count();
 
         // 1. Top Services by Earnings
-        $topServices = GeneralLineItem::selectRaw('services.name AS service_name, SUM(general_line_items.price) AS total_earnings, COUNT(request_items.id) AS request_count')
+        $topServices = GeneralLineItem::query()->selectRaw('services.name AS service_name, SUM(general_line_items.price) AS total_earnings, COUNT(request_items.id) AS request_count')
             ->join('services', 'general_line_items.service_id', '=', 'services.id')
             ->join('request_items', 'general_line_items.request_item_id', '=', 'request_items.id')
             ->groupBy('services.name')
@@ -55,7 +53,7 @@ class CacheDashboardStatistics extends Command
             ->get();
 
         // 2. Monthly Requests (last 12 months)
-        $monthlyRequests = Request::selectRaw("DATE_FORMAT(created_at, '%Y-%m') AS month, COUNT(id) AS request_count, SUM(total_cost) AS total_earnings")
+        $monthlyRequests = Request::query()->selectRaw("DATE_FORMAT(created_at, '%Y-%m') AS month, COUNT(id) AS request_count, SUM(total_cost) AS total_earnings")
             ->where('created_at', '>=', now()->subMonths(12))
             ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
             ->orderBy('month')
