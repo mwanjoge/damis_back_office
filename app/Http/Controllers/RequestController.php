@@ -118,7 +118,7 @@ class RequestController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'No price found.']);
-    }
+    } 
 
 
     /**
