@@ -31,7 +31,7 @@ class BillableItem extends BaseModel
     }
     public function embassy()
     {
-        return $this->belongsTo(Empassy::class);
+        return $this->belongsTo(Embassy::class);
     }
     public function account()
     {
