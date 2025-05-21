@@ -41,3 +41,8 @@ html {
     top: 100px;
     /* z-index: 1; */
 }
+
+.img {
+    height: 70px;
+    width: 20%;
+}

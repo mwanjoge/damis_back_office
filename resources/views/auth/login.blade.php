@@ -1,29 +1,26 @@
-@extends('layouts.master-without-nav')
+@extends('layouts.tabler.auth')
 @section('title')
     @lang('translation.signin')
 @endsection
 @section('content')
-    <div class="container-fluid min-vh-100 d-flex flex-column justify-content-center">
+    <div class="page page-center">
         <!-- auth page content -->
         <div class="auth-page-content mx-auto">
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-5 col-xl-4">
-                    <header class="header">
-                        <div class="title-area">
-                            <img src="{{ asset('images/emblem.png') }}" alt="Logo"> <!-- Replace with your actual logo -->
+            <div class="container container-tight py-4">
+                <header class="header">
+                        <div class="title-area text-center">
+                            <img class="img" src="{{ asset('images/emblem.png') }}" alt="Logo"> <!-- Replace with your actual logo -->
                             <div class="header-text">
                                 <h1>&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;S&nbsp;&nbsp;&nbsp;
                                 </h1>
-                                <h5 class="text-white">Document Authentication Management Information System</h5>
+                                <h5 class="">Document Authentication Management Information System</h5>
                             </div>
                         </div>
                     </header>
 
-
-                    <div class="card">
+                    <div class="card card-md">
                         <div class="card-body">
                             <div class="text-center">
-                                <h5 class="text-white">Welcome Back !</h5>
                                 <p class="text-muted">Sign in to continue.</p>
                             </div>
                             <div class="">
@@ -75,31 +72,10 @@
                         </div>
                         <!-- end card body -->
                     </div>
-                    <!-- end card -->
-
-                </div>
             </div>
             <!-- end row -->
         </div>
-        <!-- end auth page content -->
-
-        <!-- footer -->
-        <footer class="footer position-fixed m-0">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <p class="mb-0 text-muted">&copy;
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- end Footer -->
-
-
+    
     </div>
 @endsection
 @section('script')
