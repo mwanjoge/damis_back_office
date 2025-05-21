@@ -62,6 +62,7 @@ class CacheDashboardStatistics extends Command
         // 3. Requests per Embassy (fixed grouping)
         $requestsPerEmbassy = Request::selectRaw('embassies.id AS embassy_id, embassies.name AS embassy_name, COUNT(requests.id) AS request_count, SUM(requests.total_cost) AS total_earnings')
             ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
+            ->where('embassies.id', '!=', 1)
             ->groupBy('embassies.id', 'embassies.name')
             ->orderByDesc('total_earnings')
             ->get();
@@ -74,10 +75,11 @@ class CacheDashboardStatistics extends Command
             ->orderByDesc('service_count')
             ->get();
 
-        // 5. Embassy Earnings Over Time (Last 6 Months)
+    // 5. Embassy Earnings Over Time (Last 6 Months), excluding embassy with id = 1
         $embassyEarningsOverTime = Request::selectRaw("embassies.name AS embassy_name, DATE_FORMAT(requests.created_at, '%Y-%m') AS month, SUM(requests.total_cost) AS earnings")
             ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
             ->where('requests.created_at', '>=', now()->subMonths(6))
+            ->where('embassies.id', '!=', 1) // Exclude embassy with id 1
             ->groupBy('embassies.name', DB::raw("DATE_FORMAT(requests.created_at, '%Y-%m')"))
             ->orderBy('embassies.name')
             ->orderBy('month')
@@ -100,6 +102,7 @@ class CacheDashboardStatistics extends Command
                  LIMIT 1) AS service_name
             ")
             ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
+                ->where('embassies.id', '!=', 1)
                 ->groupBy('embassies.id', 'embassies.name', 'requests.id')
                 ->orderByDesc('total_earnings')
                 ->limit(5)
