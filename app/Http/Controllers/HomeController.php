@@ -128,7 +128,9 @@ class HomeController extends Controller
         $embassyEarningsOverTime=$data['embassyEarningsOverTime'];
         $providerStats = $data['providerStats'];
         $earningsByCurrency=$data['earningsByCurrency'];
-        return view('index', compact('topEmbassies','totalEarnings','earningsByCurrency','customersCount','applicationsCount','newApplicationsCount','recentApplications','activeServiceProvidersData','activeRequestsData','requestsPerEmbassy','monthlyRequests','topServices','embassyEarningsOverTime','providerStats','activeServicesData'));
+        $requestsByStatus = $data['requestsByStatus'];
+
+        return view('index', compact('topEmbassies','totalEarnings','earningsByCurrency','customersCount','applicationsCount','requestsByStatus','newApplicationsCount','recentApplications','activeServiceProvidersData','activeRequestsData','requestsPerEmbassy','monthlyRequests','topServices','embassyEarningsOverTime','providerStats','activeServicesData'));
     }
 
     public function settings()

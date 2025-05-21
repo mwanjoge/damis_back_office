@@ -61,10 +61,10 @@ class CacheDashboardStatistics extends Command
             ->orderBy('month')
             ->get();
 
-        // 3. Requests per Embassy
-        $requestsPerEmbassy = Request::selectRaw('embassies.name AS embassy_name, COUNT(requests.id) AS request_count, SUM(requests.total_cost) AS total_earnings')
+        // 3. Requests per Embassy (fixed grouping)
+        $requestsPerEmbassy = Request::selectRaw('embassies.id AS embassy_id, embassies.name AS embassy_name, COUNT(requests.id) AS request_count, SUM(requests.total_cost) AS total_earnings')
             ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
-            ->groupBy('embassies.name')
+            ->groupBy('embassies.id', 'embassies.name')
             ->orderByDesc('total_earnings')
             ->get();
 
@@ -117,7 +117,11 @@ class CacheDashboardStatistics extends Command
         $activeServiceProvidersData = [ServiceProvider::count()];
         $activeRequestsData = [Request::where('status', 'Completed')->count()];
         $activeServicesData = [Service::count()];
-
+// 9. Requests by Status
+        $requestsByStatus = Request::select('status', DB::raw('COUNT(*) as count'))
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
 
         // 10. Earnings by Currency (still valuable)
         $providers = ServiceProvider::with(['services.requestItems.request.country'])->get();
@@ -163,6 +167,7 @@ class CacheDashboardStatistics extends Command
             'monthlyRequests' => $monthlyRequests,
             'topServices' => $topServices,
             'topEmbassies' => $topEmbassies,
+            'requestsByStatus' => $requestsByStatus,
             'embassyEarningsOverTime' => $embassyEarningsOverTime,
             'providerStats' => $providerEarningsMatrix,
             'earningsByCurrency' => $earningsByCurrency,
