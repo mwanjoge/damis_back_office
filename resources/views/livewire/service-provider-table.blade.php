@@ -138,20 +138,20 @@
 
         // Create mode
         document.querySelector('[data-bs-target=".service-provider-modal"]').addEventListener('click',
-        function() {
-            form.action = baseAction;
-            nameInput.value = '';
-            editingIdInput.value = '';
-            choicesInstance.removeActiveItems();
-            removeMethodInput();
-            submitBtn.textContent = 'Save';
+            function() {
+                form.action = baseAction;
+                nameInput.value = '';
+                editingIdInput.value = '';
+                choicesInstance.removeActiveItems();
+                removeMethodInput();
+                submitBtn.textContent = 'Save';
 
-            // Toggle field visibility
-            livewireField.classList.remove('d-none');
-            selectField.classList.add('d-none');
+                // Toggle field visibility
+                livewireField.classList.remove('d-none');
+                selectField.classList.add('d-none');
 
-            modal.show();
-        });
+                modal.show();
+            });
 
         // Edit mode
         document.querySelectorAll('.edit-btn').forEach(btn => {
