@@ -207,47 +207,42 @@
                     </div><!-- end col -->
                 </div> <!-- end row-->
 
-                {{-- Donut and Recent Applications --}}
+                {{-- Donut and Provider Earnings --}}
                 <div class="row g-3 mb-4">
-                    <div class="col-lg-4 mb-3 mb-lg-0">
+                    <div class="col-lg-4">
+                        <!-- Requests by Status -->
+                        <div class="card h-100 mb-4">
+                            <div class="card-header">
+                                <h3 class="card-title">Requests by Status</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart">
+                                    <canvas id="requestsByStatusChart" height="180"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Earnings by Currency -->
                         <div class="card h-100">
                             <div class="card-header">
                                 <h3 class="card-title">Earnings by Currency</h3>
                             </div>
                             <div class="card-body d-flex flex-column justify-content-center">
                                 <div class="chart-lg">
-                                    <canvas id="earningsByCurrencyChart" height="260"></canvas>
+                                    <canvas id="earningsByCurrencyChart" height="200"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Right Column -->
                     <div class="col-lg-8">
-                        <div class="card">
+                        <!-- Provider Earnings -->
+                        <div class="card h-100">
                             <div class="card-header">
-                                <h3 class="card-title">Recent Applications</h3>
+                                <h3 class="card-title">Provider Earnings</h3>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-vcenter card-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Applicant</th>
-                                                <th>Service</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
-                                                <tr>
-                                                    <td>{{ $request->member->name ?? 'N/A' }}</td>
-                                                    <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
-                                                    <td>{{ $request->created_at->format('Y-m-d') }}</td>
-                                                    <td><span class="badge bg-primary-subtle text-primary">{{ $request->status }}</span></td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                <div class="chart">
+                                    <canvas id="providerEarningsChart" height="500"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -298,22 +293,6 @@
                     <div class="col-lg-6">
                         <div class="card h-100">
                             <div class="card-header">
-                                <h3 class="card-title">Provider Activity</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="providerEarningsChart" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Embassy Earnings Over Time --}}
-                <div class="row g-3 mb-4">
-                    <div class="col-md-12">
-                        <div class="card h-100">
-                            <div class="card-header">
                                 <h3 class="card-title">Embassy Earnings Over Time</h3>
                             </div>
                             <div class="card-body">
@@ -325,7 +304,41 @@
                     </div>
                 </div>
 
-                {{-- Qualitative Embassy Data --}}
+                {{-- Tables Section --}}
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Recent Applications</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-vcenter card-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Applicant</th>
+                                                <th>Service</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($recentApplications->where('status', 'Completed')->take(10) as $request)
+                                                <tr>
+                                                    <td>{{ $request->member->name ?? 'N/A' }}</td>
+                                                    <td>{{ $request->requestItems->first()->service->name ?? 'N/A' }}</td>
+                                                    <td>{{ $request->created_at->format('Y-m-d') }}</td>
+                                                    <td><span class="badge bg-primary-subtle text-primary">{{ $request->status }}</span></td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row g-3 mb-4">
                     <div class="col-12">
                         <div class="card">
@@ -333,8 +346,6 @@
                                 <h3 class="card-title">Top 5 Highest Earning Embassies</h3>
                             </div>
                             <div class="card-body">
-
-
                                 <div class="table-responsive">
                                     <table class="table table-vcenter card-table">
                                         <thead>
@@ -383,6 +394,24 @@
 
 @section('script')
 <script>
+    // Requests by Status
+    const requestsByStatus = @json($requestsByStatus ?? []);
+    new Chart(document.getElementById('requestsByStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(requestsByStatus),
+            datasets: [{
+                data: Object.values(requestsByStatus),
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ]
+            }]
+        }
+    });
+
     // Earnings per Embassy
     const earningsPerEmbassy = @json($requestsPerEmbassy ?? []);
     new Chart(document.getElementById('earningsPerEmbassyChart'), {
@@ -533,29 +562,24 @@
         embassyGroups[e.embassy_name][e.month] = e.earnings;
     });
     const months = [...new Set(embassyEarningsOverTime.map(e => e.month))];
-
     const datasets = Object.keys(embassyGroups).map((embassy, i) => ({
         label: embassy,
         data: months.map(m => embassyGroups[embassy][m] || 0),
         borderColor: `hsl(${i * 60}, 70%, 50%)`,
-        fill: false,
-        tension: 0.5
+        fill: false
     }));
-
     new Chart(document.getElementById('embassyEarningsOverTimeChart'), {
         type: 'line',
         data: {
             labels: months,
-            datasets: datasets,
-            
+            datasets: datasets
         },
         options: {
             plugins: {
                 legend: { display: false },
                 title: { display: false }
             }
-        },
-        
+        }
     });
 </script>
 @endsection
