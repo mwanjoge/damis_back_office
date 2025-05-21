@@ -42,63 +42,64 @@
                 </div>
 
                 <!-- END NAVBAR LOGO -->
-               <div class="navbar-nav flex-row order-md-last">
+                <div class="navbar-nav flex-row order-md-last">
 
-    <!-- Bell Icon (no dropdown trigger here) -->
-    <a href="#" class="nav-link d-flex lh-1 p-0 px-2 position-relative" aria-label="Notifications">
-        <!-- Bell SVG Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" class="icon icon-1 text-white me-1">
-            <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6" />
-            <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-        </svg>
-    </a>
+                    <!-- Bell Icon (no dropdown trigger here) -->
+                    <a href="#" class="nav-link d-flex lh-1 p-0 px-2 position-relative"
+                        aria-label="Notifications">
+                        <!-- Bell SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="icon icon-1 text-white me-1">
+                            <path
+                                d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6" />
+                            <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+                        </svg>
+                    </a>
 
-    <!-- Profile Avatar (dropdown trigger) -->
-    <div class="nav-item dropdown" data-bs-toggle="dropdown"
-                        aria-label="Open user menu" aria-expanded="false">
-        <a href="#" class="nav-link d-flex lh-1 p-0 px-2" >
-            <span class="avatar avatar-sm"
-                style="background-image: url({{ URL::asset('build/images/users/user-avatar.jpeg') }})">
-            </span>
-            <div class="d-none d-xl-block ps-2">
-                @auth
-                    <div>
-                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-white">
-                            {{ Auth::user()->name }}
-                        </span>
+                    <!-- Profile Avatar (dropdown trigger) -->
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown"
+                            aria-label="Open user menu" aria-expanded="false">
+                            <span class="avatar avatar-sm"
+                                style="background-image: url({{ URL::asset('build/images/users/user-avatar.jpeg') }})">
+                            </span>
+                            <div class="d-none d-xl-block ps-2">
+                                @auth
+                                    <div>
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-white">
+                                            {{ Auth::user()->name }}
+                                        </span>
+                                    </div>
+                                    <div class="mt-1 small text-secondary">
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-white">
+                                            {{ Auth::user()->role }}
+                                        </span>
+                                    </div>
+                                @endauth
+                            </div>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <a class="dropdown-item" href="{{ route('user-profile') }}">
+                                <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Profile</span>
+                            </a>
+                            <a class="dropdown-item" href="pages-profile-settings">
+                                <i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
+                                <span class="align-middle">Settings</span>
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0);"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="bx bx-power-off font-size-16 align-middle me-1"></i>
+                                <span key="t-logout">@lang('translation.logout')</span>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
                     </div>
-                    <div class="mt-1 small text-secondary">
-                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-white">
-                            {{ Auth::user()->role }}
-                        </span>
-                    </div>
-                @endauth
-            </div>
-        </a>
-
-        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <a class="dropdown-item" href="{{ route('user-profile') }}">
-                <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-                <span class="align-middle">Profile</span>
-            </a>
-            <a class="dropdown-item" href="pages-profile-settings">
-                <i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
-                <span class="align-middle">Settings</span>
-            </a>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="bx bx-power-off font-size-16 align-middle me-1"></i>
-                <span key="t-logout">@lang('translation.logout')</span>
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        </div>
-    </div>
-
-</div>
-
+                </div>
             </div>
 
             <!-- Centered Title Block -->
@@ -147,7 +148,7 @@
                 const parentModal = $(this).closest('.modal');
                 $(this).select2({
                     dropdownParent: parentModal.length ? parentModal : $(this).parent(),
-                    width: '100%' 
+                    width: '100%'
                 });
 
             }

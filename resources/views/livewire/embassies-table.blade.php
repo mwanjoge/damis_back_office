@@ -100,7 +100,11 @@
 
                         <div class="mb-3">
                             <label class="form-label">Mission Location</label>
-                            <select name="location_id" data-choices class="form-select " required
+                            <select name="location_id" data-choices class="form-select" id="missionLocation" required>
+                                <option value="">Select Location</option>
+                                @foreach ($countries as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
                                >
                                 <option value="">Select Location</option>
                                 @foreach ($countries as $id => $name)
@@ -119,7 +123,7 @@
                         <div id="accreditedCountriesWrapper" class="mb-3 w-100">
                             <p class="mt-4">Accredited Countries</p>
                             <select name="country_id[]" class=" select2" multiple
-                                wire:model="states" required>
+                                wire:model="states" >
                                 @foreach ($countries as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
@@ -144,6 +148,7 @@
             document.getElementById('missionName').value = data.name || '';
             document.getElementById('missionType').value = data.type || 'Embassy';
             document.getElementById('missionStatus').value = data.is_active ? '1' : '0';
+
 
             const formActionBase = "{{ url('embassy') }}";
             document.getElementById('missionForm').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
