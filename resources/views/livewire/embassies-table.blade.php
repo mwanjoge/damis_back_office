@@ -1,4 +1,5 @@
 @include('modal.alert')
+
 <div>
     <div class="tab-pane px-4" id="embassy" role="tabpanel">
         <div class="text-end pb-4">
@@ -9,14 +10,14 @@
         </div>
 
         <div class="table-responsive table-card" wire:ignore>
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0  datatable">
+            <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
                         <th>Mission</th>
                         <th>Type</th>
                         <th>Status</th>
-                        <th class="text-end" style="width: 180px;">Actions</th>
+                        <th class="text-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,16 +31,12 @@
                                 @php
                                     $embassyData = $embassy->only(['id', 'name', 'type', 'is_active']);
                                     $embassyData['countries'] = $embassy->countries->pluck('id')->toArray();
-                                    $embassyData['location_id'] = $embassy->country_id;
-
+                                    $embassyData['country_id'] = $embassy->country_id;
                                 @endphp
 
-                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                    data-bs-target=".mission-modal"
-                                    onclick='openMissionModal(@json($embassyData))'>
+                                <button class="btn btn-warning btn-sm" onclick='openMissionModal(@json($embassyData))'>
                                     <i class="bx bx-pencil"></i>
                                 </button>
-
 
                                 <form method="POST" action="{{ route('embassy.destroy', $embassy->id) }}"
                                     style="display:inline-block;">
@@ -52,9 +49,7 @@
                             </td>
                         </tr>
                     @empty
-                        {{-- <tr>
-                            <td colspan="5" class="text-center">No missions found.</td>
-                        </tr> --}}
+                        {{-- No data --}}
                     @endforelse
                 </tbody>
             </table>
@@ -72,15 +67,6 @@
                     </div>
 
                     <div class="modal-body px-5">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         <input type="hidden" name="_method" id="missionMethod">
                         <input type="hidden" name="id" id="missionId">
 
@@ -100,12 +86,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Mission Location</label>
-                            <select name="location_id" data-choices class="form-select" id="missionLocation" required>
-                                <option value="">Select Location</option>
-                                @foreach ($countries as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                               >
+                            <select name="location_id" id="missionLocation" class="form-select" data-choices required>
                                 <option value="">Select Location</option>
                                 @foreach ($countries as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -120,10 +101,10 @@
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
+
                         <div id="accreditedCountriesWrapper" class="mb-3 w-100">
-                            <p class="mt-4">Accredited Countries</p>
-                            <select name="country_id[]" class=" select2" multiple
-                                wire:model="states" >
+                            <label class="form-label mt-4">Accredited Countries</label>
+                            <select name="country_id[]" class="form-select select2 js-example-basic-multiple" multiple>
                                 @foreach ($countries as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
@@ -140,58 +121,70 @@
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
         function openMissionModal(data = {}) {
-            document.getElementById('missionModalTitle').innerText = data.id ? 'Edit Mission' : 'Add New Mission';
-            document.getElementById('missionMethod').value = data.id ? 'PUT' : 'POST';
+            const formActionBase = "{{ url('embassy') }}";
+            const isEdit = !!data.id;
+
+            document.getElementById('missionModalTitle').innerText = isEdit ? 'Edit Mission' : 'Add New Mission';
+            document.getElementById('missionMethod').value = isEdit ? 'PUT' : 'POST';
             document.getElementById('missionId').value = data.id || '';
             document.getElementById('missionName').value = data.name || '';
             document.getElementById('missionType').value = data.type || 'Embassy';
             document.getElementById('missionStatus').value = data.is_active ? '1' : '0';
 
+            const missionForm = document.getElementById('missionForm');
+            missionForm.action = isEdit ? `${formActionBase}/${data.id}` : formActionBase;
 
-            const formActionBase = "{{ url('embassy') }}";
-            document.getElementById('missionForm').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
-
-            // Pre-select mission location
-            const locationSelect = document.querySelector('select[name="location_id"]');
-            locationSelect.value = data.country_id || '';
-
-            const countrySelect = document.querySelector('select[name="country_id[]"]');
-
-            // Show/hide Accredited Countries field
-            const accreditedCountriesWrapper = document.getElementById('accreditedCountriesWrapper');
-            if (data.id) {
-                accreditedCountriesWrapper.style.display = 'block'; // hide when editing
+            // Mission location via Choices.js
+            const locationSelect = document.getElementById('missionLocation');
+            if (locationSelect && locationSelect.choicesInstance) {
+                locationSelect.choicesInstance.setChoiceByValue(data.country_id?.toString() || '');
             } else {
-                accreditedCountriesWrapper.style.display = 'block'; // show when adding
+                locationSelect.value = data.country_id || '';
             }
 
-            // Reset selection
-            Array.from(countrySelect.options).forEach(option => {
-                option.selected = false;
-            });
-
-            if (data.countries) {
-                data.countries.forEach(id => {
-                    const option = Array.from(countrySelect.options).find(opt => opt.value == id);
-                    if (option) option.selected = true;
-                });
+            // Accredited Countries via Select2
+            const countrySelect = $('.js-example-basic-multiple');
+            if (!countrySelect.hasClass("select2-hidden-accessible")) {
+                countrySelect.select2({ placeholder: "Select countries" });
             }
 
-            if ($(countrySelect).hasClass('js-example-basic-multiple')) {
-                $(countrySelect).trigger('change');
-            }
+            const countryIds = data.countries || [];
+            countrySelect.val(countryIds.map(String)).trigger('change');
 
             new bootstrap.Modal(document.querySelector('.mission-modal')).show();
         }
 
-
-
-        function confirmDelete(id, type) {
-            if (confirm(`Are you sure you want to delete this ${type}?`)) {
-                console.log(`Deleting ${type} with ID: ${id}`);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Init Choices.js
+            const missionLocation = document.getElementById('missionLocation');
+            if (missionLocation && !missionLocation.choicesInstance) {
+                const instance = new Choices(missionLocation, { shouldSort: false });
+                missionLocation.choicesInstance = instance;
             }
-        }
+
+            // Init Select2
+            const select2El = $('.js-example-basic-multiple');
+            if (!select2El.hasClass('select2-hidden-accessible')) {
+                select2El.select2({ placeholder: "Select countries" });
+                
+            }
+        });
     </script>
+    <style>
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-selection {
+        width: 100% !important;
+    }
+
+    .select2-selection__rendered {
+        white-space: normal !important;
+    }
+</style>
+
 </div>

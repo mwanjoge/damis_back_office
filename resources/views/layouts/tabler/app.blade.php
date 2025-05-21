@@ -58,9 +58,9 @@
                     </a>
 
                     <!-- Profile Avatar (dropdown trigger) -->
-                    <div class="nav-item dropdown" data-bs-toggle="dropdown" aria-label="Open user menu"
-                        aria-expanded="false">
-                        <a href="#" class="nav-link d-flex lh-1 p-0 px-2">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown"
+                            aria-label="Open user menu" aria-expanded="false">
                             <span class="avatar avatar-sm"
                                 style="background-image: url({{ URL::asset('build/images/users/user-avatar.jpeg') }})">
                             </span>
@@ -99,9 +99,7 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             <!-- Centered Title Block -->
