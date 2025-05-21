@@ -35,8 +35,7 @@
                 <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href="index">
                         <div>
-                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="10%"
-                                width="5%">
+                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="10%" width="5%">
                         </div>
                     </a>
                 </div>
