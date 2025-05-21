@@ -11,7 +11,9 @@ class PermissionSeeder extends Seeder
     {
         $models = [
             'account', 'department', 'country', 'designation',
-            'embassy', 'employee', 'service', 'service_provider', 'user'
+            'embassy', 'employee', 'service', 'service_provider', 'user',
+            'request', 'member', 'billable_item', 'general_line_item',
+            'invoice', 'request_item', 
         ];
 
         $actions = ['create', 'read', 'update', 'delete'];
