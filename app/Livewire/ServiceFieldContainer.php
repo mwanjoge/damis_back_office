@@ -11,7 +11,7 @@ class ServiceFieldContainer extends Component
 
     public function addInput()
     {
-        $this->inputs[] = ''; // Add empty string for new input
+        $this->inputs[] = '';
     }
 
     public function removeInput($index)

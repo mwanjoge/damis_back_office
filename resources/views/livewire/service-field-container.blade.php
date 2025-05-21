@@ -1,9 +1,8 @@
-
 <div wire.ignore.self>
     <div class="row mt-3">
         <div class="col">Add provider's services</div>
         <div class="col">
-            <a href="javascript:void(0)" wire:click.prevent="addInput" class="btn btn-outline-primary btn-sm mb-1 float-end">
+            <a wire:click="addInput" class="btn btn-outline-primary btn-sm mb-1 float-end">
                 <i class="bx bx-plus"></i> Add Service
             </a>
         </div>  
