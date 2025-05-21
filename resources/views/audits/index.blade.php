@@ -19,6 +19,7 @@
                             <th>User</th>
                             <th>Event</th>
                             <th>Entity</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,10 @@
                                 <td class="py-0">{{$audit->user_name}}</td>
                                 <td class="py-0">{{$audit->event}}</td>
                                 <td class="py-0">{{\Illuminate\Support\Str::of($audit->auditable_type)->afterLast('\\')}}</td>
+                                <td>
+                                    @include('audits._log_viewer_modal')
+                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#log-viwer-modal-{{ $audit->id }}">View</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
