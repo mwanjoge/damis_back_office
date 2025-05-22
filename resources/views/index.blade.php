@@ -374,250 +374,240 @@
 
 @endsection
 
-@section('script')
-    <script>
-        // Requests by Status (Pie Chart)
-        const requestsByStatus = @json($requestsByStatus ?? []);
-        const requestsByStatusEl = document.getElementById('requestsByStatusChart');
-        if (requestsByStatusEl) {
-            new Chart(requestsByStatusEl, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(requestsByStatus),
-                    datasets: [{
-                        data: Object.values(requestsByStatus),
-                        backgroundColor: [
-                            'rgba(11,71,111,0.6)',
-                            'rgba(205,149,11,0.6)',
-                            'rgba(126,5,30,0.6)',
-                            'rgba(147,177,10,0.6)'
-                        ]
-                    }]
-                }
-            });
-        }
 
-        const earningsPerEmbassy = @json($requestsPerEmbassy ?? []);
-        const earningsPerEmbassyEl = document.getElementById('earningsPerEmbassyChart');
-        if (earningsPerEmbassyEl) {
-            new Chart(earningsPerEmbassyEl, {
-                type: 'bar',
-                data: {
-                    labels: earningsPerEmbassy.map(e => e.embassy_name ?? 'N/A'),
-                    datasets: [{
-                        data: earningsPerEmbassy.map(e => e.total_earnings),
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)'
-                    }]
-                },
-                options: {
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `Earnings: ${new Intl.NumberFormat('en-US', {
-                                        style: 'currency',
-                                        currency: 'USD'
-                                    }).format(context.parsed.y)}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { display: false }
-                        }
+    @section('script')
+        <script>
+            // Reusable function to generate random HSL colors
+            function getRandomColors(count) {
+                return Array.from({ length: count }, () =>
+                    `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
+                );
+            }
+
+            // Requests by Status (Pie Chart)
+            const requestsByStatus = @json($requestsByStatus ?? []);
+            const requestsByStatusEl = document.getElementById('requestsByStatusChart');
+            if (requestsByStatusEl) {
+                const colors = getRandomColors(Object.keys(requestsByStatus).length);
+                new Chart(requestsByStatusEl, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(requestsByStatus),
+                        datasets: [{
+                            data: Object.values(requestsByStatus),
+                            backgroundColor: colors
+                        }]
                     }
-                }
-            });
-        }
+                });
+            }
 
-
-        // Monthly Requests (Line Chart)
-        const monthlyRequests = @json($monthlyRequests ?? []);
-        const monthlyRequestsEl = document.getElementById('monthlyRequestsChart');
-        if (monthlyRequestsEl) {
-            new Chart(monthlyRequestsEl, {
-                type: 'line',
-                data: {
-                    labels: monthlyRequests.map(m => m.month),
-                    datasets: [{
-                        label: 'Requests',
-                        data: monthlyRequests.map(m => m.request_count),
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false
-                    }]
-                }
-            });
-        }
-
-        // Top Services by Earnings (Bar Chart)
-        const topServices = @json($topServices ?? []);
-        const topServicesEl = document.getElementById('topServicesChart');
-        if (topServicesEl) {
-            new Chart(topServicesEl, {
-                type: 'bar',
-                data: {
-                    labels: topServices.map(s => s.service_name),
-                    datasets: [{
-                        label: 'Earnings',
-                        data: topServices.map(s => s.total_earnings),
-                        backgroundColor: 'rgba(44,4,13,0.6)'
-                    }]
-                },
-                options: {
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    return `Earnings: ${new Intl.NumberFormat('en-US', {
-                                        style: 'currency',
-                                        currency: 'USD'
-                                    }).format(context.parsed.y)}`;
-                                }
-                            }
-                        }
+            // Earnings Per Embassy (Bar Chart)
+            const earningsPerEmbassy = @json($requestsPerEmbassy ?? []);
+            const earningsPerEmbassyEl = document.getElementById('earningsPerEmbassyChart');
+            if (earningsPerEmbassyEl) {
+                const colors = getRandomColors(earningsPerEmbassy.length);
+                new Chart(earningsPerEmbassyEl, {
+                    type: 'bar',
+                    data: {
+                        labels: earningsPerEmbassy.map(e => e.embassy_name ?? 'N/A'),
+                        datasets: [{
+                            data: earningsPerEmbassy.map(e => e.total_earnings),
+                            backgroundColor: colors
+                        }]
                     },
-                    scales: {
-                        x: {
-                            ticks: { display: false }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Earnings by Currency (Doughnut Chart)
-        const earningsByCurrency = @json($earningsByCurrency ?? []);
-        const earningsByCurrencyEl = document.getElementById('earningsByCurrencyChart');
-        if (earningsByCurrencyEl) {
-            new Chart(earningsByCurrencyEl, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(earningsByCurrency),
-                    datasets: [{
-                        data: Object.values(earningsByCurrency),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)'
-                        ]
-                    }]
-                },
-                options: {
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.parsed;
-                                    return `${label}: ${new Intl.NumberFormat('en-US', {
-                                        style: 'currency',
-                                        currency: label
-                                    }).format(value)}`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Provider Earnings (Stacked Bar by Currency)
-        const providerStats = @json($providerStats ?? []);
-        const providerNames = providerStats.map(p => p.provider);
-        const allCurrencies = Array.from(new Set(providerStats.flatMap(p => Object.keys(p.earnings))));
-        const currencyColors = {
-            'USD': '#206bc4',
-            'EUR': '#4299e1',
-            'GBP': '#5eba00',
-            'JPY': '#fab005',
-            'CAD': '#ff922b',
-            'AUD': '#f66d9b'
-        };
-        const providerDatasets = allCurrencies.map((currency, idx) => ({
-            label: currency,
-            data: providerStats.map(p => p.earnings[currency] || 0),
-            backgroundColor: currencyColors[currency] || `hsl(${idx * 60}, 70%, 60%)`,
-            stack: 'Stack 0',
-        }));
-        const providerChartEl = document.getElementById('providerEarningsChart');
-        if (providerChartEl) {
-            if (window.Chart && Chart.getChart && Chart.getChart(providerChartEl)) Chart.getChart(providerChartEl).destroy();
-            new Chart(providerChartEl, {
-                type: 'bar',
-                data: {
-                    labels: providerNames,
-                    datasets: providerDatasets
-                },
-                options: {
-                    responsive: true,
-                    interaction: {
-                        mode: 'nearest',
-                        intersect: false
-                    },
-                    plugins: {
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                label: function(context) {
-                                    const currency = context.dataset.label;
-                                    const value = context.parsed.y;
-                                    return `${currency}: ${new Intl.NumberFormat('en-US', {
-                                        style: 'currency',
-                                        currency: currency
-                                    }).format(value)}`;
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Earnings: ${new Intl.NumberFormat('en-US', {
+                                            style: 'currency',
+                                            currency: 'USD'
+                                        }).format(context.parsed.y)}`;
+                                    }
                                 }
                             }
                         },
-                        legend: { display: false },
-                        title: { display: false }
-                    },
-                    scales: {
-                        x: { stacked: true },
-                        y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Earnings' } }
+                        scales: {
+                            x: {
+                                ticks: { display: false }
+                            }
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        // Embassy Earnings Over Time (Line Chart)
-        const embassyEarningsOverTime = @json($embassyEarningsOverTime ?? []);
-        const embassyGroups = {};
-        embassyEarningsOverTime.forEach(e => {
-            if (!embassyGroups[e.embassy_name]) embassyGroups[e.embassy_name] = {};
-            embassyGroups[e.embassy_name][e.month] = e.earnings;
-        });
-        const months = [...new Set(embassyEarningsOverTime.map(e => e.month))];
-        const embassyDatasets = Object.keys(embassyGroups).map((embassy, i) => ({
-            label: embassy,
-            data: months.map(m => embassyGroups[embassy][m] || 0),
-            borderColor: `hsl(${i * 60}, 70%, 50%)`,
-            fill: false
-        }));
-        const embassyEarningsOverTimeEl = document.getElementById('embassyEarningsOverTimeChart');
-        if (embassyEarningsOverTimeEl) {
-            new Chart(embassyEarningsOverTimeEl, {
-                type: 'line',
-                data: {
-                    labels: months,
-                    datasets: embassyDatasets
-                },
-                options: {
-                    plugins: {
-                        legend: { display: false },
-                        title: { display: false }
+            // Monthly Requests (Line Chart)
+            const monthlyRequests = @json($monthlyRequests ?? []);
+            const monthlyRequestsEl = document.getElementById('monthlyRequestsChart');
+            if (monthlyRequestsEl) {
+                new Chart(monthlyRequestsEl, {
+                    type: 'line',
+                    data: {
+                        labels: monthlyRequests.map(m => m.month),
+                        datasets: [{
+                            label: 'Requests',
+                            data: monthlyRequests.map(m => m.request_count),
+                            borderColor: getRandomColors(1)[0],
+                            fill: false
+                        }]
                     }
-                }
+                });
+            }
+
+            // Top Services by Earnings (Bar Chart)
+            const topServices = @json($topServices ?? []);
+            const topServicesEl = document.getElementById('topServicesChart');
+            if (topServicesEl) {
+                const colors = getRandomColors(topServices.length);
+                new Chart(topServicesEl, {
+                    type: 'bar',
+                    data: {
+                        labels: topServices.map(s => s.service_name),
+                        datasets: [{
+                            label: 'Earnings',
+                            data: topServices.map(s => s.total_earnings),
+                            backgroundColor: colors
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    title: context => context[0].label,
+                                    label: context => `Earnings: ${new Intl.NumberFormat('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD'
+                                    }).format(context.parsed.y)}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { ticks: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // Earnings by Currency (Doughnut Chart)
+            const earningsByCurrency = @json($earningsByCurrency ?? []);
+            const earningsByCurrencyEl = document.getElementById('earningsByCurrencyChart');
+            if (earningsByCurrencyEl) {
+                const colors = getRandomColors(Object.keys(earningsByCurrency).length);
+                new Chart(earningsByCurrencyEl, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(earningsByCurrency),
+                        datasets: [{
+                            data: Object.values(earningsByCurrency),
+                            backgroundColor: colors
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.parsed;
+                                        return `${label}: ${new Intl.NumberFormat('en-US', {
+                                            style: 'currency',
+                                            currency: label
+                                        }).format(value)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Provider Earnings (Stacked Bar by Currency)
+            const providerStats = @json($providerStats ?? []);
+            const providerNames = providerStats.map(p => p.provider);
+            const allCurrencies = Array.from(new Set(providerStats.flatMap(p => Object.keys(p.earnings))));
+            const providerDatasets = allCurrencies.map((currency) => ({
+                label: currency,
+                data: providerStats.map(p => p.earnings[currency] || 0),
+                backgroundColor: getRandomColors(1)[0],
+                stack: 'Stack 0',
+            }));
+            const providerChartEl = document.getElementById('providerEarningsChart');
+            if (providerChartEl) {
+                if (window.Chart && Chart.getChart && Chart.getChart(providerChartEl)) Chart.getChart(providerChartEl).destroy();
+                new Chart(providerChartEl, {
+                    type: 'bar',
+                    data: {
+                        labels: providerNames,
+                        datasets: providerDatasets
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            mode: 'nearest',
+                            intersect: false
+                        },
+                        plugins: {
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        const currency = context.dataset.label;
+                                        const value = context.parsed.y;
+                                        return `${currency}: ${new Intl.NumberFormat('en-US', {
+                                            style: 'currency',
+                                            currency: currency
+                                        }).format(value)}`;
+                                    }
+                                }
+                            },
+                            legend: { display: false },
+                            title: { display: false }
+                        },
+                        scales: {
+                            x: { stacked: true },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                title: { display: true, text: 'Earnings' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Embassy Earnings Over Time (Line Chart)
+            const embassyEarningsOverTime = @json($embassyEarningsOverTime ?? []);
+            const embassyGroups = {};
+            embassyEarningsOverTime.forEach(e => {
+                if (!embassyGroups[e.embassy_name]) embassyGroups[e.embassy_name] = {};
+                embassyGroups[e.embassy_name][e.month] = e.earnings;
             });
-        }
-    </script>
+            const months = [...new Set(embassyEarningsOverTime.map(e => e.month))];
+            const embassyDatasets = Object.keys(embassyGroups).map((embassy) => ({
+                label: embassy,
+                data: months.map(m => embassyGroups[embassy][m] || 0),
+                borderColor: getRandomColors(1)[0],
+                fill: false
+            }));
+            const embassyEarningsOverTimeEl = document.getElementById('embassyEarningsOverTimeChart');
+            if (embassyEarningsOverTimeEl) {
+                new Chart(embassyEarningsOverTimeEl, {
+                    type: 'line',
+                    data: {
+                        labels: months,
+                        datasets: embassyDatasets
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: false }
+                        }
+                    }
+                });
+            }
+        </script>
 @endsection
