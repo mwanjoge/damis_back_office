@@ -14,7 +14,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $embassy->account->name ?? 'N/A' }}</td>
                         <td class="text-end">
-                            <a href="{{ route('embassies.show', $embassy->id) }}" class="btn btn-info btn-sm">
+                            <a href="{{ route('embassies.show', encode([$embassy->id])) }}" class="btn btn-info btn-sm">
                                 <i class="bx bx-detail"></i>
                             </a>
                     </tr>
