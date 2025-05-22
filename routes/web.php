@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\CountryController;
 use App\Livewire\RequestItems;
 use App\Livewire\SettingsPage;
@@ -79,8 +80,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/request/approve/{id}', [RequestController::class, 'approveRequest'])->name('requests.approve');
     Route::post('/request/reject', [RequestController::class, 'rejectRequest'])->name('requests.reject');
-
-
+    Route::resource('audits', AuditController::class)->names('audits');
     // Route::get('/tables', function () {
     //     return view('tables');
     // })->name('tables');

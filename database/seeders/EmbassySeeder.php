@@ -28,8 +28,6 @@ class EmbassySeeder extends Seeder
             'has_depertment' => false,
         ]));
 
-        print('stsrting');
-
         // Load CSV file
         $csv = Reader::createFromPath(base_path('database/seeders/data/missions.csv'), 'r');
 

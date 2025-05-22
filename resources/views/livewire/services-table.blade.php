@@ -139,52 +139,5 @@
         closeModalBtn.addEventListener('click', function() {
             servicesModal.hide();
         });
-
-        // Handle delete confirmation
-        // document.addEventListener('click', function(e) {
-        //     const deleteBtn = e.target.closest('.delete-btn');
-        //     if (deleteBtn) {
-        //         e.preventDefault();
-        //         const serviceId = deleteBtn.dataset.id;
-
-        //         Swal.fire({
-        //             title: 'Are you sure?',
-        //             text: "You won't be able to revert this!",
-        //             icon: 'warning',
-        //             showCancelButton: true,
-        //             confirmButtonColor: '#3085d6',
-        //             cancelButtonColor: '#d33',
-        //             confirmButtonText: 'Yes, delete it!'
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 window.location.href = `{{ route('service.destroy', ':id') }}`.replace(
-        //                     ':id', serviceId);
-        //                 // Send delete request
-        //                 fetch(`${formActionBase}/${serviceId}`, {
-        //                         method: 'DELETE',
-        //                         headers: {
-        //                             'X-CSRF-TOKEN': document.querySelector(
-        //                                 'meta[name="csrf-token"]').content,
-        //                             'Accept': 'application/json',
-        //                             'Content-Type': 'application/json'
-        //                         },
-        //                     })
-        //                     .then(response => {
-        //                         if (response.ok) {
-        //                             Swal.fire('Deleted!', 'Service has been deleted.',
-        //                                 'success').then(() => {
-        //                                 location
-        //                             .reload(); // or use AJAX to update the table
-        //                             });
-        //                         } else {
-        //                             Swal.fire('Error!', 'Failed to delete the service.',
-        //                                 'error');
-        //                         }
-        //                     });
-
-        //             }
-        //         });
-        //     }
-        // });
     });
 </script>

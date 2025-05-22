@@ -50,70 +50,70 @@ class ServicesTable extends Component
         $this->resetValidation();
     }
 
-    public function save()
-    {
-        $this->validate();
+    // public function save()
+    // {
+    //     $this->validate();
 
-        try {
-            DB::beginTransaction();
+    //     try {
+    //         DB::beginTransaction();
 
-            $data = [
-                'name' => $this->name,
-                'service_provider_id' => $this->selectedProvider
-            ];
+    //         $data = [
+    //             'name' => $this->name,
+    //             'service_provider_id' => $this->selectedProvider
+    //         ];
 
-            if ($this->editingId) {
-                Service::findOrFail($this->editingId)->update($data);
-                $message = 'Service updated successfully!';
-            } else {
-                Service::create($data);
-                $message = 'Service created successfully!';
-            }
+    //         if ($this->editingId) {
+    //             Service::findOrFail($this->editingId)->update($data);
+    //             $message = 'Service updated successfully!';
+    //         } else {
+    //             Service::create($data);
+    //             $message = 'Service created successfully!';
+    //         }
 
-            DB::commit();
+    //         DB::commit();
             
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => $message
-            ]);
+    //         $this->dispatch('showAlert', [
+    //             'type' => 'success',
+    //             'message' => $message
+    //         ]);
             
-            $this->loadData();
-            $this->resetForm();
-            $this->dispatch('close-modal');
-        } catch (Exception $e) {
-            DB::rollBack();
-            $this->dispatch('showAlert', [
-                'type' => 'error',
-                'message' => 'Error: ' . $e->getMessage()
-            ]);
-        }
-    }
+    //         $this->loadData();
+    //         $this->resetForm();
+    //         $this->dispatch('close-modal');
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         $this->dispatch('showAlert', [
+    //             'type' => 'error',
+    //             'message' => 'Error: ' . $e->getMessage()
+    //         ]);
+    //     }
+    // }
 
-    public function deleteConfirm($id)
-    {
-        try {
-            DB::beginTransaction();
+    // public function deleteConfirm($id)
+    // {
+    //     try {
+    //         DB::beginTransaction();
             
-            $service = Service::findOrFail($id);
-            $service->delete();
+    //         $service = Service::findOrFail($id);
+    //         $service->delete();
             
-            DB::commit();
+    //         DB::commit();
             
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => 'Service deleted successfully'
-            ]);
+    //         $this->dispatch('showAlert', [
+    //             'type' => 'success',
+    //             'message' => 'Service deleted successfully'
+    //         ]);
             
-            // Reload data after successful deletion
-            $this->loadData();
-        } catch (Exception $e) {
-            DB::rollBack();
-            $this->dispatch('showAlert', [
-                'type' => 'error',
-                'message' => 'Failed to delete service: ' . $e->getMessage()
-            ]);
-        }
-    }
+    //         // Reload data after successful deletion
+    //         $this->loadData();
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         $this->dispatch('showAlert', [
+    //             'type' => 'error',
+    //             'message' => 'Failed to delete service: ' . $e->getMessage()
+    //         ]);
+    //     }
+    // }
     
     public function render()
     {

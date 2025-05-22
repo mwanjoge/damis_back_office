@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BillableItem extends Model
+class BillableItem extends BaseModel
 {
     use HasFactory;
 
@@ -31,7 +31,7 @@ class BillableItem extends Model
     }
     public function embassy()
     {
-        return $this->belongsTo(Empassy::class);
+        return $this->belongsTo(Embassy::class);
     }
     public function account()
     {
