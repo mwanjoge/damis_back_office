@@ -34,18 +34,19 @@
                                     $embassyData['country_id'] = $embassy->country_id;
                                 @endphp
 
-                                <button class="btn btn-warning btn-sm" onclick='openMissionModal(@json($embassyData))'>
+                                <button class="btn btn-warning btn-sm"
+                                    onclick='openMissionModal(@json($embassyData))'>
                                     <i class="bx bx-pencil"></i>
                                 </button>
-
-                                <form method="POST" action="{{ route('embassy.destroy', $embassy->id) }}"
-                                    style="display:inline-block;">
+                                <form id="delete-form-{{ $embassy->id }}" method="POST"
+                                    action="{{ route('embassy.destroy', $embassy->id) }}" style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bx-trash-alt"></i>
-                                    </button>
                                 </form>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $embassy->id }})">
+                                    <i class="bx bx-trash-alt"></i>
+                                </button>
+
                             </td>
                         </tr>
                     @empty
@@ -148,7 +149,9 @@
             // Accredited Countries via Select2
             const countrySelect = $('.js-example-basic-multiple');
             if (!countrySelect.hasClass("select2-hidden-accessible")) {
-                countrySelect.select2({ placeholder: "Select countries" });
+                countrySelect.select2({
+                    placeholder: "Select countries"
+                });
             }
 
             const countryIds = data.countries || [];
@@ -161,30 +164,34 @@
             // Init Choices.js
             const missionLocation = document.getElementById('missionLocation');
             if (missionLocation && !missionLocation.choicesInstance) {
-                const instance = new Choices(missionLocation, { shouldSort: false });
+                const instance = new Choices(missionLocation, {
+                    shouldSort: false
+                });
                 missionLocation.choicesInstance = instance;
             }
 
             // Init Select2
             const select2El = $('.js-example-basic-multiple');
             if (!select2El.hasClass('select2-hidden-accessible')) {
-                select2El.select2({ placeholder: "Select countries" });
-                
+                select2El.select2({
+                    placeholder: "Select countries"
+                });
+
             }
         });
     </script>
     <style>
-    .select2-container {
-        width: 100% !important;
-    }
+        .select2-container {
+            width: 100% !important;
+        }
 
-    .select2-selection {
-        width: 100% !important;
-    }
+        .select2-selection {
+            width: 100% !important;
+        }
 
-    .select2-selection__rendered {
-        white-space: normal !important;
-    }
-</style>
+        .select2-selection__rendered {
+            white-space: normal !important;
+        }
+    </style>
 
 </div>

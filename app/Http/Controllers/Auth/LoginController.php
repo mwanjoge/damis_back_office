@@ -28,6 +28,16 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
+    public function maxAttempts()
+    {
+        return 5;
+    }
+
+    public function decayMinutes()
+    {
+        return 10;
+    }
+
     /**
      * Handle post-login redirection.
      *

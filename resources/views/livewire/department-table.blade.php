@@ -8,7 +8,8 @@
                             </button>
                         </div>
                         <div class="table-responsive table-card">
-                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
+                            <table
+                                class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
                                 <thead class="text-muted table-light">
                                     <tr>
                                         <th>#</th>
@@ -29,15 +30,17 @@
                                                     onclick="openDepartmentModal({{ json_encode($department) }})">
                                                     <i class="bx bx-pencil"></i>
                                                 </button>
-                                                <form method="POST"
+
+                                                <form id="delete-form-{{ $department->id }}" method="POST"
                                                     action="{{ route('department.destroy', $department->id) }}"
-                                                    style="display:inline-block;">
+                                                    style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="bx bx-trash-alt"></i>
-                                                    </button>
                                                 </form>
+                                                <button class="btn btn-danger btn-sm"
+                                                    onclick="confirmDelete({{ $department->id }})">
+                                                    <i class="bx bx-trash-alt"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @empty

@@ -40,19 +40,20 @@
                                     onclick="openEmployeeModal({{ json_encode($employee) }})">
                                     <i class="bx bx-pencil"></i>
                                 </button>
-                                <form method="POST" action="{{ route('employee.destroy', $employee->id) }}"
-                                    style="display:inline-block;">
+                                <form id="delete-form-{{ $employee->id }}" method="POST"
+                                    action="{{ route('employee.destroy', $employee->id) }}" style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bx-trash-alt"></i>
-                                    </button>
                                 </form>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $employee->id }})">
+                                    <i class="bx bx-trash-alt"></i>
+                                </button>
                                 <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info btn-sm">
                                     <i class="bx bx-detail"></i>
                                 </a>
                                 <form method="POST" action="{{ route('employee.reset-password', $employee->id) }}"
-                                    style="display:inline-block;" onsubmit="return confirm('Are you sure you want to reset the password to default?');">
+                                    style="display:inline-block;"
+                                    onsubmit="return confirm('Are you sure you want to reset the password to default?');">
                                     @csrf
                                     <button type="submit" class="btn btn-secondary btn-sm" title="Reset Password">
                                         <i class="bx bx-lock-open-alt"></i>
@@ -89,7 +90,8 @@
                         <input type="hidden" name="id" id="employeeId">
                         <div class="mb-3">
                             <label class="form-label">First Name</label>
-                            <input type="text" name="first_name" id="employeeFirstName" class="form-control" required>
+                            <input type="text" name="first_name" id="employeeFirstName" class="form-control"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Last Name</label>

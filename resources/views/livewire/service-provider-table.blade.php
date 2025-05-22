@@ -32,15 +32,15 @@
                                 <i class="bx bx-pencil"></i>
                             </button>
 
-
-                            <form method="POST" action="{{ route('service_provider.destroy', $provider['id']) }}"
-                                style="display:inline-block;">
+                            <form id="delete-form-{{ $provider['id'] }}" method="POST"
+                                action="{{ route('service_provider.destroy', $provider['id']) }}"
+                                style="display: none;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bx bx-trash-alt"></i>
-                                </button>
                             </form>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $provider['id'] }})">
+                                <i class="bx bx-trash-alt"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
