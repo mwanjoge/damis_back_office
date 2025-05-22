@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
+
 
 class PasswordController extends Controller
 {
@@ -25,17 +27,28 @@ class PasswordController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
-    {
-        $request->validate([
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+ public function update(Request $request)
+{
+    $request->validate([
+        'password' => [
+            'required',
+            'confirmed',
+            Password::min(8)               // Minimum 8 characters
+                ->mixedCase()              // Must contain uppercase and lowercase
+                ->letters()                // Must contain letters
+                ->numbers()                // Must contain numbers
+                ->symbols()                // Must contain symbols
+                ->uncompromised(),         // Must not be in known data breaches
+        ],
+    ]);
 
-        $user = Auth::user();
-        $user->password = Hash::make($request->password);
-        $user->is_default_password = false;
-        $user->save();
+    $user = Auth::user();
+    $user->password = Hash::make($request->password);
+    $user->is_default_password = false;
+    $user->save();
 
-        return redirect()->route('home')->with('success', 'Password updated successfully.');
-    }
+    return redirect()->route('home')->with('success', 'Password updated successfully.');
 }
+}
+
+

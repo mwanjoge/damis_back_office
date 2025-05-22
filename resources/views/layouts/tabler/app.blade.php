@@ -33,10 +33,10 @@
 
                 <!-- BEGIN NAVBAR LOGO -->
                 <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    <a href="index">
+                    <a href="home">
                         <div>
-                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="10%"
-                                width="5%">
+                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="13%"
+                                width="10%">
                         </div>
                     </a>
                 </div>
