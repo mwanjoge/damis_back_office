@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Department extends BaseModel
 {
     
-    use HasFactory, Auditable;
+    use HasFactory, Auditable, SoftDeletes;
 
     protected $table = 'depertments';
 

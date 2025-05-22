@@ -150,7 +150,6 @@
                     dropdownParent: parentModal.length ? parentModal : $(this).parent(),
                     width: '100%'
                 });
-
             }
         });
     }

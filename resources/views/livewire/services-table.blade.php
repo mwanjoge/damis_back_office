@@ -32,13 +32,14 @@
                                 <i class="bx bx-pencil"></i>
                             </button>
 
-                            <form method="post" action="{{ route('service.destroy', $service->id) }}" style="display: inline-block;">
+                            <form id="delete-form-{{ $service->id }}" method="POST"
+                                action="{{ route('service.destroy', $service->id) }}" style="display: none;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bx bx-trash-alt"></i>
-                                </button>
                             </form>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $service->id }})">
+                                <i class="bx bx-trash-alt"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -119,7 +120,7 @@
                 serviceProviderSelect.value = serviceProviderId || '';
                 form.action = `${formActionBase}/${serviceId}`;
                 form.method =
-                'POST'; // HTML forms only support GET or POST. Use hidden _method for PUT.
+                    'POST'; // HTML forms only support GET or POST. Use hidden _method for PUT.
 
                 // Add hidden _method field for PUT request
                 let methodInput = form.querySelector('input[name="_method"]');
