@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Sqids\Sqids;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(Sqids::class, function () {
+            return new Sqids(config('app.hash_salt'), 10);
+        });
     }
 
     /**
@@ -22,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Route::bind('id', function ($id) {
+             return decode($id);
+        });
+        
         Event::listen(
             'App\Events\EmbassyCreated',
             'App\Listeners\PushCreatedRecordsToPublicServer'
@@ -50,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
 
     //     $view->with('breadcrumbs', $breadcrumbs);
     // });
+
+        
     }
 
 }

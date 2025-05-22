@@ -28,6 +28,7 @@ class Request extends BaseModel
         'is_approved' => 'boolean',
         'is_paid' => 'boolean',
         'total_cost' => 'decimal:2',
+        //'id' => 'encrypted'
     ];
 
     // Relationships
