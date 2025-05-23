@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->enum('type', ['Diaspora', 'Domestic']);
-            $table->enum('status', ['Pending', 'In Progress', 'Completed', 'Cancelled', 'Rejected']);
+            $table->enum('status', ['New','Pending', 'In Progress', 'Completed', 'Cancelled', 'Rejected']);
             $table->uuid('tracking_number')->unique();
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_paid')->default(false);

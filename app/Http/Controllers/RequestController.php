@@ -124,8 +124,9 @@ class RequestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(\App\Models\Request $request)
+    public function show(\App\Models\Request $request, int $id)
     {
+        $request = \App\Models\Request::findOrFail($id);
         $request->load('requestItems.serviceProvider', 'requestItems.service');
 
         $request->load('embassy', 'member');
