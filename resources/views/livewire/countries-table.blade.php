@@ -55,7 +55,7 @@
     <div class="modal fade countries-modal" tabindex="-1" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered">
             <form method="post"
-                action="{{ $editingId ? route('country.update', $editingId) : route('country.store') }}"
+                action="{{ $editingId ? route('country.update', encode([$editingId])) : route('country.store') }}"
                 class="modal-content">
                 @csrf
                 @if ($editingId)

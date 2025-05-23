@@ -71,8 +71,9 @@ class CountryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCountryRequest $request, Country $country)
+    public function update(UpdateCountryRequest $request, int $id)
     {
+        $country = Country::findOrFail($id);
         $country->update($request->all());
         return redirect()->route('settings')->with('success', 'Country updated successfully!');
     }
