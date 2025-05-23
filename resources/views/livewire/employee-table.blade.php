@@ -41,7 +41,8 @@
                                     <i class="bx bx-pencil"></i>
                                 </button>
                                 <form id="delete-form-{{ $employee->id }}" method="POST"
-                                    action="{{ route('employee.destroy', encode([$employee->id])) }}" style="display: none;">
+                                    action="{{ route('employee.destroy', encode([$employee->id])) }}"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
@@ -73,6 +74,8 @@
             <div class="modal-content">
                 <form id="employeeForm" method="post" action="{{ route('employee.store') }}">
                     @csrf
+                    <input type="hidden" name="_method" id="employeeMethod" value="POST">
+                    <input type="hidden" name="id" id="employeeId">
                     <div class="modal-header text-center">
                         <h4 id="employeeModalTitle">Add New Employee</h4>
                     </div>
@@ -86,12 +89,10 @@
                                 </ul>
                             </div>
                         @endif
-                        <input type="hidden" name="_method" id="employeeMethod">
-                        <input type="hidden" name="id" id="employeeId">
+
                         <div class="mb-3">
                             <label class="form-label">First Name</label>
-                            <input type="text" name="first_name" id="employeeFirstName" class="form-control"
-                                required>
+                            <input type="text" name="first_name" id="employeeFirstName" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Last Name</label>
@@ -119,7 +120,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
                         <div class="hstack gap-2 justify-content-center mt-4">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save Employee</button>
@@ -131,9 +132,18 @@
     </div>
     <script>
         function openEmployeeModal(data = {}, encodedId = '') {
-            console.log("id "+encodedId);
-            document.getElementById('employeeModalTitle').innerText = data.id ? 'Edit Employee' : 'Add New Employee';
-            document.getElementById('employeeMethod').value = data.id ? 'PUT' : 'POST';
+            const isEdit = !!data.id;
+            const form = document.getElementById('employeeForm');
+            const methodInput = document.getElementById('employeeMethod');
+            const storeUrl = "{{ route('employee.store') }}";
+            const updateUrlTemplate = "{{ url('employee') }}/:id";
+
+            document.getElementById('employeeModalTitle').innerText = isEdit ? 'Edit Employee' : 'Add New Employee';
+
+            methodInput.value = isEdit ? 'PUT' : 'POST';
+            form.action = isEdit ? updateUrlTemplate.replace(':id', encodedId) : storeUrl;
+
+            // populate form fields
             document.getElementById('employeeId').value = data.id || '';
             document.getElementById('employeeFirstName').value = data.first_name || '';
             document.getElementById('employeeLastName').value = data.last_name || '';
@@ -141,9 +151,9 @@
             document.getElementById('employeeDepartmentId').value = data.department_id || '';
             document.getElementById('employeeDesignationId').value = data.designation_id || '';
             document.getElementById('employeeStatus').value = data.is_active ? '1' : '0';
-            const formActionBase = "{{ url('employee') }}";
-            document.getElementById('employeeForm').action = data.id ? `${formActionBase}/${encodedId}` : formActionBase;
+
             new bootstrap.Modal(document.querySelector('.employee-modal')).show();
         }
+
     </script>
 </div>

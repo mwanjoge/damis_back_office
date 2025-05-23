@@ -224,7 +224,7 @@
                                     <td>
                                         @if ($item->attachment)
                                             <button type="button" class="btn btn-sm btn-outline-primary"
-                                                onclick="previewDocument('{{ asset('storage/' . $item->attachment) }}', '{{ $item->certificate_holder_name }}', '{{ $item->certificate_index_number }}', '{{ $item->id }}', '{{ $item->service->name }}', '{{ $item->service->serviceProvider->name }}')">
+                                                onclick="previewDocument('{{ asset('storage/' . $item->attachment) }}', '{{ $item->certificate_holder_name }}', '{{ $item->certificate_index_number }}', '{{ $item->id }}', '{{ $item->service->name }}', '{{ $item->service->serviceProvider->name }}', '{{ encode([$item->id]) }}')">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                     <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>

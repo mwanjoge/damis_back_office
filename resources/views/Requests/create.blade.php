@@ -294,7 +294,7 @@
             // Set initial state based on the current value of typeSelect
             setTimeout(() => {
                 if (typeSelect.value === "Domestic") {
-                    countrySelect.value = 174;
+                    countrySelect.value = 172;
                     countryFieldDiv.style.display = "none";
                 }
 

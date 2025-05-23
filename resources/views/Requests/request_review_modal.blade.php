@@ -51,7 +51,7 @@
  <script>
      let selectedItemId = null;
 
-     function previewDocument(url, holderName, indexNumber, itemId, serviceName, serviceProvider) {
+     function previewDocument(url, holderName, indexNumber, itemId, serviceName, serviceProvider, encodedId) {
          selectedItemId = itemId;
 
          // Fill in certificate info
@@ -70,7 +70,7 @@
             `;
 
          // Update form actions
-         document.getElementById('approve-form').action = `/request/approve/${itemId}`;
+         document.getElementById('approve-form').action = `/request/approve/${encodedId }`;
          //  document.getElementById('reject-form').action = `/requests/reject/${itemId}`;
 
          const iframe = document.getElementById('preview-frame');
