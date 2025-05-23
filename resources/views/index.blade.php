@@ -61,25 +61,6 @@
                             <div class="flex-grow-1">
                                 <h4 class="fs-16 mb-1">Hello {{ Auth::user()->name }}</h4>
                             </div>
-{{--                            <div class="mt-3 mt-lg-0">--}}
-{{--                                <form action="javascript:void(0);">--}}
-{{--                                    <div class="row g-3 mb-0 align-items-center">--}}
-{{--                                        <div class="col-sm-auto">--}}
-{{--                                            <div class="input-group">--}}
-{{--                                                <input type="text"--}}
-{{--                                                    class="form-control border-0 fs-13 dash-filter-picker shadow"--}}
-{{--                                                    data-provider="flatpickr" data-range-date="true"--}}
-{{--                                                    data-date-format="d M, Y"--}}
-{{--                                                    data-deafult-date="01 Jan 2022 to 31 Jan 2022">--}}
-{{--                                                <div class="input-group-text bg-secondary border-secondary text-white">--}}
-{{--                                                    <i class="ri-calendar-2-line"></i>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                        <!--end col-->--}}
-{{--                                    </div>--}}
-{{--                                    <!--end row-->--}}
-{{--                                </form>--}}
                         </div><!-- end card header -->
                     </div>
                     <!--end col-->

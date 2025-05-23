@@ -83,13 +83,14 @@ class DesignationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Designation $designation)
+    public function destroy(int $id)
     {
         try {
+            $designation = Designation::findOrFail($id);
             $designation->delete();
-            return response()->json(['message' => 'Designation deleted successfully']);
+            return redirect()->back()->with('success', 'Designation deleted successfully.');
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error deleting designation'], 500);
+            return redirect()->back()->with('error', 'Failed to delete designation: ' . $e->getMessage());
         }
     }
 }

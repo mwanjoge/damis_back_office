@@ -106,9 +106,10 @@ public function store(StoreEmployeeRequest $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy(int $id)
     {
         try {
+            $employee = Employee::findOrFail($id);
             User::where('userable_id', $employee->id)->where('userable_type', Employee::class)->delete();
 
             $employee->delete();

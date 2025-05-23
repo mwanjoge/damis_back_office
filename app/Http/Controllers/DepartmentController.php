@@ -83,9 +83,10 @@ class DepartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Department $department)
+    public function destroy(int $id)
     {
         try {
+            $department = Department::findOrFail($id);
             $department->delete();
             return redirect()->route('human_resources')->with('success', 'Department deleted successfully.');
         } catch (\Exception $e) {
