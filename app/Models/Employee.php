@@ -13,7 +13,7 @@ class Employee extends BaseModel
     protected $fillable = [
         'account_id',
         'designation_id',
-        'depertment_id',
+        'department_id',
         'first_name',
         'middle_name',
         'last_name',

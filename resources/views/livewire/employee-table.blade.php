@@ -1,6 +1,6 @@
 <div>
     @include('modal.alert')
-    <div class="tab-pane px-4" id="employee" role="tabpanel">
+    <div class="tab-pane" id="employee" role="tabpanel">
         <div class="text-end pb-4">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".employee-modal"
                 onclick="openEmployeeModal()">
@@ -9,7 +9,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-nowrap mb-0  datatable">
+            <table class="table table-striped table-sm table-nowrap mb-0  datatable">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
@@ -41,7 +41,7 @@
                                     <i class="bx bx-pencil"></i>
                                 </button>
                                 <form id="delete-form-{{ $employee->id }}" method="POST"
-                                    action="{{ route('employee.destroy', $employee->id) }}" style="display: none;">
+                                    action="{{ route('employee.destroy', encode([$employee->id])) }}" style="display: none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
@@ -103,8 +103,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Department</label>
-                            <select name="depertment_id" id="employeeDepartmentId" data-choices class="form-select "
-                                required>
+                            <select name="department_id" id="employeeDepartmentId" data-choices class="form-select">
                                 <option value="">Select Department</option>
                                 @foreach ($departments as $department)
                                     <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -113,20 +112,14 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Designation</label>
-                            <select name="designation_id" id="employeeDesignationId" data-choices class="form-select ">
+                            <select name="designation_id" id="employeeDesignationId" data-choices class="form-select">
                                 <option value="">Select Designation</option>
                                 @foreach ($designations as $designation)
                                     <option value="{{ $designation->id }}">{{ $designation->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select name="is_active" id="employeeStatus" class="form-select" required>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
+                        
                         <div class="hstack gap-2 justify-content-center mt-4">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save Employee</button>
@@ -145,7 +138,7 @@
             document.getElementById('employeeFirstName').value = data.first_name || '';
             document.getElementById('employeeLastName').value = data.last_name || '';
             document.getElementById('employeeEmail').value = data.email || '';
-            document.getElementById('employeeDepartmentId').value = data.depertment_id || '';
+            document.getElementById('employeeDepartmentId').value = data.department_id || '';
             document.getElementById('employeeDesignationId').value = data.designation_id || '';
             document.getElementById('employeeStatus').value = data.is_active ? '1' : '0';
             const formActionBase = "{{ url('employee') }}";

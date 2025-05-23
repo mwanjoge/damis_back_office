@@ -1,7 +1,7 @@
 @include('modal.alert')
 <div>
 
-    <div class="tab-pane px-4" id="designation" role="tabpanel">
+    <div class="tab-pane" id="designation" role="tabpanel">
         <div class="text-end pb-4">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".designation-modal"
                 onclick="openDesignationModal()">
@@ -10,7 +10,7 @@
         </div>
 
         <div class="table-responsive table-card">
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+            <table class="table table-sm table-striped table-centered align-middle datatable table-nowrap mb-0">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
@@ -32,20 +32,19 @@
                                     <i class="bx bx-pencil"></i>
                                 </button>
 
-                                <form method="POST" action="{{ route('designation.destroy', encode([$designation->id])) }}"
-                                    style="display:inline-block;">
+                                <form id="delete-form-{{ $designation->id }}" method="POST"
+                                    action="{{ route('designation.destroy', encode([$designation->id])) }}"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bx-trash-alt"></i>
-                                    </button>
                                 </form>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $designation->id }})">
+                                    <i class="bx bx-trash-alt"></i>
+                                </button>
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="4" class="text-center">No designations found.</td>
-                        </tr>
+                        
                     @endforelse
                 </tbody>
             </table>
@@ -81,7 +80,8 @@
 
                         <div class="mb-3">
                             <label class="form-label">Account</label>
-                            <select name="account_id" id="designationAccountId" data-choices class="form-select " required>
+                            <select name="account_id" id="designationAccountId" data-choices class="form-select "
+                                required>
                                 <option value="">Select Account</option>
                                 @foreach ($accounts as $account)
                                     <option value="{{ $account->id }}">{{ $account->name }}</option>
@@ -100,7 +100,7 @@
     </div>
 
     <script>
-        function openDesignationModal(data = {},encodedId='') {
+        function openDesignationModal(data = {}, encodedId = '') {
             const isEdit = !!data.id;
             document.getElementById('designationModalTitle').innerText = isEdit ? 'Edit Designation' : 'Add New Designation';
             document.getElementById('designationMethod').value = isEdit ? 'PUT' : 'POST';

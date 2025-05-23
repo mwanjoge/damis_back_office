@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +15,7 @@ class EmployeeSeeder extends Seeder
     {
         $employee = \App\Models\Employee::create([
             'account_id' => 1,
-            'depertment_id' => 1,
+            'department_id' => 1,
             'first_name' => 'John Doe',
             'last_name' => 'Doe',
             'email' => 'admin@gmail.com']);
