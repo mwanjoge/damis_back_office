@@ -11,7 +11,7 @@
 
     <div class="row mb-5">
         <div class="col-12">
-            <h4 class="p-1 font-italic">Human Resources</h4>
+            <h2 class="p-1">Human Resources</h2>
             <div class="card shadow-sm">
                 <div class="card-header bg-white border-bottom-0">
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
