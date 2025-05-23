@@ -11,7 +11,7 @@
 
     @include('modal.alert')
     <div class="row">
-        <div class="col-xxl-9 pt-4">
+        <div class="col">
             <h4 class="p-1 font-italic">Authentication</h4>
             <div class="card mb-xxl-n5">
                 <div class="card-header">

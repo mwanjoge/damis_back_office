@@ -4,15 +4,14 @@
 {{-- @section('content') --}}
 <div class="container">
     @include('modal.alert')
-    <div class="d-flex justify-content-end align-items-center">
+    <div class="d-flex justify-content-end align-items-center py-2">
         {{-- <h4 class="fw-bold">Roles</h4> --}}
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roleModal"
             onclick="openRoleModal('create')">+ Create New Role</button>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-striped">
+    <div class="table-responsive card-table">
+        <table class="table table-sm table-striped">
                 <thead>
                     <tr class="bg-light text-dark">
                         <th>#</th>
@@ -51,8 +50,6 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
-
     </div>
 </div>
 {{-- @endsection --}}
