@@ -32,14 +32,15 @@
                                     <i class="bx bx-pencil"></i>
                                 </button>
 
-                                <form method="POST" action="{{ route('designation.destroy', encode([$designation->id])) }}"
-                                    style="display:inline-block;">
+                                <form id="delete-form-{{ $designation->id }}" method="POST"
+                                    action="{{ route('designation.destroy', encode([$designation->id])) }}"
+                                    style="display: none;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bx bx-trash-alt"></i>
-                                    </button>
                                 </form>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $designation->id }})">
+                                    <i class="bx bx-trash-alt"></i>
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -79,7 +80,8 @@
 
                         <div class="mb-3">
                             <label class="form-label">Account</label>
-                            <select name="account_id" id="designationAccountId" data-choices class="form-select " required>
+                            <select name="account_id" id="designationAccountId" data-choices class="form-select "
+                                required>
                                 <option value="">Select Account</option>
                                 @foreach ($accounts as $account)
                                     <option value="{{ $account->id }}">{{ $account->name }}</option>
@@ -98,7 +100,7 @@
     </div>
 
     <script>
-        function openDesignationModal(data = {},encodedId='') {
+        function openDesignationModal(data = {}, encodedId = '') {
             const isEdit = !!data.id;
             document.getElementById('designationModalTitle').innerText = isEdit ? 'Edit Designation' : 'Add New Designation';
             document.getElementById('designationMethod').value = isEdit ? 'PUT' : 'POST';
