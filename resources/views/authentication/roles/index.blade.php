@@ -37,9 +37,15 @@
                                     <i class="bx bx-edit-alt"></i>
                                 </button>
 
-                                <a href="#" class="btn btn-sm btn-danger">
-                                    <i class="bx bxs-trash"></i>
-                                </a>
+                                  {{-- <form id="delete-form-{{ $service->id }}" method="POST"
+                                action="{{ route('service.destroy', $service->id) }}" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $service->id }})">
+                                <i class="bx bx-trash-alt"></i>
+                            </button> --}}
+                       
                             </td>
                         </tr>
                     @endforeach

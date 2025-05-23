@@ -28,12 +28,12 @@ class AppServiceProvider extends ServiceProvider
         Route::bind('id', function ($id) {
              return decode($id);
         });
-        
+
         Event::listen(
             'App\Events\EmbassyCreated',
             'App\Listeners\PushCreatedRecordsToPublicServer'
         );
-        
+
         Http::macro('public', function () {
             return Http::withHeaders([
                 'Connection' => 'keep-alive'
@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
     //     $view->with('breadcrumbs', $breadcrumbs);
     // });
 
-        
+
     }
 
 }

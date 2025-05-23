@@ -36,7 +36,12 @@
                             </button>
 
                             <!-- Delete Button -->
-                            <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $country->id }}">
+                            <form id="delete-form-{{ $country->id }}" method="POST"
+                                action="{{ route('country.destroy', $country->id) }}" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $country->id }})">
                                 <i class="bx bx-trash-alt"></i>
                             </button>
                         </td>

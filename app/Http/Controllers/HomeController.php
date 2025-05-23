@@ -33,24 +33,6 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     // public function index(Request $request)
-    // {
-    //     $data = \Cache::get('dashboard_data', [
-    //         'totalEarnings' => 0,
-    //         'applicationsCount' => 0,
-    //         'customersCount' => 0,
-    //         'newApplicationsCount' => 0,
-    //         'recentApplications' => collect(),
-    //         'activeServiceProvidersData' => [],
-    //         'activeRequestsData' => [],
-    //         'activeServicesData' => [],
-    //         'requestsPerEmbassy' => collect(),
-    //         'monthlyRequests' => collect(),
-    //         'topServices' => collect(),
-    //         'providerStats' => collect(),
-    //         'countryCoverage' => collect(),
-    //     ]);
-    //     return view('index', $data);
-    // }
 
     public function index()
     {
@@ -72,48 +54,11 @@ class HomeController extends Controller
             'embassyEarningsOverTime' => collect(),
             'providerStats' => collect(),
             'countryCoverage' => collect(),
+            'requestsByStatus' => [],
             'earningsByCurrency' => [],
         ]);
 
-        // // If topEmbassies is empty, fetch it directly
-        // if ($data['topEmbassies']->isEmpty()) {
-        //     $data['topEmbassies'] = \App\Models\Request::selectRaw("
-        //         embassies.name AS embassy_name,
-        //         SUM(requests.total_cost) AS total_earnings,
-        //         COUNT(requests.id) AS request_count,
-        //         (SELECT COUNT(DISTINCT countries.id)
-        //          FROM countries
-        //          WHERE countries.embassy_id = embassies.id) AS countries_count,
-        //         (SELECT services.name
-        //          FROM request_items
-        //          JOIN services ON request_items.service_id = services.id
-        //          WHERE request_items.request_id = requests.id
-        //          GROUP BY services.name
-        //          ORDER BY COUNT(*) DESC
-        //          LIMIT 1) AS service_name
-        //     ")
-        //         ->join('embassies', 'requests.embassy_id', '=', 'embassies.id')
-        //         ->groupBy('embassies.id', 'embassies.name', 'requests.id')
-        //         ->orderByDesc('total_earnings')
-        //         ->limit(5)
-        //         ->get();
-        // }
-
         $topEmbassies=$data['topEmbassies'];
-
-        // // Ensure the data is in the expected format
-        // $topEmbassies = $topEmbassies->map(function($embassy) {
-        //     return [
-        //         'embassy_name' => $embassy->embassy_name ?? '-',
-        //         'countries_count' => $embassy->countries_count ?? 0,
-        //         'service_name' => $embassy->service_name ?? '-',
-        //         'total_earnings' => $embassy->total_earnings ?? 0
-        //     ];
-        // });
-
-        // Debug the structure of $topEmbassies
-        // dd($topEmbassies);
-
         $totalEarnings=$data['totalEarnings'];
         $customersCount=$data['customersCount'];
         $applicationsCount=$data['applicationsCount'];

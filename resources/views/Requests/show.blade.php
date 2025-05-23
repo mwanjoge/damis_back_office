@@ -125,7 +125,7 @@
                                 @forelse($request->requestItems as $index => $item)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td class="text-start"><strong>{{ $item->service->name ?? '-' }}</strong></td>
+                                        <td class="text-start">{{ $item->service->name ?? '-' }}</td>
                                         <td>{{ $item->certificate_holder_name }}</td>
                                         <td>{{ number_format($item->price, 2) }}</td>
                                     </tr>
