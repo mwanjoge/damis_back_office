@@ -9,12 +9,12 @@
     </div>
 
     <div class="table-responsive table-card">
-        <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
-            <thead class="text-muted table-light">
+        <table class="table table-sm mb-0 datatable">
+            <thead class="text-muted">
             <tr>
                 <th>#</th>
                 <th>Service Provider</th>
-                <th class="text-end" style="width: 180px;">Actions</th>
+                <th style="width: 180px;">Actions</th>
             </tr>
             </thead>
             <tbody>

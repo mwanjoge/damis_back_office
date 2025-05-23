@@ -23,8 +23,8 @@ class UpdateCountryRequest extends FormRequest
     {
         return [
             'embassy_id'     => 'nullable|exists:embassies,id',
-            'name'           => 'required|string|max:255|unique:countries,name,' . $this->route('country')->id,
-            'code'           => 'nullable|string|max:255|unique:countries,code,' . $this->route('country')->id,
+            'name'           => 'required|string|max:255|unique:countries,name,' . $this->route()->parameter('id'),
+            'code'           => 'nullable|string|max:255|unique:countries,code,' . $this->route()->parameter('id'),
             'phone_code'     => 'nullable|string|max:255',
             'currency'       => 'nullable|string|max:255',
             'currency_code'  => 'nullable|string|max:255',

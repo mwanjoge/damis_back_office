@@ -119,13 +119,13 @@
         <div class="">
             @include('layouts.tabler.top_bar_navs')
         </div>
-        <div class="page-body">
+        <div class="page-body pb-5 mb-5">
             <div class="container-xl">
                 @yield('content')
             </div>
         </div>
     </div>
-    </div>
+ 
     <!-- END PAGE WRAPPER -->
     @include('layouts.tabler.js_files_links')
     @yield('script')
