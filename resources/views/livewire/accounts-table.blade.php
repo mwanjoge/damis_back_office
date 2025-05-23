@@ -1,6 +1,6 @@
 <div>
     <div class="table-responsive" wire:ignore>
-        <table class="table table-sm align-middle datatable">
+        <table class="table table-sm table-striped align-middle datatable">
             <thead>
                 <tr>
                     <th>#</th>

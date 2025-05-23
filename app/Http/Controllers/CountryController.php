@@ -81,13 +81,14 @@ class CountryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Country $country)
+    public function destroy(int $id)
     {
+        $country = Country::query()->find($id);
         try {
             $country->delete();
-            return redirect()->json()->with('success', 'Country deleted successfully');
+            return back()->with('success', 'Country deleted successfully');
         } catch (\Exception $e) {
-            return redirect()->json()->with('error', 'Failed to delete country: ' . $e->getMessage());
+            return back()->with('error', 'Failed to delete country: ' . $e->getMessage());
         }
     }
 }

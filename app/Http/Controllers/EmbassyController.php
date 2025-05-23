@@ -76,19 +76,9 @@ class EmbassyController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'Something went wrong!');
+
             // Optionally, you can log the error message for debugging
             return redirect()->route('settings');
-
-            // // Log error for debugging
-            // Log::error('Failed to store embassy: ' . $e->getMessage(), [
-            //     'trace' => $e->getTraceAsString()
-            // ]);
-
-            // // Return failure response
-            // return response()->json([
-            //     'error' => 'Failed to store embassy',
-            //     'message' => $e->getMessage()
-            // ], 500);
         }
     }
 
@@ -114,6 +104,7 @@ class EmbassyController extends Controller
      */
  public function update(UpdateEmbassyRequest $request, int $id)
 {
+    return $request->all();
     try {
         $embassy =  Embassy::query()->find($id);
         $data = $request->validated();

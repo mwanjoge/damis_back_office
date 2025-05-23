@@ -92,8 +92,9 @@ class ServiceProviderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ServiceProvider $serviceProvider)
+    public function destroy(int $id)
     {
+        $serviceProvider = ServiceProvider::query()->find($id);
         try {
             $serviceProvider->delete();
             session()->flash('success', 'Service Provider deleted successfully!');

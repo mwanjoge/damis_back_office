@@ -10,7 +10,7 @@
         </div>
 
         <div class="table-responsive table-card" wire:ignore>
-            <table class="table table-sm table-centered table-nowrap mb-0 datatable">
+            <table class="table table-sm table-striped table-centered table-nowrap mb-0 datatable">
                 <thead class="text-muted table-light">
                 <tr>
                     <th>#</th>

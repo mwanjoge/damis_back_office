@@ -5,7 +5,7 @@
         </button>
     </div>
     <div class="table-responsive table-card" wire:ignore>
-        <table class="table table-sm table-nowrap mb-0 datatable">
+        <table class="table table-sm table-striped table-nowrap mb-0 datatable">
             <thead class="text-muted table-light pt-3">
                 <tr>
                     <th>#</th>
@@ -37,7 +37,7 @@
 
                             <!-- Delete Button -->
                             <form id="delete-form-{{ $country->id }}" method="POST"
-                                action="{{ route('country.destroy', $country->id) }}" style="display: none;">
+                                action="{{ route('country.destroy', encode([$country->id])) }}" style="display: none;">
                                 @csrf
                                 @method('DELETE')
                             </form>
