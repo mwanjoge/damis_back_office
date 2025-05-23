@@ -10,7 +10,7 @@
     {{-- @include('layouts.breadcrumb') --}}
 
     <div class="row mt-4 mb-5">
-        <div class="col-12 col-xl-12 col-xxl-10">
+        <div class="col-12">
             <h4 class="p-1 font-italic">Settings</h4>
             <div class="card shadow-sm">
                 <div class="card-header bg-white border-bottom-0">

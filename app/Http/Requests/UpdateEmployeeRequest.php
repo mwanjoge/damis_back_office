@@ -21,13 +21,14 @@ class UpdateEmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
+        //dd($this->route()->parameter('id'));
         return [
-            'designation_id'  => 'nullable|exists:designations,id',
-            'depertment_id'   => 'required|exists:depertments,id',
+            'department_id' => '',
+            'designation_id' => '',
             'first_name'      => 'required|string|max:255',
             'middle_name'     => 'nullable|string|max:255',
             'last_name'       => 'required|string|max:255',
-            'email'           => 'required|email|max:255|unique:employees,email,' . $this->route('employee')->id,
+            'email'           => 'required|email|max:255|unique:employees,email,' . $this->route()->parameter('id'),
             'is_active'       => 'boolean',
         ];
     }

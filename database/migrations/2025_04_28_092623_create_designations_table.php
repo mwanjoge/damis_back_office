@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('account_id')->constrained()->cascadeOnDelete();
             $table->string('name')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

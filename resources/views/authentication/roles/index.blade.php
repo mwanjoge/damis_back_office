@@ -28,7 +28,7 @@
                             <td class="text-capitalize">{{ $role->name }}</td>
                             <td>{{ $role->permissions->count() }} permissions</td>
                             <td class="text-end">
-                                <a href="{{ route('roles.show', $role->id) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('roles.show', encode([$role->id])) }}" class="btn btn-sm btn-primary">
                                     <i class="bx bx-show"></i>
                                 </a>
                                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
@@ -45,7 +45,7 @@
                             <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $service->id }})">
                                 <i class="bx bx-trash-alt"></i>
                             </button> --}}
-                       
+
                             </td>
                         </tr>
                     @endforeach

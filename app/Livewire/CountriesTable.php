@@ -5,14 +5,9 @@ namespace App\Livewire;
 use App\Models\Country;
 use App\Models\Embassy;
 use Livewire\Component;
-use Illuminate\Http\Request;
-use App\Http\Requests\StoreCountryRequest;
-use App\Http\Controllers\CountryController;
-use App\Http\Requests\UpdateCountryRequest;
 
 class CountriesTable extends Component
 {
-    // public $countries = [];
     public $embassies = [];
 
     public $editingId = null;
@@ -28,14 +23,19 @@ class CountriesTable extends Component
     public function mount()
     {
         $this->embassies = Embassy::query()->get();
-        // $this->countries = Country::with('embassy')->get();
     }
 
-    public function openForm($id = null)
+    public function openForm($encodedId = null)
     {
-        if ($id) {
+        if ($encodedId) {
+            // Decode the encoded ID
+            $id = is_array($encodedId) ? (decode($encodedId)[0] ?? null) : (decode([$encodedId])[0] ?? null);
+            if (!$id) {
+                $this->resetForm();
+                return;
+            }
             $country = Country::findOrFail($id);
-            $this->editingId = $country->id;
+            $this->editingId = $encodedId;
             $this->name = $country->name;
             $this->code = $country->code;
             $this->phone_code = $country->phone_code;
@@ -43,33 +43,28 @@ class CountriesTable extends Component
             $this->currency_code = $country->currency_code;
             $this->embassy_id = $country->embassy_id;
         } else {
-            $this->reset(['editingId', 'name', 'code', 'phone_code', 'embassy_id']);
+            $this->resetForm();
         }
     }
 
-    public function deleteCountry($id)
+    private function resetForm()
     {
-        try {
-            $country = Country::findOrFail($id);
-            $country->delete();
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => 'Country deleted successfully!'
-            ]);
-        } catch (\Exception $e) {
-            $this->dispatch('showAlert', [
-                'type' => 'error',
-                'message' => 'Failed to delete country: ' . $e->getMessage()
-            ]);
-        }
+        $this->editingId = null;
+        $this->name = null;
+        $this->code = null;
+        $this->phone_code = null;
+        $this->currency = null;
+        $this->currency_code = null;
+        $this->embassy_id = null;
     }
 
-    public function deleteConfirm($id)
+    public function deleteConfirm($encodedId)
     {
         try {
+            $id = is_array($encodedId) ? (decode($encodedId)[0] ?? null) : (decode([$encodedId])[0] ?? null);
+            if (!$id) throw new \Exception('Invalid ID');
             $country = Country::findOrFail($id);
             $country->delete();
-            
             session()->flash('message', 'Country deleted successfully.');
             $this->dispatch('showDeleteSuccess');
         } catch (\Exception $e) {

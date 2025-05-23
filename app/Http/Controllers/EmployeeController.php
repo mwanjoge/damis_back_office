@@ -74,8 +74,9 @@ public function store(StoreEmployeeRequest $request)
     /**
      * Display the specified resource.
      */
-    public function show(Employee $employee)
+    public function show(int $id)
     {
+        $employee = Employee::query()->find($id);
         return view('employee.show', compact('employee'));
     }
 
@@ -90,15 +91,11 @@ public function store(StoreEmployeeRequest $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEmployeeRequest $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, int $id)
     {
+        $employee = Employee::query()->find($id);
         try {
             $data = $request->validated();
-            $designation = \App\Models\Designation::find($data['designation_id']);
-            if (!$designation) {
-                return redirect()->route('human_resources')->with('error', 'Invalid designation selected.');
-            }
-            $data['account_id'] = $designation->account_id;
             $employee->update($data);
             return redirect()->route('human_resources')->with('success', 'Employee updated successfully.');
         } catch (\Exception $e) {
