@@ -9,12 +9,12 @@
     </div>
 
     <div class="table-responsive table-card">
-        <table class="table table-sm mb-0 datatable">
+        <table class="table table-sm table-striped mb-0 datatable">
             <thead class="text-muted">
             <tr>
-                <th>#</th>
+                <th class="text-start">#</th>
                 <th>Service Provider</th>
-                <th style="width: 180px;">Actions</th>
+                <th class="text-end" style="width: 180px;">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -24,7 +24,7 @@
                     $providerData['encoded_id'] = encode([$provider['id']]);
                 @endphp
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td class="text-start">{{ $loop->iteration }}</td>
                     <td>{{ $provider['name'] }}</td>
                     <td class="text-end">
                         <button type="button" class="btn btn-warning btn-sm edit-btn"

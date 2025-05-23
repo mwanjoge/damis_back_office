@@ -25,7 +25,7 @@
                     <tbody>
                         @foreach ($audits as $audit)
                             <tr class="py-0">
-                                <td class="py-0">{{$audit->created_at}}</td>
+                                <td class="py-0 text-start">{{$audit->created_at}}</td>
                                 <td class="py-0">{{$audit->user_name}}</td>
                                 <td class="py-0">{{$audit->event}}</td>
                                 <td class="py-0">{{\Illuminate\Support\Str::of($audit->auditable_type)->afterLast('\\')}}</td>

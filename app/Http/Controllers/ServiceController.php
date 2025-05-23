@@ -88,11 +88,11 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         try {
-            $service = Service::findOrFail($id);
+            $service = Service::query()->find($id);
             $service->delete();
             session()->flash('success', 'Service deleted successfully!');
             return redirect()->back();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error', 'Delete failed: ' . $e->getMessage());
             return redirect()->back(); }
     }

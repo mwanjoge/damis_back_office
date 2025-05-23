@@ -76,6 +76,7 @@ class EmbassyController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'Something went wrong!');
+
             // Optionally, you can log the error message for debugging
             return redirect()->route('settings');
 

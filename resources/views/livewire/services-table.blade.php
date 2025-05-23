@@ -10,7 +10,7 @@
     </div>
 
     <div class="table-responsive table-card">
-        <table class="table table-centered align-middle table-nowrap mb-0 datatable">
+        <table class="table table-sm table-striped align-middle table-nowrap mb-0 datatable">
             <thead class="text-muted table-light">
             <tr>
                 <th>#</th>
@@ -22,7 +22,7 @@
             <tbody>
             @foreach ($services as $service)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td class="text-center">{{ $loop->iteration }}</td>
                     <td>{{ $service->name }}</td>
                     <td>{{ $service->serviceProvider->name ?? 'N/A' }}</td>
                     <td class="text-end">
