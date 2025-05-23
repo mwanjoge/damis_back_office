@@ -47,7 +47,7 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
-         dd($request->all());
+        dd($request->all());
         $request->validated();
         DB::beginTransaction();
 
@@ -80,7 +80,6 @@ class EmbassyController extends Controller
 
             // Optionally, you can log the error message for debugging
             return redirect()->route('settings');
-
         }
     }
 
@@ -104,32 +103,32 @@ class EmbassyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-public function update(UpdateEmbassyRequest $request, int $id)
-{
-    try {
-        $embassy = Embassy::findOrFail($id);
+    public function update(UpdateEmbassyRequest $request, int $id)
+    {
+        try {
+            $embassy = Embassy::findOrFail($id);
 
-        // ✅ DO NOT assign $request->country_id here — it's an array
-        $embassy->update([
-            'name'       => $request->name,
-            'type'       => $request->type,
-            'country_id' => $request->location_id, // ✅ this is a single integer
-            'is_active'  => $request->is_active ?? false,
-        ]);
+            // DO NOT assign $request->country_id here — it's an array
+            $embassy->update([
+                'name'       => $request->name,
+                'type'       => $request->type,
+                'country_id' => $request->location_id,
+                'is_active'  => $request->is_active ?? false,
+            ]);
 
-        // ✅ Clear previous accreditations
-        Country::where('embassy_id', $embassy->id)->update(['embassy_id' => null]);
+            // Clear previous accreditations
+            Country::where('embassy_id', $embassy->id)->update(['embassy_id' => null]);
 
-        // ✅ Reassign accredited countries
-        if ($request->has('country_id')) {
-            Country::whereIn('id', $request->country_id)->update(['embassy_id' => $embassy->id]);
+            // Reassign accredited countries
+            if ($request->has('country_id')) {
+                Country::whereIn('id', $request->country_id)->update(['embassy_id' => $embassy->id]);
+            }
+
+            return redirect()->back()->with('success', 'Embassy updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update embassy: ' . $e->getMessage());
         }
-
-        return redirect()->back()->with('success', 'Embassy updated successfully.');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Failed to update embassy: ' . $e->getMessage());
     }
-}
 
 
 
