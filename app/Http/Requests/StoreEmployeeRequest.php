@@ -14,13 +14,12 @@ class StoreEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'designation_id'  => 'nullable|exists:designations,id',
-            'depertment_id'   => 'required|exists:depertments,id',
+            'designation_id'  => 'nullable',
+            'department_id'   => '',
             'first_name'      => 'required|string|max:255',
             'middle_name'     => 'nullable|string|max:255',
             'last_name'       => 'required|string|max:255',
-            'email'           => 'required|email|max:255|unique:employees,email',
-            'is_active'       => 'boolean',
+            'email'           => 'required|email|max:255|unique:employees,email'
         ];
     }
 }

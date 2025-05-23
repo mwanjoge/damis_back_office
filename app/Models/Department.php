@@ -11,7 +11,7 @@ class Department extends BaseModel
     
     use HasFactory, Auditable, SoftDeletes;
 
-    protected $table = 'depertments';
+    protected $table = 'departments';
 
     protected $fillable = [
         'name',
@@ -19,6 +19,6 @@ class Department extends BaseModel
 
     public function employees()
     {
-        return $this->hasMany(Employee::class, 'depertment_id');
+        return $this->hasMany(Employee::class);
     }
 }

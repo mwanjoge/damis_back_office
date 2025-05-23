@@ -6,14 +6,14 @@
     <div class="page page-center">
         <!-- auth page content -->
         <div class="auth-page-content mx-auto">
-            <div class="container container-tight py-4">
-                <header class="header">
+            <div class="container container-tight">
+                <header class="header mt-0">
                         <div class="title-area text-center">
-                            <img class="img" src="{{ asset('images/emblem.png') }}" alt="Logo"> <!-- Replace with your actual logo -->
-                            <div class="header-text">
-                                <h1>&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;S&nbsp;&nbsp;&nbsp;
+                            <img class="img" src="{{ asset('images/emblem.png') }}" alt="Logo" style="height: 150px; width: auto;"> <!-- Replace with your actual logo -->
+                            <div class="header-text py-2">
+                                <h1 style="font-size: 60px;">&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;S&nbsp;&nbsp;&nbsp;
                                 </h1>
-                                <h5 class="">Document Authentication Management Information System</h5>
+                                <p class="">Document Authentication Management Information System</p>
                             </div>
                         </div>
                     </header>

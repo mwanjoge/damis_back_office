@@ -1,6 +1,6 @@
 @include('modal.alert')
                             <div>
-                                <div class="tab-pane px-4" id="department" role="tabpanel">
+                                <div class="tab-pane" id="department" role="tabpanel">
                                     <div class="text-end pb-4">
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target=".department-modal" onclick="openDepartmentModal()">
@@ -8,10 +8,10 @@
                                         </button>
                                     </div>
                                     <div class="table-responsive table-card">
-                                        <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
+                                        <table class="table table-striped table-sm align-middle table-nowrap mb-0 datatable">
                                             <thead class="text-muted table-light">
                                                 <tr>
-                                                    <th>#</th>
+                                                    <th class="text-start">#</th>
                                                     <th>Department</th>
                                                     <th class="text-end" style="width: 180px;">Actions</th>
                                                 </tr>
@@ -19,7 +19,7 @@
                                             <tbody>
                                                 @forelse ($departments as $department)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td class="text-start">{{ $loop->iteration }}</td>
                                                         <td>{{ $department->name }}</td>
                                                         <td class="text-end">
                                                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
