@@ -21,7 +21,7 @@
 <body>
     <script src="{{ asset('vendors/tabler/js/tabler-theme.min.js') }}"></script>
     <!-- END GLOBAL THEME SCRIPT -->
-    <div class="page " style="min-height: 5vh;">
+    <div class="page" style="min-height: 1vh;">
         <!-- BEGIN NAVBAR  -->
         <header class="navbar navbar-expand-md navbar-light bg-white shadow-sm "
             style=" background-image: url('{{ URL::asset('images/flag.png') }}'); background-size: cover; background-position: center; position: relative;">
@@ -32,10 +32,10 @@
                 style="position: relative; z-index: 2;">
 
                 <!-- BEGIN NAVBAR LOGO -->
-                <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal">
                     <a href="index">
                         <div>
-                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="10%" width="5%">
+                            <img src="{{ URL::asset('images/emblem.png') }}" alt="" width="8%;">
                         </div>
                     </a>
                 </div>
@@ -78,7 +78,7 @@
     <!-- END NAVBAR  -->
     
     @yield('content')
-    </div>
+   
     <!-- END PAGE WRAPPER -->
     @include('layouts.tabler.js_files_links')
     @yield('script')
