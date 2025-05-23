@@ -19,11 +19,11 @@ class UpdateEmbassyRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    
+
     public function rules(): array
     {
         return [
-            'name'        => 'required|string|max:255|unique:embassies,name,' . $this->route('embassy'),
+            'name'        => 'required|string|max:255', // 🔹 No `unique` rule here
             'type'        => 'required|in:Embassy,Permanent Mission,High Commission',
             'location_id' => 'required|exists:countries,id',
             'is_active'   => 'boolean',

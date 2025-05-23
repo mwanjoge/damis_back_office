@@ -47,6 +47,7 @@ class EmbassyController extends Controller
      */
     public function store(StoreEmbassyRequest $request)
     {
+         dd($request->all());
         $request->validated();
         DB::beginTransaction();
 
@@ -103,26 +104,23 @@ class EmbassyController extends Controller
     /**
      * Update the specified resource in storage.
      */
- public function update(UpdateEmbassyRequest $request, int $id)
+public function update(UpdateEmbassyRequest $request, int $id)
 {
-    // dd($request);
     try {
-        $embassy =  Embassy::query()->find($id);
-        $data = $request->validated();
-        $embassy->update($data);
+        $embassy = Embassy::findOrFail($id);
 
-        // Corrected type assignment
+        // ✅ DO NOT assign $request->country_id here — it's an array
         $embassy->update([
-            'name'        => $request->name,
-            'type'        => $request->type,
-            'country_id'  => $request->location_id,
-            'is_active'   => $request->is_active ?? false,
+            'name'       => $request->name,
+            'type'       => $request->type,
+            'country_id' => $request->location_id, // ✅ this is a single integer
+            'is_active'  => $request->is_active ?? false,
         ]);
 
-        // Clear old accreditations
+        // ✅ Clear previous accreditations
         Country::where('embassy_id', $embassy->id)->update(['embassy_id' => null]);
 
-        // Set new accreditations
+        // ✅ Reassign accredited countries
         if ($request->has('country_id')) {
             Country::whereIn('id', $request->country_id)->update(['embassy_id' => $embassy->id]);
         }
@@ -132,6 +130,7 @@ class EmbassyController extends Controller
         return redirect()->back()->with('error', 'Failed to update embassy: ' . $e->getMessage());
     }
 }
+
 
 
 

@@ -8,6 +8,16 @@
     <div class="row mb-5">
         <div class="col-12">
             <h2 class="p-1">Settings</h2>
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="card shadow-sm">
                 <div class="card-header bg-white border-bottom-0">
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">

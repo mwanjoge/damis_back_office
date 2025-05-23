@@ -156,24 +156,6 @@
             }
         });
 
-        Livewire.on('showDeleteSuccess', () => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Deleted!',
-                text: 'Country has been deleted.',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        });
-
-        Livewire.on('showDeleteError', () => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Failed to delete country.',
-            });
-        });
-
         window.addEventListener('close-modal', () => {
             $('.countries-modal').modal('hide');
         });

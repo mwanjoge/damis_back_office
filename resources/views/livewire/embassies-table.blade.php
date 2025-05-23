@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="modal-body px-5">
-                        <input type="hidden" name="_method" id="missionMethod">
+                        <input type="hidden" name="_method" id="missionMethod" value="POST">
                         <input type="hidden" name="id" id="missionId">
 
                         <div class="mb-3">
@@ -128,17 +128,24 @@
         function openMissionModal(data = {}) {
             const formActionBase = "{{ url('embassy') }}";
             const isEdit = !!data.id;
-            const encodedId = data.encoded_id || data.id || '';
+            const encodedId = data.encoded_id || '';
 
             document.getElementById('missionModalTitle').innerText = isEdit ? 'Edit Mission' : 'Add New Mission';
             document.getElementById('missionMethod').value = isEdit ? 'PUT' : 'POST';
             document.getElementById('missionId').value = data.id || '';
             document.getElementById('missionName').value = data.name || '';
-            document.getElementById('missionType').value = data.type || 'Embassy';
+            document.getElementById('missionType').value = data.type || '';
             document.getElementById('missionStatus').value = data.is_active ? '1' : '0';
 
             const missionForm = document.getElementById('missionForm');
-            missionForm.action = isEdit ? `${formActionBase}/${encodedId}` : formActionBase;
+            const methodInput = document.getElementById('missionMethod');
+            const storeUrl = "{{ route('embassy.store') }}";
+            const updateUrlTemplate = "{{ url('embassy') }}/:id";
+
+            methodInput.value = isEdit ? 'PUT' : 'POST';
+            missionForm.action = isEdit ? updateUrlTemplate.replace(':id', encodedId) : storeUrl;
+
+            // missionForm.action = isEdit ? `${formActionBase}/${encodedId}` : formActionBase;
 
             // Mission location via Choices.js
             const locationSelect = document.getElementById('missionLocation');

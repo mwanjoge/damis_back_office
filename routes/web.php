@@ -44,12 +44,12 @@ Route::middleware(['auth'])->group(function () {
         //Route::resource('embassy', EmbassyController::class)->names('embassy');
         Route::post('bills', [App\Http\Controllers\BillableItemController::class, 'store'])->name('bills.store');
         // EMBASSY ROUTES
+        Route::put('embassy/{id}', [EmbassyController::class, 'update'])->name('embassy.update');
         Route::get('embassy', [EmbassyController::class, 'index'])->name('embassy.index');
         Route::get('embassy/create', [EmbassyController::class, 'create'])->name('embassy.create');
         Route::post('embassy', [EmbassyController::class, 'store'])->name('embassy.store');
         Route::get('embassy/{id}', [EmbassyController::class, 'show'])->name('embassy.show');
         Route::get('embassy/{id}/edit', [EmbassyController::class, 'edit'])->name('embassy.edit');
-        Route::put('embassy/{id}', [EmbassyController::class, 'update'])->name('embassy.update');
         Route::delete('embassy/{id}', [EmbassyController::class, 'destroy'])->name('embassy.destroy');
 
         // COUNTRY ROUTES
