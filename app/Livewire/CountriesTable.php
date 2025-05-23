@@ -29,7 +29,7 @@ class CountriesTable extends Component
     {
         if ($encodedId) {
             // Decode the encoded ID
-            $id = is_array($encodedId) ? (decode($encodedId)[0] ?? null) : (decode([$encodedId])[0] ?? null);
+            $id = decode($encodedId);
             if (!$id) {
                 $this->resetForm();
                 return;
