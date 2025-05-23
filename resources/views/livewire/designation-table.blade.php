@@ -28,11 +28,11 @@
                             <td class="text-end">
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".designation-modal"
-                                    onclick="openDesignationModal({{ json_encode($designation) }})">
+                                    onclick="openDesignationModal({{ $designation }},'{{ encode([$designation->id]) }}')">
                                     <i class="bx bx-pencil"></i>
                                 </button>
 
-                                <form method="POST" action="{{ route('designation.destroy', $designation->id) }}"
+                                <form method="POST" action="{{ route('designation.destroy', encode([$designation->id])) }}"
                                     style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
@@ -43,7 +43,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>      
+                        <tr>
                             <td colspan="4" class="text-center">No designations found.</td>
                         </tr>
                     @endforelse
@@ -100,7 +100,7 @@
     </div>
 
     <script>
-        function openDesignationModal(data = {}) {
+        function openDesignationModal(data = {},encodedId='') {
             const isEdit = !!data.id;
             document.getElementById('designationModalTitle').innerText = isEdit ? 'Edit Designation' : 'Add New Designation';
             document.getElementById('designationMethod').value = isEdit ? 'PUT' : 'POST';
@@ -110,15 +110,10 @@
 
             const form = document.getElementById('designationForm');
             const formActionBase = "{{ url('designation') }}";
-            form.action = isEdit ? `${formActionBase}/${data.id}` : formActionBase;
+            form.action = isEdit ? `${formActionBase}/${encodedId}` : formActionBase;
 
             new bootstrap.Modal(document.querySelector('.designation-modal')).show();
         }
 
-        function confirmDelete(id, type) {
-            if (confirm(`Are you sure you want to delete this ${type}?`)) {
-                console.log(`Deleting ${type} with ID: ${id}`);
-            }
-        }
     </script>
 </div>

@@ -82,12 +82,13 @@ class ServiceProviderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateServiceProviderRequest $request, ServiceProvider $serviceProvider)
+    public function update(UpdateServiceProviderRequest $request, int $id)
     {
-        $serviceProvider->update($request->all());
+        $serviceProvider = ServiceProvider::query()->find($id);
+        $data = $request->validated();
+        $serviceProvider->update($data);
         return redirect()->route('settings')->with('success', 'Service Provider updated successfully!');
     }
-
     /**
      * Remove the specified resource from storage.
      */

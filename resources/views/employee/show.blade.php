@@ -31,11 +31,11 @@
             <div class="card-body">
                 <table class="table table-bordered">
                     <tbody>
-                        <tr><th>Username</th><td>{{ $employee->user->username }}</td></tr>
-                        <tr><th>Email</th><td>{{ $employee->user->email }}</td></tr>
-                        <tr><th>Phone</th><td>{{ $employee->user->phone }}</td></tr>
-                        <tr><th>Role</th><td>{{ optional($employee->user->roles)->name ?? 'No role assigned' }}</td></tr>
-                        <tr><th>Status</th><td><span class="badge {{ $employee->user->is_active ? 'bg-success' : 'bg-danger' }}">{{ $employee->user->is_active ? 'Active' : 'Inactive' }}</span></td></tr>         
+                        <tr><th>Username</th><td>{{ $employee->user?->name }}</td></tr>
+                        <tr><th>Email</th><td>{{ $employee->user?->email }}</td></tr>
+                        <tr><th>Phone</th><td>{{ $employee->user?->phone }}</td></tr>
+                        <tr><th>Role</th><td>{{ optional($employee->user?->roles)->name ?? 'No role assigned' }}</td></tr>
+                        <tr><th>Status</th><td><span class="badge {{ $employee->user?->is_active ? 'bg-success' : 'bg-danger' }}">{{ $employee->user?->is_active ? 'Active' : 'Inactive' }}</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -47,13 +47,13 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    @if ($employee->user->getPermissionsViaRoles()->isEmpty())
+                    @if ($employee->user?->getPermissionsViaRoles()->isEmpty())
                         <div class="col-12">
                             <i class="bx bx-x"></i>
                             <span class="text-muted">No permissions assigned</span>
                         </div>
                     @else
-                        @foreach ($employee->user->getPermissionsViaRoles() as $permission)
+                        @foreach ($employee->user?->getPermissionsViaRoles()??[] as $permission)
                             <div class="col-6">
                                 <i class="bx bx-check"></i>
                                 {{ str_replace('_', ' ', $permission->name) }}

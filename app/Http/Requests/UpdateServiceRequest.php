@@ -23,7 +23,7 @@ class UpdateServiceRequest extends FormRequest
     {
         return [
             'service_provider_id' => 'required|exists:service_providers,id',
-            'name' => 'required|string|max:255|unique:services,name,' . $this->route('service')->id,
+            'name' => 'required|string|max:255|unique:services,name,' .$this->route()->parameter('id'),
         ];
     }
 }

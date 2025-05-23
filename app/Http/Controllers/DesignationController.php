@@ -68,8 +68,9 @@ class DesignationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDesignationRequest $request, Designation $designation)
+    public function update(UpdateDesignationRequest $request, int $id)
     {
+      $designation = Designation::query()->find($id);
         try {
             $data = $request->validated();
             $designation->update($data);

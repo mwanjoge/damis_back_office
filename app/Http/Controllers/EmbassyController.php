@@ -112,11 +112,13 @@ class EmbassyController extends Controller
     /**
      * Update the specified resource in storage.
      */
- public function update(UpdateEmbassyRequest $request, $id)
+ public function update(UpdateEmbassyRequest $request, int $id)
 {
     try {
-        $embassy = Embassy::findOrFail($id);
-        
+        $embassy =  Embassy::query()->find($id);
+        $data = $request->validated();
+        $embassy->update($data);
+
         // Corrected type assignment
         $embassy->update([
             'name'        => $request->name,

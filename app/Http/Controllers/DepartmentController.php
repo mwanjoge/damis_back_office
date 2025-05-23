@@ -68,10 +68,12 @@ class DepartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDepartmentRequest $request, Department $department)
+    public function update(UpdateDepartmentRequest $request, int  $id)
     {
+        $department = Department::query()->find($id);
         try {
-            $department->update($request->validated());
+            $data = $request->validated();
+            $department->update($data);
             return redirect()->route('human_resources')->with('success', 'Department updated successfully.');
         } catch (\Exception $e) {
             return redirect()->route('human_resources')->with('error', 'Failed to update department: ' . $e->getMessage());

@@ -72,7 +72,8 @@ class ServiceController extends Controller
     public function update(UpdateServiceRequest $request, $serviceId)
     {
         try {
-            $service = Service::find($serviceId);
+            $decodedId = is_numeric($serviceId) ? $serviceId : (decode($serviceId)[0] ?? null);
+            $service = Service::findOrFail($decodedId);
             $service->update($request->validated());
             return redirect()->route('settings')->with('success', 'Service updated successfully!');
         } catch (Exception $e) {

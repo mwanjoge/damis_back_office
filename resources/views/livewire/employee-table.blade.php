@@ -37,7 +37,7 @@
                             <td class="text-end">
                                 <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target=".employee-modal"
-                                    onclick="openEmployeeModal({{ json_encode($employee) }})">
+                                    onclick="openEmployeeModal({{ json_encode($employee) }}, '{{ encode([$employee->id]) }}')">
                                     <i class="bx bx-pencil"></i>
                                 </button>
                                 <form id="delete-form-{{ $employee->id }}" method="POST"
@@ -48,7 +48,7 @@
                                 <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $employee->id }})">
                                     <i class="bx bx-trash-alt"></i>
                                 </button>
-                                <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info btn-sm">
+                                <a href="{{ route('employee.show', encode([$employee->id])) }}" class="btn btn-info btn-sm">
                                     <i class="bx bx-detail"></i>
                                 </a>
                                 <form method="POST" action="{{ route('employee.reset-password', $employee->id) }}"
@@ -137,7 +137,8 @@
         </div>
     </div>
     <script>
-        function openEmployeeModal(data = {}) {
+        function openEmployeeModal(data = {}, encodedId = '') {
+            console.log("id "+encodedId);
             document.getElementById('employeeModalTitle').innerText = data.id ? 'Edit Employee' : 'Add New Employee';
             document.getElementById('employeeMethod').value = data.id ? 'PUT' : 'POST';
             document.getElementById('employeeId').value = data.id || '';
@@ -148,7 +149,7 @@
             document.getElementById('employeeDesignationId').value = data.designation_id || '';
             document.getElementById('employeeStatus').value = data.is_active ? '1' : '0';
             const formActionBase = "{{ url('employee') }}";
-            document.getElementById('employeeForm').action = data.id ? `${formActionBase}/${data.id}` : formActionBase;
+            document.getElementById('employeeForm').action = data.id ? `${formActionBase}/${encodedId}` : formActionBase;
             new bootstrap.Modal(document.querySelector('.employee-modal')).show();
         }
     </script>

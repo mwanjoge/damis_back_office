@@ -4,7 +4,7 @@
     <div class="tab-pane px-4" id="embassy" role="tabpanel">
         <div class="text-end pb-4">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".mission-modal"
-                onclick="openMissionModal()">
+                    onclick="openMissionModal()">
                 New Mission
             </button>
         </div>
@@ -12,46 +12,47 @@
         <div class="table-responsive table-card" wire:ignore>
             <table class="table table-borderless table-centered align-middle table-nowrap mb-0 datatable">
                 <thead class="text-muted table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Mission</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th class="text-end">Actions</th>
-                    </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Mission</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @forelse ($embassies as $embassy)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $embassy->name }}</td>
-                            <td>{{ ucfirst($embassy->type) }}</td>
-                            <td>{{ $embassy->is_active ? 'Active' : 'Inactive' }}</td>
-                            <td class="text-end">
-                                @php
-                                    $embassyData = $embassy->only(['id', 'name', 'type', 'is_active']);
-                                    $embassyData['countries'] = $embassy->countries->pluck('id')->toArray();
-                                    $embassyData['country_id'] = $embassy->country_id;
-                                @endphp
+                @forelse ($embassies as $embassy)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $embassy->name }}</td>
+                        <td>{{ ucfirst($embassy->type) }}</td>
+                        <td>{{ $embassy->is_active ? 'Active' : 'Inactive' }}</td>
+                        <td class="text-end">
+                            @php
+                                $encodedId = encode([$embassy->id]);
+                                $embassyData = $embassy->only(['id', 'name', 'type', 'is_active']);
+                                $embassyData['countries'] = $embassy->countries->pluck('id')->toArray();
+                                $embassyData['country_id'] = $embassy->country_id;
+                                $embassyData['encoded_id'] = $encodedId;
+                            @endphp
 
-                                <button class="btn btn-warning btn-sm"
+                            <button class="btn btn-warning btn-sm"
                                     onclick='openMissionModal(@json($embassyData))'>
-                                    <i class="bx bx-pencil"></i>
-                                </button>
-                                <form id="delete-form-{{ $embassy->id }}" method="POST"
-                                    action="{{ route('embassy.destroy', $embassy->id) }}" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $embassy->id }})">
-                                    <i class="bx bx-trash-alt"></i>
-                                </button>
-
-                            </td>
-                        </tr>
-                    @empty
-                        {{-- No data --}}
-                    @endforelse
+                                <i class="bx bx-pencil"></i>
+                            </button>
+                            <form id="delete-form-{{ $embassy->id }}" method="POST"
+                                  action="{{ route('embassy.destroy', $encodedId) }}" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $embassy->id }})">
+                                <i class="bx bx-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                @empty
+                    {{-- No data --}}
+                @endforelse
                 </tbody>
             </table>
         </div>
@@ -127,6 +128,7 @@
         function openMissionModal(data = {}) {
             const formActionBase = "{{ url('embassy') }}";
             const isEdit = !!data.id;
+            const encodedId = data.encoded_id || data.id || '';
 
             document.getElementById('missionModalTitle').innerText = isEdit ? 'Edit Mission' : 'Add New Mission';
             document.getElementById('missionMethod').value = isEdit ? 'PUT' : 'POST';
@@ -136,7 +138,7 @@
             document.getElementById('missionStatus').value = data.is_active ? '1' : '0';
 
             const missionForm = document.getElementById('missionForm');
-            missionForm.action = isEdit ? `${formActionBase}/${data.id}` : formActionBase;
+            missionForm.action = isEdit ? `${formActionBase}/${encodedId}` : formActionBase;
 
             // Mission location via Choices.js
             const locationSelect = document.getElementById('missionLocation');
@@ -176,7 +178,6 @@
                 select2El.select2({
                     placeholder: "Select countries"
                 });
-
             }
         });
     </script>
@@ -193,5 +194,4 @@
             white-space: normal !important;
         }
     </style>
-
 </div>
