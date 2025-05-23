@@ -9,7 +9,7 @@
 
     {{-- @include('layouts.breadcrumb') --}}
 
-    <div class="row mt-4 mb-5">
+    <div class="row mb-5">
         <div class="col-12">
             <h4 class="p-1 font-italic">Human Resources</h4>
             <div class="card shadow-sm">
@@ -33,7 +33,7 @@
                     </ul>
                 </div>
 
-                <div class="card-body px-4 bg-white">
+                <div class="card-body bg-white">
                     <div class="tab-content">
                         <!-- Mission -->
                         <div class="tab-pane fade show active" id="tab-department" role="tabpanel" wire:ignore.self>

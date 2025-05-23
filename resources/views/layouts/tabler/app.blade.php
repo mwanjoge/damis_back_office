@@ -21,7 +21,7 @@
 <body>
     <script src="{{ asset('vendors/tabler/js/tabler-theme.min.js') }}"></script>
     <!-- END GLOBAL THEME SCRIPT -->
-    <div class="page " style="min-height: 5vh;">
+    <div class="page " style="min-height: 1vh;">
         <!-- BEGIN NAVBAR  -->
         <header class="navbar navbar-expand-md navbar-light bg-white shadow-sm "
             style=" background-image: url('{{ URL::asset('images/flag.png') }}'); background-size: cover; background-position: center; position: relative;">
@@ -36,7 +36,7 @@
                     <a href="home">
                         <div>
                             <img src="{{ URL::asset('images/emblem.png') }}" alt="" height="13%"
-                                width="10%">
+                                width="8%">
                         </div>
                     </a>
                 </div>

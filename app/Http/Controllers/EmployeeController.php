@@ -47,14 +47,17 @@ public function store(StoreEmployeeRequest $request)
     try {
         $data = $request->validated();
 
-        $designation = \App\Models\Designation::find($data['designation_id']);
-        if (!$designation) {
-            return redirect()->route('human_resources')->with('error', 'Invalid designation selected.');
-        }
-
-        $data['account_id'] = $designation->account_id;
+        $data['account_id'] = auth()->user()->userable->account_id;
 
         $employee = Employee::create($data);
+        if ($data['designation_id']) {
+            $employee->designation_id = $data['designation_id'];
+        }
+        if($data['department_id']){
+            $employee->department_id = $data['department_id'];
+        }
+
+        $employee->save();
 
         $user = User::create([
             'name' => $employee->first_name . ' ' . $employee->last_name,
@@ -114,9 +117,9 @@ public function store(StoreEmployeeRequest $request)
 
             $employee->delete();
 
-            return redirect()->route('human_resources')->with('success', 'Employee deleted successfully.');
+            return back()->with('success', 'Employee deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('human_resources')->with('error', 'Failed to delete employee: ' . $e->getMessage());
+            return back()->with('error', 'Failed to delete employee: ' . $e->getMessage());
         }
     }
 

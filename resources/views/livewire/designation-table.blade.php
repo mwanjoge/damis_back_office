@@ -1,7 +1,7 @@
 @include('modal.alert')
 <div>
 
-    <div class="tab-pane px-4" id="designation" role="tabpanel">
+    <div class="tab-pane" id="designation" role="tabpanel">
         <div class="text-end pb-4">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".designation-modal"
                 onclick="openDesignationModal()">
@@ -10,7 +10,7 @@
         </div>
 
         <div class="table-responsive table-card">
-            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+            <table class="table table-sm table-striped table-centered align-middle datatable table-nowrap mb-0">
                 <thead class="text-muted table-light">
                     <tr>
                         <th>#</th>
