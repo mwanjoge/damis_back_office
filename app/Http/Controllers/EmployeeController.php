@@ -50,14 +50,7 @@ public function store(StoreEmployeeRequest $request)
         $data['account_id'] = auth()->user()->userable->account_id;
 
         $employee = Employee::create($data);
-        if ($data['designation_id']) {
-            $employee->designation_id = $data['designation_id'];
-        }
-        if($data['department_id']){
-            $employee->department_id = $data['department_id'];
-        }
-
-        $employee->save();
+        
 
         $user = User::create([
             'name' => $employee->first_name . ' ' . $employee->last_name,
@@ -68,9 +61,9 @@ public function store(StoreEmployeeRequest $request)
             'is_default_password' => true,
         ]);
 
-        return redirect()->route('human_resources')->with('success', 'Employee created successfully.');
+        return back()->with('success', 'Employee created successfully.');
     } catch (\Exception $e) {
-        return redirect()->route('human_resources')->with('error', 'Failed to create employee: ' . $e->getMessage());
+        return back()->with('error', 'Failed to create employee: ' . $e->getMessage());
     }
 }
 

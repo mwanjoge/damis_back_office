@@ -27,7 +27,7 @@ class Employee extends BaseModel
 
     public function department()
     {
-        return $this->belongsTo(Department::class, 'depertment_id');
+        return $this->belongsTo(Department::class);
     }
 
     public function designation()
