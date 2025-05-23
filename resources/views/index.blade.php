@@ -88,9 +88,7 @@
                                 <div class="d-flex align-items-baseline mt-3">
                                     <div class="h1 mb-0 me-2">{{ number_format($totalEarnings ?? 0) }}</div>
                                 </div>
-                                <div class="mt-2">
-                                    <a href="" class="text-muted">View net earnings</a>
-                                </div>
+
                             </div><!-- end card body -->
                         </div><!-- end card -->
                     </div><!-- end col -->
@@ -117,9 +115,7 @@
                                 <div class="d-flex align-items-baseline mt-3">
                                     <div class="h1 mb-0 me-2">{{ $applicationsCount }}</div>
                                 </div>
-                                <div class="mt-2">
-                                    <a href="" class="text-muted">View all applications</a>
-                                </div>
+
                             </div><!-- end card body -->
                         </div><!-- end card -->
                     </div><!-- end col -->
@@ -145,9 +141,7 @@
                                 <div class="d-flex align-items-baseline mt-3">
                                     <div class="h1 mb-0 me-2">{{ $customersCount }}</div>
                                 </div>
-                                <div class="mt-2">
-                                    <a href="" class="text-muted">Total customers</a>
-                                </div>
+
                             </div><!-- end card body -->
                         </div><!-- end card -->
                     </div><!-- end col -->
@@ -173,9 +167,7 @@
                                 <div class="d-flex align-items-baseline mt-3">
                                     <div class="h1 mb-0 me-2">{{ $newApplicationsCount }}</div>
                                 </div>
-                                <div class="mt-2">
-                                    <a href="" class="text-muted">View new applications</a>
-                                </div>
+
                             </div><!-- end card body -->
                         </div><!-- end card -->
                     </div><!-- end col -->

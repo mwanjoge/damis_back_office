@@ -40,10 +40,7 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <div class="float-end">
-                                            <a href="{{ route('password.update') }}" class="text-muted">Forgot
-                                                password?</a>
-                                        </div>
+
                                         <label class="form-label" for="password-input">Password <span
                                                 class="text-danger">*</span></label>
                                         <div class="position-relative auth-pass-inputgroup mb-3">
@@ -75,7 +72,7 @@
             </div>
             <!-- end row -->
         </div>
-    
+
     </div>
 @endsection
 @section('script')
