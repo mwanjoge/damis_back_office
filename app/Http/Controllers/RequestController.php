@@ -63,7 +63,7 @@ class RequestController extends Controller
             if (!$accountId) {
                 if ($request->ajax() || $request->wantsJson()) {
 
-                    return response()->json([
+                    return response()->json(data: [
                         'success' => false,
                         'message' => 'Account not found for the specified embassy.'
                     ]);

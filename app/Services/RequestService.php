@@ -25,15 +25,16 @@ class RequestService
         foreach ($data['request_items'] as $item) {
             $totalCost += $item['price'] ?? $data['price'];
         }
-        return Request::create([
+        $request = Request::create([
             'account_id' => $country->embassy_id,
             'embassy_id' => $country->embassy_id,
             'member_id' => $data['member_id'],
             'country_id' => $data['country_id'],
             'type' => $data['type'],
-            'tracking_number' => \Illuminate\Support\Str::ulid(),
             'total_cost' => $totalCost,
         ]);
+        $request->tracking_number = getTrackNumber([$request->id]);
+        $request->save();
     }
 
 
