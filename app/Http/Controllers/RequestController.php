@@ -53,6 +53,7 @@ class RequestController extends Controller
      */
     public function store(StoreRequestRequest $request)
     {
+        // dd($request->all());
         try {
             $data = $request->validated();
 
@@ -87,7 +88,6 @@ class RequestController extends Controller
             return redirect()->route('requests.index')->with('success', 'Request created successfully!');
         } catch (\Exception $e) {
             Log::error('Request creation error: ' . $e->getMessage());
-
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,

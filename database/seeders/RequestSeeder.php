@@ -25,13 +25,13 @@ class RequestSeeder extends Seeder
 
         foreach ($months as $month) {
             foreach ($members as $member) {
-                $embassy = Embassy::where('id', $member->account->embassy_id)->first();
+                $embassy = Embassy::inRandomOrder()->first();
                 $day = random_int(1,  31);
                 $date = Carbon::createFromDate(2025, $month, $day);
                 if($embassy->country_id) {
                     $request = Request::factory()->create([
-                        'account_id' => $member->account_id,
-                        'embassy_id' => $member->account->embassy_id,
+                        'account_id' => $embassy->id,
+                        'embassy_id' => $embassy->id,
                         'member_id' => $member->id,
                         'country_id' => $embassy->country_id,
                         'created_at' => $date,
