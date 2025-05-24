@@ -51,7 +51,7 @@ class RequestSeeder extends Seeder
                         continue;
                     }
                     $requestItem = $request->requestItems()->create([
-                        'account_id' => $accountId,
+                        'account_id' => $request->embassy_id,
                         'service_id' => $service->id,
                         'certificate_holder_name' => $member->name,
                         'certificate_index_number' => Str::random(8),
@@ -63,7 +63,7 @@ class RequestSeeder extends Seeder
                     ]);
 
                     $invoice->generalLineItems()->create([
-                        'account_id' => $accountId,
+                        'account_id' => $request->embassy_id,
                         'service_id' => $service->id,
                         'service_provider_id' => $service->service_provider_id,
                         'request_item_id' => $requestItem->id,
