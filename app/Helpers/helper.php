@@ -14,6 +14,15 @@ function encode(...$args)
     return app(Sqids\Sqids::class)->encode(...$args);
 }
 
+function getTrackNumber(...$args)
+{
+    $id = new Sqids\Sqids('', 6);
+    return $id->encode(...$args);
+
+   // return app(Sqids\Sqids::class)->encode(...$args);
+}
+
+
 function decode($enc)
 {
     if (is_int($enc)) {

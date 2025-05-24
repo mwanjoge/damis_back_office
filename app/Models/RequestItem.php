@@ -20,7 +20,7 @@ class RequestItem extends Model
     ];
 
     public function service() {
-        return $this->belongsTo(\App\Models\Service::class, 'service_id');
+        return $this->belongsTo(Service::class);
     }
 
     public function serviceProvider() {
