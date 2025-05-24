@@ -23,29 +23,26 @@ class RequestSeeder extends Seeder
 
         foreach ($months as $month) {
             foreach ($members as $member) {
-                // Randomly pick an embassy and account (or set to null if you want)
-                $embassy = $embassies->random();
-                $accountId = !empty($accounts) ? $accounts[array_rand($accounts)] : null;
-
-                $day = random_int(1, 31);
+                $embassy = Embassy::inRandomOrder()->first();
+                $day = random_int(1,  31);
                 $date = Carbon::createFromDate(2025, $month, $day);
-
-                $request = Request::factory()->create([
-                    'account_id' => $accountId,
-                    'embassy_id' => $embassy->id,
-                    'member_id' => $member->id,
-                    'country_id' => $embassy->country_id,
-                    'created_at' => $date,
-                    'updated_at' => $date
-                ]);
-
-                $invoice = $request->invoice()->create([
-                    'account_id' => $accountId,
-                    'request_id' => $request->id,
-                    'member_id' => $request->member_id,
-                    'created_at' => $date,
-                    'updated_at' => $date
-                ]);
+                if($embassy->country_id) {
+                    $request = Request::factory()->create([
+                        'account_id' => $embassy->id,
+                        'embassy_id' => $embassy->id,
+                        'member_id' => $member->id,
+                        'country_id' => $embassy->country_id,
+                        'created_at' => $date,
+                        'updated_at' => $date
+                    ]);
+                    
+                    $invoice = $request->invoice()->create([
+                        'account_id' => $request->account_id,
+                        'request_id' => $request->id,
+                        'member_id' => $request->member_id,
+                        'created_at' => $date,
+                        'updated_at' => $date
+                    ]);
 
                 $take = random_int(1, 3);
                 foreach (Service::query()->inRandomOrder()->take($take)->get() as $service) {

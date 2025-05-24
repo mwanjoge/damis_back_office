@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class GeneralLineItem extends BaseModel
 {
     protected $guarded = [];
+
+    public function service() {
+        return $this->belongsTo(Service::class);
+    }
 }

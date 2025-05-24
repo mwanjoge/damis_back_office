@@ -52,6 +52,11 @@ class EmbassySeeder extends Seeder
                 'embassy_id' => $embassy->id,
             ]);
         }
+
+        $country = \App\Models\Country::where('name', 'Tanzania')->first();
+        $country->update([
+            'embassy_id' => 1,
+        ]);
     }
 
 

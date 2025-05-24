@@ -9,6 +9,8 @@ class StoreRequestRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+
+     
     public function authorize(): bool
     {
         return true;
@@ -21,6 +23,7 @@ class StoreRequestRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->all());
         return [
              'embassy_id' => 'nullable|exists:embassies,id',
              'member_id' => 'required|exists:members,id',

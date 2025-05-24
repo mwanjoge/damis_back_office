@@ -15,6 +15,7 @@
             @foreach ($invoice->generalLineItems as $item)
                 <tr>
                     <td style="border: 1px solid #ddd; padding: 8px;">{{ $item->service?->name }}</td>
+                    <td></td>
                     {{-- <td style="border: 1px solid #ddd; padding: 8px;">{{ $item->description }}</td> --}}
                     <td style="border: 1px solid #ddd; padding: 8px;">{{ $item->price }}</td>
                 </tr>

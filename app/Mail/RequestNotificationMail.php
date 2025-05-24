@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Request;
 
 class RequestNotificationMail extends Mailable
 {
@@ -16,7 +17,8 @@ class RequestNotificationMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+
+    public function __construct(protected Request $request)
     {
         //
     }
@@ -34,11 +36,12 @@ class RequestNotificationMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function build()
     {
-        return new Content(
-            view: 'view.name',
-        );
+        return $this->view(
+            'emails.request',
+        )->with(["request" => $this->request]);
+        
     }
 
     /**
