@@ -93,3 +93,4 @@ class RequestSeeder extends Seeder
         Artisan::call('app:cache-dashboard-statistics');
     }
 }
+}
